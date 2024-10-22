@@ -8,7 +8,7 @@ const Banner = () => {
         <img 
           src="/images/banner.png" // Path to your image
           alt="Courier Rider" 
-          className="w-full h-full object-cover" // This makes the image cover the entire section
+          className="w-full h-full object-cover " // This makes the image cover the entire section
         />
       </div>
 
