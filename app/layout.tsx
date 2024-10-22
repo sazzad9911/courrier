@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Green Bangla Courier Service | Home",
@@ -17,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-[#091242]">
         <Header></Header>
-        <div>{children}</div>
+        <Providers>{children}</Providers>
         <Footer></Footer>
       </body>
     </html>
