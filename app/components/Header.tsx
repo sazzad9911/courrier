@@ -4,7 +4,7 @@ import { FaClock, FaEnvelope, FaPhone, FaMapMarkerAlt, FaGlobe } from 'react-ico
 const Header = () => {
   return (
     <header className=" text-white">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between py-4 px-4 md:px-8">
+      <div className="container mx-auto lg:flex flex-col md:flex-row items-center justify-between py-4 px-4 md:px-8 hidden ">
         <div className="flex items-center space-x-2">
           <div className="bg-yellow-500 p-2 rounded-md">
             <FaMapMarkerAlt size={24} />
@@ -29,13 +29,13 @@ const Header = () => {
       </div>
       <nav className="bg-green-900">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between py-3 px-4 md:px-8 text-white">
-          <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+          <ul className="flex items-center gap-6">
             <li className="hover:text-yellow-400"><a href="#home">HOME</a></li>
             <li className="hover:text-yellow-400"><a href="#coverage">COVERAGE</a></li>
             <li className="hover:text-yellow-400"><a href="#about">ABOUT US</a></li>
             <li className="hover:text-yellow-400"><a href="#contact">CONTACT US</a></li>
           </ul>
-          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+          <div className="hidden lg:flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
             <a href="#track" className="flex items-center space-x-2 hover:text-yellow-500 text-yellow-400">
               <FaMapMarkerAlt />
               <span>Track Parcel</span>
