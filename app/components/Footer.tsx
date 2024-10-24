@@ -4,8 +4,7 @@ import React from "react";
 import { FaFacebookSquare, FaLinkedin, FaTwitterSquare } from "react-icons/fa";
 
 export default function Footer() {
-  const params = usePathname();
-  if (params.includes("/dashboard") || params.includes("/auth")) return null;
+
   return (
     <footer className="bg-[#172557] text-white pb-10">
       <div className="container mx-auto px-4 md:px-8">

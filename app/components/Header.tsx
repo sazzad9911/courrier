@@ -11,8 +11,7 @@ import {
 } from "react-icons/fa";
 
 const Header = () => {
-  const params=usePathname()
-  if(params.includes("/dashboard")||params.includes("/auth")) return null
+  
   return (
     <header className=" text-white">
       <div className="container mx-auto lg:flex flex-col md:flex-row items-center justify-between py-4 px-4 md:px-8 hidden ">

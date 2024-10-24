@@ -2,8 +2,21 @@
 "use client";
 
 import { ChakraProvider } from "@chakra-ui/react";
+import { AuthProvider } from "../providers/AuthProvider";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { usePathname } from "next/navigation";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-
-  return <ChakraProvider>{children}</ChakraProvider>;
+  const params = usePathname();
+  if (params.includes("/dashboard") || params.includes("/auth")) return null;
+  return (
+    <AuthProvider>
+      <ChakraProvider>
+        <Header></Header>
+        {children}
+      </ChakraProvider>
+      <Footer></Footer>
+    </AuthProvider>
+  );
 }
