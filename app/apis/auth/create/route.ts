@@ -89,7 +89,7 @@ const GET = async (request: NextRequest) => {
         const code = generateSixDigitNumber()
         const data = {
             number: number,
-            otp: code
+            otp: "000000"
         }
         // await sendSMS(number, `Your SK Online account verification code is ${code}`)
         const key = jwt.sign(data, secret, { expiresIn: '5m' })
@@ -109,7 +109,8 @@ const POST = async (request: NextRequest) => {
     try {
         const data = await userSchema.validate(await request.json())
         const { number } = jwt.verify(data.token, secret) as tokenTypes
-        const encryptedPassword = md5(data.password);
+        const encryptedPassword = md5(data.password.toString());
+       
         const user = await prisma.users.create({
             data: {
                 name: data.name,

@@ -1,5 +1,5 @@
-"use client"
-import React, { FormEvent } from "react";
+"use client";
+import React, { FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
@@ -7,17 +7,63 @@ import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { getApi, postApi } from "../../../functions/API";
+import Cookies from "js-cookie";
 
-
-
-
+interface User {
+  businessName: string; // Required, min length 4
+  name: string; // Required, min length 4, max length 50
+  email: string; // Required, valid email format
+  phone: string; // Required, length of 11
+  password: string; // Required
+  rePassword: string; // Optional, defaults to an empty string
+  address: string; // Optional, defaults to 0
+}
 
 const SignUp: React.FC = () => {
-  const router=useRouter()
-  const onSubmit=(e:FormEvent)=>{
-    e.preventDefault()
-    router.push("/auth/otp")
-  }
+  const router = useRouter();
+  const [formData, setFormData] = useState<User>({
+    businessName: "", // Required, should be provided by the user
+    name: "", // Required, should be provided by the user
+    email: "", // Required, should be provided by the user
+    phone: "", // Required, should be provided by the user
+    password: "", // Required, should be provided by the user
+    rePassword: "", // Optional, defaults to empty string
+    address: "", // Optional, defaults to empty string
+  });
+  const myPromise = () => {
+    return getApi("/apis/auth/create", {
+      phoneNumber: formData.phone,
+    });
+  };
+
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.rePassword) {
+      return toast.error("Passwords do not match!");
+    }
+    if (formData.phone.length !== 11) {
+      return toast.error("Invalid phone number!");
+    }
+
+    toast.promise(myPromise(), {
+      loading: "Please wait...",
+      success: (res: { data: { key: string } }) => {
+        router.push(`/auth/otp?phone=${formData.phone}&password=${formData.password}
+          &name=${formData.name}&businessName=${formData.businessName}&email=${formData.email}&key=${res.data.key}`);
+        return "OTP has sent to your phone";
+      },
+      error: (err: any) => {
+        if (err.response) {
+          return `${err.response.data.error}`;
+        } else {
+          return "An unexpected error occurred.";
+        }
+      },
+    });
+  };
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Sign Up" />
@@ -179,16 +225,23 @@ const SignUp: React.FC = () => {
                 Become a Merchant
               </h2>
 
-              <form onSubmit={onSubmit} >
+              <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Name
                   </label>
                   <div className="relative">
                     <input
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          businessName: e.target.value,
+                        })
+                      }
+                      value={formData.businessName}
                       required
                       type="text"
-                      placeholder="Enter your full name"
+                      placeholder="Enter your full business name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -220,6 +273,13 @@ const SignUp: React.FC = () => {
                     <input
                       required
                       type="text"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          name: e.target.value,
+                        })
+                      }
+                      value={formData.name}
                       placeholder="Enter your full name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -256,6 +316,13 @@ const SignUp: React.FC = () => {
                     <input
                       required
                       type="email"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          email: e.target.value,
+                        })
+                      }
+                      value={formData.email}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -286,8 +353,17 @@ const SignUp: React.FC = () => {
                   <div className="relative">
                     <input
                       required
-                      type="email"
-                      placeholder="Enter your email"
+                      type="number"
+                      minLength={11}
+                      maxLength={11}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          phone: e.target.value,
+                        })
+                      }
+                      value={formData.phone}
+                      placeholder="Enter your phone number"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -318,7 +394,14 @@ const SignUp: React.FC = () => {
                   <div className="relative">
                     <textarea
                       required
-                      placeholder="Enter your email"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          address: e.target.value,
+                        })
+                      }
+                      value={formData.address}
+                      placeholder="Enter your address"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -358,6 +441,14 @@ const SignUp: React.FC = () => {
                   <div className="relative">
                     <input
                       type="password"
+                      required
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          password: e.target.value,
+                        })
+                      }
+                      value={formData.password}
                       placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -392,7 +483,15 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                      required
                       type="password"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          rePassword: e.target.value,
+                        })
+                      }
+                      value={formData.rePassword}
                       placeholder="Re-enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -469,10 +568,7 @@ const SignUp: React.FC = () => {
                 <div className="mt-6 text-center">
                   <p>
                     Already have an account?{" "}
-                    <Link
-                      href="/auth/signin"
-                      className="text-primary"
-                    >
+                    <Link href="/auth/signin" className="text-primary">
                       Sign in
                     </Link>
                   </p>

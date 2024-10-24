@@ -1,16 +1,74 @@
-import React from "react";
+"use client"
+import React, { FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
+import { getApi, postApi, putApi } from "../../../functions/API";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "OTP",
-  description: "This is Next.js Signin Page TailAdmin Dashboard Template",
-};
 
 const OTP: React.FC = () => {
+  const params=useSearchParams()
+  const router=useRouter()
+  const [otp,setOTP]=useState()
+
+  const myPromise = (token:string) => {
+    return postApi("/apis/auth/create", {
+      phone:params.get("phone"),
+      token:token,
+      email:params.get("email"),
+      name:params.get("name"),
+      businessName:params.get("businessName"),
+      password:params.get("password").split(" ").join("")
+    }); 
+
+  };
+  const verifyCode=()=>{
+    return putApi('/apis/auth/create',{
+      OTP: otp,
+      key:params.get("key")
+    })
+  }
+  const submitData=(token:string)=>{
+    toast.promise(myPromise(token), { 
+      loading: "Please wait...",
+      success: (res: { data: { userToken: string } }) => {
+        Cookies.set("token", res.data.userToken.toString());
+        router.push("/dashboard");
+        return "Register successful";
+      },
+      error: (err: any) => {
+        if (err.response) {
+          return `${err.response.data.error}`;
+        } else {
+          return "An unexpected error occurred.";
+        }
+      },
+    });
+  }
+  
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    toast.promise(verifyCode(), { 
+      loading: "Please wait...",
+      success: (res: { data: { token: string } }) => {
+        submitData(res.data.token)
+        //console.log(params.get("password"))
+        return "OTP verification successful";
+      },
+      error: (err: any) => {
+        if (err.response) {
+          return `${err.response.data.error}`;
+        } else {
+          return "An unexpected error occurred."; // Handle network errors
+        }
+      },
+    });
+  };
   return (
     <DefaultLayout>
       <Breadcrumb pageName="OTP Verification" />
@@ -173,7 +231,7 @@ const OTP: React.FC = () => {
                 OTP Verification
               </h2>
 
-              <form>
+              <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     6 digit OTP
@@ -181,6 +239,8 @@ const OTP: React.FC = () => {
                   <div className="relative">
                     <input minLength={6} maxLength={6} required
                       type="number"
+                      onChange={(e:any)=>setOTP(e.target.value)}
+                      value={otp}
                       placeholder="Enter your otp"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />

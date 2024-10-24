@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { usePathname } from "next/navigation";
 
+
 export default function Providers({ children }: { children: React.ReactNode }) {
   const params = usePathname();
   if (params.includes("/dashboard") || params.includes("/auth")) {

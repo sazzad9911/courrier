@@ -1,16 +1,44 @@
-import React from "react";
+"use client";
+import React, { FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
-
-export const metadata: Metadata = {
-  title: "Next.js SignIn Page | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js Signin Page TailAdmin Dashboard Template",
-};
+import { postApi } from "../../../functions/API";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const SignIn: React.FC = () => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const router = useRouter();
+
+  const myPromise = () => {
+    return postApi("/apis/auth/login", {
+      email: email,
+      password: password,
+    });
+  };
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    toast.promise(myPromise(), {
+      loading: "Please wait...",
+      success: (res: { data: { userToken: string } }) => {
+        Cookies.set("token", res.data.userToken.toString());
+        router.push("/dashboard");
+        return "Login successful";
+      },
+      error: (err: any) => {
+        if (err.response) {
+          return `${err.response.data.error}`;
+        } else {
+          return "An unexpected error occurred.";
+        }
+      },
+    });
+  };
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Sign In" />
@@ -173,15 +201,18 @@ const SignIn: React.FC = () => {
                 Sign In to Green Bangla
               </h2>
 
-              <form>
+              <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
                   </label>
                   <div className="relative">
                     <input
+                      onChange={(e: any) => setEmail(e.target.value)}
+                      value={email}
                       type="email"
                       placeholder="Enter your email"
+                      required
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -211,6 +242,9 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                      required
+                      onChange={(e: any) => setPassword(e.target.value)}
+                      value={password}
                       type="password"
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"

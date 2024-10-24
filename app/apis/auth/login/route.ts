@@ -20,10 +20,12 @@ const POST = async (request: NextRequest) => {
 
 
     if (!email || !password) {
-        return NextResponse.json({ error: "Invalid phone number and password" }, { status: 404 })
+        return NextResponse.json({ error: "Invalid email and password" }, { status: 404 })
     }
     try {
+ 
         const encryptedPassword = md5(password);
+        console.log(encryptedPassword)
         const user = await prisma.users.findUnique({
             where: {
                 email: email,
@@ -31,7 +33,7 @@ const POST = async (request: NextRequest) => {
             }
         })
         if (!user) {
-            return NextResponse.json({ error: "Phone number and password are incorrect" }, { status: 404 })
+            return NextResponse.json({ error: "Email and password are incorrect" }, { status: 404 })
         }
         const userToken = await encrypt(user.id.toString(), false)
         return NextResponse.json({ user, userToken })

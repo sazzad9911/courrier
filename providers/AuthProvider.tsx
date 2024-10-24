@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import userTypes from "../types/userTypes";
 import LoaderScreen from "../app/components/common/Loader";
 import { getApi, putApi } from "../functions/API";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 // Define types
 interface UserData {
   // Define your user data structure here
@@ -61,8 +61,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     percentageLastMonthWithdraw: 0,
   });
   const [topData, setTopData] = useState();
-  const router=useRouter()
-
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const url = `${pathname}${params.toString()}`;
+  console.log(url)
   // Function to fetch user data from API
   const fetchUserData = async () => {
     try {
@@ -80,18 +83,18 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUserData(data);
         setIsLoading(false);
         setIsAuthenticated(true);
-        router.replace("/dashboard")
+       // router.replace(url);
       } else {
         setIsAuthenticated(false);
-        
+
         //router.replace("/auth/signin")
         setIsLoading(false);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
       setIsAuthenticated(false);
-      
-     // router.replace("/auth/signin")
+
+      // router.replace("/auth/signin")
       setIsLoading(false);
     } finally {
       //setIsLoading(false);
@@ -109,9 +112,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       setIsLoading(false);
     }
   }, [reload]);
-
-
- 
 
   // Context value
   const contextValue: AuthContextType = {
