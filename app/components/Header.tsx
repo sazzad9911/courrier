@@ -1,4 +1,5 @@
 "use client"
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import {
@@ -111,12 +112,12 @@ const Header = () => {
             >
               Register
             </a>
-            <a
-              href="#login"
+            <Link
+              href="/dashboard/auth/signin"
               className="bg-green-600 px-4 py-2 rounded-md hover:bg-green-700"
             >
               Login
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
