@@ -1,6 +1,7 @@
 import Banner from "./components/Banner";
 import CityServiceInfo from "./components/CityServiceInfo";
 import Facilities from "./components/Facilities";
+import Faq from "./components/Faq";
 import ReportCards from "./components/HomeCards/ReportCards";
 import PartnersSection from "./components/PartnersSection";
 import SearchHome from "./components/SearchHome";
@@ -14,6 +15,7 @@ export default function Home() {
       <CityServiceInfo></CityServiceInfo>
       <Facilities></Facilities>
       <PartnersSection></PartnersSection>
+      <Faq></Faq>
     </div>
   );
 }
