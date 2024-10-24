@@ -9,7 +9,13 @@ import { usePathname } from "next/navigation";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const params = usePathname();
-  if (params.includes("/dashboard") || params.includes("/auth")) return null;
+  if (params.includes("/dashboard") || params.includes("/auth")) {
+    return (
+      <AuthProvider>
+        <ChakraProvider>{children}</ChakraProvider>
+      </AuthProvider>
+    );
+  }
   return (
     <AuthProvider>
       <ChakraProvider>
