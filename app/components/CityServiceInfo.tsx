@@ -20,7 +20,7 @@ const CityServiceInfo = () => {
         {/* Inside City Info Box */}
         <div className="w-full  bg-green-900 text-white p-4 rounded-lg shadow-md flex items-center justify-center">
           <p className="text-sm md:text-base text-center">
-            "Inter-city" refers to activities, services, or transportation that occur or operate between different cities or urban areas within a region or country.
+          &quot;Inter-city&quot; refers to activities, services, or transportation that occur or operate between different cities or urban areas within a region or country.
           </p>
         </div>
       </div>
@@ -43,7 +43,7 @@ const CityServiceInfo = () => {
         {/* Outside City Info Box */}
         <div className="w-full bg-green-900 text-white p-4 rounded-lg shadow-md flex items-center justify-center">
           <p className="text-sm md:text-base text-center">
-            "Out-side City" refers to areas situated on the outskirts or periphery of a city, often characterized by suburban development and residential neighborhoods.
+          &quot;Out-side City&quot; refers to areas situated on the outskirts or periphery of a city, often characterized by suburban development and residential neighborhoods.
           </p>
         </div>
       </div>
