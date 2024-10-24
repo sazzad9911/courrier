@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Banner = () => {
@@ -23,12 +24,12 @@ const Banner = () => {
             Experience fast, secure, and reliable parcel delivery with live tracking! 
             Our service ensures your package is always on the move, and you can track its journey in real-time.
           </p>
-          <a
-            href="#join"
+          <Link
+           href="/auth/signup"
             className="bg-green-600 text-white py-1 md:py-2 md:px-6 px-2 rounded-md hover:bg-green-700"
           >
             Join as Merchant
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@ import {
 
 const Header = () => {
   const params=usePathname()
-  if(params.includes("/dashboard")) return null
+  if(params.includes("/dashboard")||params.includes("/auth")) return null
   return (
     <header className=" text-white">
       <div className="container mx-auto lg:flex flex-col md:flex-row items-center justify-between py-4 px-4 md:px-8 hidden ">
@@ -106,14 +106,14 @@ const Header = () => {
               <FaGlobe />
               <span>EN</span>
             </a>
-            <a
-              href="#register"
+            <Link
+              href="/auth/signup"
               className="border border-white px-4 py-2 rounded-md hover:bg-yellow-500 hover:border-transparent"
             >
               Register
-            </a>
+            </Link>
             <Link
-              href="/dashboard/auth/signin"
+              href="/auth/signin"
               className="bg-green-600 px-4 py-2 rounded-md hover:bg-green-700"
             >
               Login

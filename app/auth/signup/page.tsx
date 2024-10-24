@@ -1,19 +1,26 @@
-import React from "react";
+"use client"
+import React, { FormEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+
 import { Metadata } from "next";
-import DefaultLayout from "../../../components/Layouts/DefaultLayout";
+import DefaultLayout from "../../components/Layouts/DefaultLayout";
+import { useRouter } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Next.js SignIn Page | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js Signin Page TailAdmin Dashboard Template",
-};
 
-const SignIn: React.FC = () => {
+
+
+
+const SignUp: React.FC = () => {
+  const router=useRouter()
+  const onSubmit=(e:FormEvent)=>{
+    e.preventDefault()
+    router.push("/auth/otp")
+  }
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Sign In" />
+      <Breadcrumb pageName="Sign Up" />
 
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
@@ -35,7 +42,6 @@ const SignIn: React.FC = () => {
                   height={32}
                 />
               </Link>
-
               <p className="2xl:px-20">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                 suspendisse.
@@ -170,16 +176,85 @@ const SignIn: React.FC = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to Green Bangla
+                Become a Merchant
               </h2>
 
-              <form>
+              <form onSubmit={onSubmit} >
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Business Name
+                  </label>
+                  <div className="relative">
+                    <input
+                      required
+                      type="text"
+                      placeholder="Enter your full name"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+
+                    <span className="absolute right-4 top-4">
+                      <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g opacity="0.5">
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M20.625 9.625H1.375V6.1875C1.375 5.4285 1.991 4.8125 2.75 4.8125H19.25C20.009 4.8125 20.625 5.4285 20.625 6.1875V9.625ZM9.625 11.6875C9.625 11.4359 9.69718 11.2035 9.81543 11H12.1846C12.3028 11.2035 12.375 11.4359 12.375 11.6875C12.375 12.4465 11.759 13.0625 11 13.0625C10.241 13.0625 9.625 12.4465 9.625 11.6875ZM20.625 18.5625C20.625 19.3215 20.009 19.9375 19.25 19.9375H2.75C1.991 19.9375 1.375 19.3215 1.375 18.5625V11H8.34762C8.28987 11.2207 8.25 11.4483 8.25 11.6875C8.25 13.2062 9.48131 14.4375 11 14.4375C12.5187 14.4375 13.75 13.2062 13.75 11.6875C13.75 11.4483 13.7101 11.2207 13.6524 11H20.625V18.5625ZM8.25 2.75C8.25 2.3705 8.558 2.0625 8.9375 2.0625H13.0625C13.442 2.0625 13.75 2.3705 13.75 2.75V3.4375H8.25V2.75ZM19.25 3.4375H15.125V2.0625C15.125 1.3035 14.509 0.6875 13.75 0.6875H8.25C7.491 0.6875 6.875 1.3035 6.875 2.0625V3.4375H2.75C1.23131 3.4375 0 4.66881 0 6.1875V18.5625C0 20.0812 1.23131 21.3125 2.75 21.3125H19.25C20.7687 21.3125 22 20.0812 22 18.5625V6.1875C22 4.66881 20.7687 3.4375 19.25 3.4375Z"
+                            fill="black"
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Your Name
+                  </label>
+                  <div className="relative">
+                    <input
+                      required
+                      type="text"
+                      placeholder="Enter your full name"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+
+                    <span className="absolute right-4 top-4">
+                      <svg
+                        className="fill-current"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g opacity="0.5">
+                          <path
+                            d="M11.0008 9.52185C13.5445 9.52185 15.607 7.5281 15.607 5.0531C15.607 2.5781 13.5445 0.584351 11.0008 0.584351C8.45703 0.584351 6.39453 2.5781 6.39453 5.0531C6.39453 7.5281 8.45703 9.52185 11.0008 9.52185ZM11.0008 2.1656C12.6852 2.1656 14.0602 3.47185 14.0602 5.08748C14.0602 6.7031 12.6852 8.00935 11.0008 8.00935C9.31641 8.00935 7.94141 6.7031 7.94141 5.08748C7.94141 3.47185 9.31641 2.1656 11.0008 2.1656Z"
+                            fill=""
+                          />
+                          <path
+                            d="M13.2352 11.0687H8.76641C5.08828 11.0687 2.09766 14.0937 2.09766 17.7719V20.625C2.09766 21.0375 2.44141 21.4156 2.88828 21.4156C3.33516 21.4156 3.67891 21.0719 3.67891 20.625V17.7719C3.67891 14.9531 5.98203 12.6156 8.83516 12.6156H13.2695C16.0883 12.6156 18.4258 14.9187 18.4258 17.7719V20.625C18.4258 21.0375 18.7695 21.4156 19.2164 21.4156C19.6633 21.4156 20.007 21.0719 20.007 20.625V17.7719C19.9039 14.0937 16.9133 11.0687 13.2352 11.0687Z"
+                            fill=""
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
                   </label>
                   <div className="relative">
                     <input
+                      required
                       type="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -204,15 +279,121 @@ const SignIn: React.FC = () => {
                     </span>
                   </div>
                 </div>
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Phone
+                  </label>
+                  <div className="relative">
+                    <input
+                      required
+                      type="email"
+                      placeholder="Enter your email"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
 
-                <div className="mb-6">
+                    <span className="absolute right-4 top-4">
+                      <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g opacity="0.5">
+                          <path
+                            d="M2.75 5.04167C2.75 12.8887 9.11129 19.25 16.9583 19.25C17.3124 19.25 17.6633 19.2371 18.0109 19.2116C18.4098 19.1823 18.6092 19.1678 18.7908 19.0633C18.9411 18.9767 19.0836 18.8233 19.159 18.667C19.25 18.4784 19.25 18.2583 19.25 17.8182V15.2356C19.25 14.8655 19.25 14.6804 19.189 14.5218C19.1353 14.3817 19.0479 14.2569 18.9346 14.1585C18.8063 14.047 18.6324 13.9837 18.2846 13.8572L15.345 12.7883C14.9403 12.6412 14.7379 12.5676 14.5459 12.5801C14.3766 12.5911 14.2137 12.6489 14.0753 12.747C13.9184 12.8582 13.8077 13.0428 13.5861 13.4121L12.8333 14.6667C10.4043 13.5666 8.43508 11.5948 7.33333 9.16667L8.58791 8.41392C8.95716 8.19237 9.14179 8.08159 9.25302 7.92464C9.3511 7.78624 9.40894 7.62334 9.41994 7.45406C9.43241 7.26208 9.3588 7.05974 9.21168 6.65505L8.14274 3.71544C8.01625 3.36761 7.95301 3.19369 7.84155 3.06543C7.74309 2.95212 7.61832 2.86472 7.47819 2.81091C7.31955 2.75 7.13449 2.75 6.76438 2.75H4.18184C3.74172 2.75 3.52166 2.75 3.33298 2.84098C3.17671 2.91634 3.0233 3.05893 2.93673 3.20928C2.83221 3.39081 2.8176 3.59023 2.7884 3.98909C2.76295 4.33662 2.75 4.68763 2.75 5.04167Z"
+                            stroke="black"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Address
+                  </label>
+                  <div className="relative">
+                    <textarea
+                      required
+                      placeholder="Enter your email"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+
+                    <span className="absolute right-4 top-4">
+                      <svg
+                        width="23"
+                        height="23"
+                        viewBox="0 0 23 23"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g opacity="0.5" clipPath="url(#clip0_4775_1177)">
+                          <path
+                            d="M11.0158 22.6288C5.56733 22.6288 0.032959 21.4601 0.032959 19.2257C0.032959 17.232 4.29546 16.407 6.11733 16.1491H6.18608C6.4439 16.1491 6.66733 16.3382 6.70171 16.596C6.7189 16.7335 6.68452 16.871 6.59858 16.9741C6.51265 17.0773 6.39233 17.1632 6.25483 17.1804C2.4564 17.7304 1.04702 18.7273 1.04702 19.2429C1.04702 20.2054 4.9314 21.6148 10.9986 21.6148C17.0658 21.6148 20.9501 20.2054 20.9501 19.2429C20.9501 18.7273 19.5236 17.7304 15.6908 17.1804C15.5533 17.1632 15.433 17.0945 15.347 16.9741C15.2611 16.871 15.2267 16.7335 15.2439 16.596C15.2783 16.3382 15.5017 16.1491 15.7595 16.1491H15.8283C17.6673 16.407 21.9642 17.232 21.9642 19.2257C21.9814 21.4429 16.4642 22.6288 11.0158 22.6288ZM10.6548 18.9851C10.397 18.7445 4.45015 13.1241 4.45015 7.60696C4.45015 3.99758 7.38921 1.05852 10.9986 1.05852C14.608 1.05852 17.547 3.99758 17.547 7.60696C17.547 12.9695 11.6001 18.7273 11.3423 18.9679L10.9986 19.3116L10.6548 18.9851ZM11.0158 2.08977C7.97358 2.08977 5.49858 4.56477 5.49858 7.60696C5.49858 11.921 9.70952 16.5445 11.0158 17.8679C12.3392 16.5101 16.5501 11.8007 16.5501 7.60696C16.533 4.58196 14.058 2.08977 11.0158 2.08977ZM11.0158 10.5288C9.29702 10.5288 7.90483 9.13664 7.90483 7.41789C7.90483 5.69914 9.29702 4.30695 11.0158 4.30695C12.7345 4.30695 14.1267 5.69914 14.1267 7.41789C14.1267 9.13664 12.7345 10.5288 11.0158 10.5288ZM11.0158 5.3382C9.86421 5.3382 8.93608 6.26633 8.93608 7.41789C8.93608 8.56945 9.86421 9.49758 11.0158 9.49758C12.1673 9.49758 13.0955 8.56945 13.0955 7.41789C13.0955 6.26633 12.1501 5.3382 11.0158 5.3382Z"
+                            fill="black"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_4775_1177">
+                            <rect
+                              width="22"
+                              height="22"
+                              fill="white"
+                              transform="translate(0.0158691 0.869461)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Password
                   </label>
                   <div className="relative">
                     <input
                       type="password"
-                      placeholder="6+ Characters, 1 Capital letter"
+                      placeholder="Enter your password"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+
+                    <span className="absolute right-4 top-4">
+                      <svg
+                        className="fill-current"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g opacity="0.5">
+                          <path
+                            d="M16.1547 6.80626V5.91251C16.1547 3.16251 14.0922 0.825009 11.4797 0.618759C10.0359 0.481259 8.59219 0.996884 7.52656 1.95938C6.46094 2.92188 5.84219 4.29688 5.84219 5.70626V6.80626C3.84844 7.18438 2.33594 8.93751 2.33594 11.0688V17.2906C2.33594 19.5594 4.19219 21.3813 6.42656 21.3813H15.5016C17.7703 21.3813 19.6266 19.525 19.6266 17.2563V11C19.6609 8.93751 18.1484 7.21876 16.1547 6.80626ZM8.55781 3.09376C9.31406 2.40626 10.3109 2.06251 11.3422 2.16563C13.1641 2.33751 14.6078 3.98751 14.6078 5.91251V6.70313H7.38906V5.67188C7.38906 4.70938 7.80156 3.78126 8.55781 3.09376ZM18.1141 17.2906C18.1141 18.7 16.9453 19.8688 15.5359 19.8688H6.46094C5.05156 19.8688 3.91719 18.7344 3.91719 17.325V11.0688C3.91719 9.52189 5.15469 8.28438 6.70156 8.28438H15.2953C16.8422 8.28438 18.1141 9.52188 18.1141 11V17.2906Z"
+                            fill=""
+                          />
+                          <path
+                            d="M10.9977 11.8594C10.5852 11.8594 10.207 12.2031 10.207 12.65V16.2594C10.207 16.6719 10.5508 17.05 10.9977 17.05C11.4102 17.05 11.7883 16.7063 11.7883 16.2594V12.6156C11.7883 12.2031 11.4102 11.8594 10.9977 11.8594Z"
+                            fill=""
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Re-type Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="password"
+                      placeholder="Re-enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -243,12 +424,12 @@ const SignIn: React.FC = () => {
                 <div className="mb-5">
                   <input
                     type="submit"
-                    value="Sign In"
-                    className="w-full cursor-pointer rounded-lg border border-yellow-500 bg-yellow-500  p-4 text-black transition hover:bg-opacity-90"
+                    value="Next"
+                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-black transition hover:bg-opacity-90"
                   />
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                {/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -282,14 +463,17 @@ const SignIn: React.FC = () => {
                       </defs>
                     </svg>
                   </span>
-                  Sign in with Google
-                </button>
+                  Sign up with Google
+                </button> */}
 
                 <div className="mt-6 text-center">
                   <p>
-                    Don’t have any account?{" "}
-                    <Link href="/auth/signup" className="text-primary">
-                      Sign Up
+                    Already have an account?{" "}
+                    <Link
+                      href="/auth/signin"
+                      className="text-primary"
+                    >
+                      Sign in
                     </Link>
                   </p>
                 </div>
@@ -302,4 +486,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
