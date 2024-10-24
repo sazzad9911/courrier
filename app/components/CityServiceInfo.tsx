@@ -2,7 +2,7 @@ import React from 'react';
 
 const CityServiceInfo = () => {
   return (
-    <section className="container mx-auto px-4 md:px-8 py-8">
+    <section className="container mx-auto px-4 md:px-8 pt-4">
       <div className="flex flex-col md:flex-row justify-between items-center md:items-stretch w-full gap-4">
         {/* Inside City Section */}
         <div className="flex items-center gap-2 bg-white p-4 rounded-lg shadow-md w-full md:w-[500px]">
