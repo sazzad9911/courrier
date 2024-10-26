@@ -15,6 +15,7 @@ const Header = () => {
   return (
     <header className=" text-white">
       <div className="container mx-auto lg:flex flex-col md:flex-row items-center justify-between py-4 px-4 md:px-8 hidden ">
+        <Link href='/'>
         <div className="flex items-center space-x-2">
           <div className=" p-2 rounded-md">
             <svg
@@ -58,6 +59,7 @@ const Header = () => {
             Green Bangla Courier Service
           </span>
         </div>
+        </Link>
         <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
           <div className="flex items-center space-x-2">
             <FaClock />
@@ -81,7 +83,7 @@ const Header = () => {
               <Link href="/">HOME</Link>
             </li>
             <li className="hover:text-yellow-400">
-              <a href="#coverage">COVERAGE</a>
+              <Link href="pages/coverage">COVERAGE</Link>
             </li>
             <li className="hover:text-yellow-400">
               <a href="#about">ABOUT US</a>

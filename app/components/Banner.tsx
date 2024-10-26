@@ -8,9 +8,9 @@ const Banner = () => {
       {/* Background Image */}
       <div className="absolute h-40 w-full md:h-auto">
         <img 
-          src="/images/banner.png" // Path to your image
+          src="/images/banner.png" 
           alt="Courier Rider" 
-          className="w-full  h-full  md:object-cover " // This makes the image cover the entire section
+          className="w-full  h-full  md:object-cover " 
         />
       </div>
 
