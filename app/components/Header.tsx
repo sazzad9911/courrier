@@ -78,7 +78,7 @@ const Header = () => {
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between py-3 px-4 md:px-8 text-white">
           <ul className="flex items-center gap-6">
             <li className="hover:text-yellow-400">
-              <a href="#home">HOME</a>
+              <Link href="/">HOME</Link>
             </li>
             <li className="hover:text-yellow-400">
               <a href="#coverage">COVERAGE</a>
@@ -91,13 +91,13 @@ const Header = () => {
             </li>
           </ul>
           <div className="hidden lg:flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
-            <a
-              href="#track"
+            <Link
+              href="pages/track-parcel"
               className="flex items-center space-x-2 hover:text-yellow-500 text-yellow-400"
             >
               <FaMapMarkerAlt />
               <span>Track Parcel</span>
-            </a>
+            </Link>
             <a
               href="#lang"
               className="flex items-center space-x-2 hover:text-yellow-500 text-yellow-400"
