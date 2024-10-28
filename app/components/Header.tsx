@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import React from "react";
 import {
   FaClock,
@@ -11,10 +12,11 @@ import {
 } from "react-icons/fa";
 
 const Header = () => {
-  
+  const pathname = usePathname()
   return (
     <header className=" text-white">
       <div className="container mx-auto lg:flex flex-col md:flex-row items-center justify-between py-4 px-4 md:px-8 hidden ">
+        <Link href='/'>
         <div className="flex items-center space-x-2">
           <div className=" p-2 rounded-md">
             <svg
@@ -58,6 +60,7 @@ const Header = () => {
             Green Bangla Courier Service
           </span>
         </div>
+        </Link>
         <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
           <div className="flex items-center space-x-2">
             <FaClock />
@@ -78,10 +81,10 @@ const Header = () => {
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between py-3 px-4 md:px-8 text-white">
           <ul className="flex items-center gap-6">
             <li className="hover:text-yellow-400">
-              <Link href="/">HOME</Link>
+              <Link  className={`${pathname === '/' ? 'underline text-yellow-400' : ''}`} href="/">HOME</Link>
             </li>
             <li className="hover:text-yellow-400">
-              <a href="#coverage">COVERAGE</a>
+              <Link className={`${pathname === '/pages/coverage' ? 'underline text-yellow-400' : ''}`} href="pages/coverage">COVERAGE</Link>
             </li>
             <li className="hover:text-yellow-400">
               <a href="#about">ABOUT US</a>
