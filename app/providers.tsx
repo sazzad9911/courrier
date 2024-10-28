@@ -12,9 +12,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const params = usePathname();
   if (params.includes("/dashboard") || params.includes("/auth")) {
     return (
-      <AuthProvider>
-        <ChakraProvider>{children}</ChakraProvider>
-      </AuthProvider>
+      <Suspense>
+        <AuthProvider>
+          <ChakraProvider>{children}</ChakraProvider>
+        </AuthProvider>
+      </Suspense>
     );
   }
   return (
