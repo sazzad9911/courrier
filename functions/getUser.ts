@@ -1,5 +1,5 @@
-import prisma from "@/libs/prisma"
-import userTypes from "@/types/userTypes"
+import prisma from "../libs/prisma"
+import userTypes from "../types/userTypes"
 
 const getUser=async(stringValue:string)=>{
     const user = JSON.parse(stringValue) as userTypes

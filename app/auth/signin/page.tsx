@@ -3,7 +3,6 @@ import React, { FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import { postApi } from "../../../functions/API";
 import toast from "react-hot-toast";
@@ -11,8 +10,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
   const myPromise = () => {
@@ -30,7 +29,7 @@ const SignIn: React.FC = () => {
         router.push("/dashboard");
         return "Login successful";
       },
-      error: (err: any) => {
+      error: (err: {response:{data:{error:string}}}) => {
         if (err.response) {
           return `${err.response.data.error}`;
         } else {
@@ -208,7 +207,7 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      onChange={(e: any) => setEmail(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                       value={email}
                       type="email"
                       placeholder="Enter your email"
@@ -243,7 +242,7 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       required
-                      onChange={(e: any) => setPassword(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                       value={password}
                       type="password"
                       placeholder="6+ Characters, 1 Capital letter"
