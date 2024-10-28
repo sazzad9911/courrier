@@ -3,13 +3,10 @@ import React, { FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-
-import { Metadata } from "next";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { getApi, postApi } from "../../../functions/API";
-import Cookies from "js-cookie";
+import { getApi } from "../../../functions/API";
 
 interface User {
   businessName: string; // Required, min length 4
@@ -55,7 +52,7 @@ const SignUp: React.FC = () => {
           &name=${formData.name}&businessName=${formData.businessName}&email=${formData.email}&key=${res.data.key}`);
         return "OTP has sent to your phone";
       },
-      error: (err: any) => {
+      error: (err: {response:{data:{error:string}}}) => {
         if (err.response) {
           return `${err.response.data.error}`;
         } else {

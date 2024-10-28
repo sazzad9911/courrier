@@ -25,20 +25,15 @@ interface tokenTypes {
     otp: string
 }
 
-interface requestTypes {
-    name: string,
-    password: string,
-    token: string,
-}
-function generateSixDigitNumber() {
-    // Generate a random number between 0 and 999999
-    let randomNumber = Math.floor(Math.random() * 1000000);
+// const generateSixDigitNumber=()=> {
+//     // Generate a random number between 0 and 999999
+//     const randomNumber = Math.floor(Math.random() * 1000000);
 
-    // Ensure the number is at least 6 digits by padding with leading zeros if necessary
-    let sixDigitNumber = String(randomNumber).padStart(6, '0');
+//     // Ensure the number is at least 6 digits by padding with leading zeros if necessary
+//     const sixDigitNumber = String(randomNumber).padStart(6, '0');
 
-    return sixDigitNumber;
-}
+//     return sixDigitNumber;
+// }
 
 const GET = async (request: NextRequest) => {
     const number = request.nextUrl.searchParams.get("phoneNumber");
@@ -86,7 +81,7 @@ const GET = async (request: NextRequest) => {
         if (!oldUser && forget) {
             return NextResponse.json({ error: "No user account with this phone number" }, { status: 404 })
         }
-        const code = generateSixDigitNumber()
+        // const code = generateSixDigitNumber()
         const data = {
             number: number,
             otp: "000000"

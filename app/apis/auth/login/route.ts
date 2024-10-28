@@ -1,11 +1,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import md5 from "md5"
-import jwt from "jsonwebtoken"
 import prisma from "../../../../libs/prisma";
-import getUser from "../../../../functions/getUser";
 import { encrypt } from "../../../../functions/JWT";
-const secret = process.env.SECRET || "cluster0"
 
 interface loginTypes {
     email: string,
