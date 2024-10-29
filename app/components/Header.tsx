@@ -114,7 +114,16 @@ const Header = () => {
               </Link>
             </li>
             <li className="hover:text-yellow-400">
-              <a href="#about">ABOUT US</a>
+              <Link
+                href="/pages/about-us"
+                className={`${
+                  pathname === "/pages/about-us"
+                    ? "underline text-yellow-400"
+                    : ""
+                }`}
+              >
+                ABOUT US
+              </Link>
             </li>
             <li className="hover:text-yellow-400">
               <a href="#contact">CONTACT US</a>
@@ -210,9 +219,9 @@ const Header = () => {
       {/* Drawer Component */}
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
-        <DrawerContent bg='green.900'>
-          <DrawerCloseButton color='white'/>
-          <DrawerHeader textColor='white'>Menu</DrawerHeader>
+        <DrawerContent bg="green.900">
+          <DrawerCloseButton color="white" />
+          <DrawerHeader textColor="white">Menu</DrawerHeader>
           <DrawerBody>
             <ul className="space-y-4 text-white">
               <li>
@@ -240,13 +249,17 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#about"
+                <Link
+                  href="/pages/about-us"
                   onClick={onClose}
-                  className="hover:text-yellow-400"
+                  className={`${
+                    pathname === "/pages/about-us"
+                      ? "underline text-yellow-400"
+                      : ""
+                  } hover:text-yellow-400`}
                 >
                   ABOUT US
-                </a>
+                </Link>
               </li>
               <li>
                 <a
@@ -294,7 +307,6 @@ const Header = () => {
                   Login
                 </Link>
               </li>
-             
             </ul>
           </DrawerBody>
         </DrawerContent>
