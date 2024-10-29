@@ -126,7 +126,12 @@ const Header = () => {
               </Link>
             </li>
             <li className="hover:text-yellow-400">
-              <a href="#contact">CONTACT US</a>
+              <Link href="/pages/contact-us"
+                className={`${
+                  pathname === "/pages/contact-us"
+                    ? "underline text-yellow-400"
+                    : ""
+                }`}>CONTACT US</Link>
             </li>
           </ul>
           <Link href="/" className="lg:hidden">
@@ -262,13 +267,17 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#contact"
+                <Link
+                  href="/pages/contact-us"
                   onClick={onClose}
-                  className="hover:text-yellow-400"
+                  className={`${
+                    pathname === "/pages/contact-us"
+                      ? "underline text-yellow-400"
+                      : ""
+                  } hover:text-yellow-400`}
                 >
                   CONTACT US
-                </a>
+                </Link>
               </li>
               <li>
                 <Link

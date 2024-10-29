@@ -21,7 +21,7 @@ export default function Search() {
             placeholder="Enter your tracking code"
             value={trackingCode}
             onChange={(e) => setTrackingCode(e.target.value)}
-            className="w-full py-2 md:py-3 px-4 text-base rounded-full border focus:border-none border-green-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full py-2 md:py-3 px-4 text-base rounded-full border border-green-400 focus:outline-none focus:ring-1 focus:ring-green-500"
           />
 
           {/* Search Button */}
