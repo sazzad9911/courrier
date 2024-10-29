@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
@@ -8,11 +8,23 @@ import { postApi } from "../../../functions/API";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import useAuth from "../../../hooks/useAuth";
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const { userData } = useAuth();
+
+  useEffect(() => {
+    if (userData) {
+      if (userData.isAdmin) {
+        router.replace("/moderator");
+      } else {
+        router.replace("/dashboard");
+      }
+    }
+  }, [userData]);
 
   const myPromise = () => {
     return postApi("/apis/auth/login", {
@@ -29,7 +41,7 @@ const SignIn: React.FC = () => {
         router.push("/dashboard");
         return "Login successful";
       },
-      error: (err: {response:{data:{error:string}}}) => {
+      error: (err: { response: { data: { error: string } } }) => {
         if (err.response) {
           return `${err.response.data.error}`;
         } else {
@@ -38,6 +50,7 @@ const SignIn: React.FC = () => {
       },
     });
   };
+  if (Cookies.get("token")) return;
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Sign In" />
@@ -207,7 +220,9 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setEmail(e.target.value)
+                      }
                       value={email}
                       type="email"
                       placeholder="Enter your email"
@@ -242,7 +257,9 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       required
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPassword(e.target.value)
+                      }
                       value={password}
                       type="password"
                       placeholder="6+ Characters, 1 Capital letter"
