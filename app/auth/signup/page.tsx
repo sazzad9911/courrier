@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
@@ -7,6 +7,8 @@ import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getApi } from "../../../functions/API";
+import useAuth from "../../../hooks/useAuth";
+import Cookies from "js-cookie";
 
 interface User {
   businessName: string; // Required, min length 4
@@ -29,6 +31,17 @@ const SignUp: React.FC = () => {
     rePassword: "", // Optional, defaults to empty string
     address: "", // Optional, defaults to empty string
   });
+  const { userData } = useAuth();
+  useEffect(() => {
+    if (userData) {
+      if (userData.isAdmin) {
+        router.replace("/moderator");
+      } else {
+        router.replace("/dashboard");
+      }
+    }
+  }, [userData]);
+  
   const myPromise = () => {
     return getApi("/apis/auth/create", {
       phoneNumber: formData.phone,
@@ -61,6 +74,7 @@ const SignUp: React.FC = () => {
       },
     });
   };
+  if (Cookies.get("token")) return;
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Sign Up" />

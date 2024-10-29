@@ -10,12 +10,14 @@ import { Suspense } from "react";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const params = usePathname();
-  if (params.includes("/dashboard") || params.includes("/auth")) {
+  if (
+    params.includes("/dashboard") ||
+    params.includes("/auth") ||
+    params.includes("/moderator")
+  ) {
     return (
       <Suspense>
-        <AuthProvider>
-          <ChakraProvider>{children}</ChakraProvider>
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </Suspense>
     );
   }
@@ -23,10 +25,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <Suspense>
       <AuthProvider>
         <ChakraProvider>
-          <Header></Header>
-          {children}
+          <div className="bg-[#091242]">
+            <Header></Header>
+            {children}
+            <Footer></Footer>
+          </div>
         </ChakraProvider>
-        <Footer></Footer>
       </AuthProvider>
     </Suspense>
   );

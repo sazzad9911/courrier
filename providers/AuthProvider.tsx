@@ -65,7 +65,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const pathname = usePathname();
   const params = useSearchParams();
   const url = `${pathname}${params.toString()}`;
-  console.log(url)
+  console.log(url);
   // Function to fetch user data from API
   const fetchUserData = async () => {
     try {
@@ -83,12 +83,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUserData(data);
         setIsLoading(false);
         setIsAuthenticated(true);
-       // router.replace(url);
+        return data;
+        // router.replace(url);
       } else {
         setIsAuthenticated(false);
-
         //router.replace("/auth/signin")
         setIsLoading(false);
+        return null;
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -96,8 +97,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       // router.replace("/auth/signin")
       setIsLoading(false);
-    } finally {
-      //setIsLoading(false);
+      return null;
     }
   };
   const reloadAuth = () => {
@@ -106,12 +106,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // useEffect hook to fetch user data when component mounts
   useEffect(() => {
-    Cookies.get("token") && fetchUserData();
     if (!Cookies.get("token")) {
       //router.replace("/auth/signin")
       setIsLoading(false);
+    } else {
+      fetchUserData();
     }
   }, [reload]);
+ 
 
   // Context value
   const contextValue: AuthContextType = {
