@@ -13,9 +13,6 @@ import { usePathname } from "next/navigation";
 
 import React from "react";
 import {
-  FaClock,
-  FaEnvelope,
-  FaPhone,
   FaMapMarkerAlt,
   FaGlobe,
 } from "react-icons/fa";
@@ -72,18 +69,83 @@ const Header = () => {
             </span>
           </div>
         </Link>
-        <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
+        <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-7 text-sm">
           <div className="flex items-center space-x-2">
-            <FaClock />
-            <span>Mon - Sat 9.00 - 18.00</span>
-            <span className="hidden md:block">Sunday Closed</span>
+            <svg
+              width="63"
+              height="64"
+              viewBox="0 0 63 64"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="31.5"
+                cy="32"
+                r="31"
+                fill="#111C55"
+                stroke="#273270"
+              />
+              <path
+                d="M32 42.5C38.0751 42.5 43 37.5751 43 31.5C43 25.4249 38.0751 20.5 32 20.5C25.9249 20.5 21 25.4249 21 31.5C21 37.5751 25.9249 42.5 32 42.5Z"
+                stroke="#F6B426"
+              />
+              <path d="M32 22.5V31.7058L37 35.5" stroke="#F6B426" />
+            </svg>
+
+            <div>
+              <span>Mon - Sat 9.00 - 18.00</span>
+              <span className="hidden md:block text-yellow-500">Sunday Closed</span>
+            </div>
           </div>
           <div className="flex items-center space-x-2">
-            <FaEnvelope />
-            <span>contact@logistics.com</span>
+            <svg
+              width="63"
+              height="64"
+              viewBox="0 0 63 64"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="31.5"
+                cy="32"
+                r="31"
+                fill="#111C55"
+                stroke="#273270"
+              />
+              <path
+                d="M40.996 23.5H23.004C22.4495 23.5 22 23.8755 22 24.3387V37.6613C22 38.1245 22.4495 38.5 23.004 38.5H40.996C41.5505 38.5 42 38.1245 42 37.6613V24.3387C42 23.8755 41.5505 23.5 40.996 23.5Z"
+                stroke="#F6B426"
+              />
+              <path d="M22 23.5L32.4247 30.5L42 23.7294" stroke="#F6B426" />
+            </svg>
+
+            <div>
+              <span>Email</span>
+              <span>contact@logistics.com</span>
+            </div>
           </div>
           <div className="flex items-center space-x-2">
-            <FaPhone />
+            <svg
+              width="63"
+              height="63"
+              viewBox="0 0 63 63"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="31.5"
+                cy="31.5"
+                r="31"
+                fill="#111C55"
+                stroke="#273270"
+              />
+              <path
+                d="M23.9741 22.1408C23.8394 22.1449 23.7071 22.1743 23.5848 22.2272C23.4625 22.28 23.3528 22.3554 23.2622 22.4487C23.1715 22.542 23.1018 22.6514 23.0571 22.7704C23.0124 22.8894 22.9936 23.0156 23.0019 23.1416C23.1364 25.3015 23.7704 30.5716 26.8059 33.8583C30.4409 37.8181 35.1748 39.1824 40.0317 38.9808C40.292 38.9662 40.5368 38.8596 40.7165 38.6826C40.8962 38.5055 40.9975 38.2712 41 38.0268V34.5674C40.997 34.2446 40.8783 33.9322 40.663 33.6802C40.4476 33.4282 40.1482 33.2513 39.8127 33.1779L37.3804 32.6739C37.0796 32.6138 36.7664 32.6397 36.4815 32.7481C36.1965 32.8566 35.9528 33.0427 35.7819 33.2823L35.244 34.0454C35.1946 34.1153 35.1208 34.1668 35.0352 34.1911C34.9496 34.2154 34.8577 34.211 34.7752 34.1786C33.5379 33.6783 28.6081 31.5184 28.0663 27.8753C28.0557 27.805 28.0675 27.7333 28.1003 27.6692C28.1332 27.6051 28.1855 27.5516 28.2507 27.5154L29.2267 26.9574C29.4944 26.802 29.7047 26.5732 29.8291 26.3022C29.9535 26.0311 29.986 25.7308 29.9222 25.4419L29.3881 23.1236C29.31 22.7988 29.1142 22.5093 28.8339 22.3045C28.5537 22.0998 28.2064 21.9923 27.8511 22.0004L23.9741 22.1408Z"
+                stroke="#F6B426"
+              />
+            </svg>
+
+            <span>Call Us</span>
             <span>(00) 112 365 489</span>
           </div>
         </div>
@@ -126,12 +188,16 @@ const Header = () => {
               </Link>
             </li>
             <li className="hover:text-yellow-400">
-              <Link href="/pages/contact-us"
+              <Link
+                href="/pages/contact-us"
                 className={`${
                   pathname === "/pages/contact-us"
                     ? "underline text-yellow-400"
                     : ""
-                }`}>CONTACT US</Link>
+                }`}
+              >
+                CONTACT US
+              </Link>
             </li>
           </ul>
           <Link href="/" className="lg:hidden">
