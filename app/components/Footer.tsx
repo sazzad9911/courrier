@@ -67,7 +67,6 @@ export default function Footer() {
               <li>Changelog</li>
               <li>Licenses</li>
               <li>Protected</li>
-              <li>Not Found</li>
             </ul>
           </div>
           {/* Subscribe Form */}
@@ -156,7 +155,6 @@ export default function Footer() {
                 <li>Changelog</li>
                 <li>Licenses</li>
                 <li>Protected</li>
-                <li>Not Found</li>
               </ul>
             </div>
           </div>
@@ -198,7 +196,7 @@ export default function Footer() {
                 <span className="material-icons">schedule</span>
                 <p>Mon - Sat 9.00 - 18.00</p>
               </div>
-              <p>Sunday Closed</p>
+              <p className="text-yellow-500">Sunday Closed</p>
             </div>
             <div className="mt-4 lg:mt-0 flex items-center justify-center space-x-4">
               <div className="flex items-center space-x-1">

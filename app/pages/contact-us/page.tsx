@@ -11,6 +11,7 @@ const ContactUs: React.FC = () => {
     // Handle form submission logic (e.g., send data to an API)
     console.log({ name, email, message });
     alert("Your message has been sent!");
+    setMessage('')
   };
 
   return (
