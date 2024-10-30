@@ -1,9 +1,10 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 import { FaFacebookSquare, FaLinkedin, FaTwitterSquare } from "react-icons/fa";
-
+import { usePathname } from "next/navigation";
 export default function Footer() {
-
+  const pathname = usePathname();
   return (
     <footer className="bg-[#172557] text-white pb-10">
       <div className="container mx-auto px-4 md:px-8">
@@ -11,9 +12,11 @@ export default function Footer() {
         <div className="hidden lg:flex justify-between items-start">
           {/* Left Section */}
           <div className="flex-1 mr-10">
-            <h2 className="text-xl font-bold mb-4 pt-4 pb-4">
-              GreenBangla Courier Service
-            </h2>
+            <Link href="/">
+              <h2 className="text-xl font-bold mb-4 pt-4 pb-4">
+                GreenBangla Courier Service
+              </h2>
+            </Link>
             <p className="text-sm leading-relaxed pt-4">
               GreenBangla Courier Service is a leading logistics provider in
               Bangladesh, renowned for its efficient and reliable delivery
@@ -27,11 +30,33 @@ export default function Footer() {
           <div className="flex-1">
             <h3 className="font-medium mb-4 bg-[#ffffff1b] p-4">Pages</h3>
             <ul className="space-y-2 p-4">
-              <li>About Us</li>
+              <li>
+                <Link
+                  href="/pages/about-us"
+                  className={`${
+                    pathname === "/pages/about-us"
+                      ? "underline text-yellow-400"
+                      : ""
+                  } hover:text-yellow-400`}
+                >
+                  About Us
+                </Link>
+              </li>
               <li>Our Team</li>
               <li>Our Project</li>
               <li>Pricing</li>
-              <li>Contact</li>
+              <li>
+                <Link
+                  href="/pages/contact-us"
+                  className={`${
+                    pathname === "/pages/contact-us"
+                      ? "underline text-yellow-400"
+                      : ""
+                  } hover:text-yellow-400`}
+                >
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
           {/* Utility Links */}
@@ -58,9 +83,15 @@ export default function Footer() {
                 <button className="bg-gradient-to-r from-yellow-400 to-yellow-200 px-6 py-2 text-sm font-semibold text-black rounded-sm">
                   Send Now
                 </button>
-                <FaLinkedin />
-                <FaTwitterSquare />
-                <FaFacebookSquare />
+                <a href="https://www.linkedin.com/" target="blank">
+                  <FaLinkedin />
+                </a>
+                <a href="https://www.twiter.com/" target="blank">
+                  <FaTwitterSquare />
+                </a>
+                <a href="https://www.facebook.com/" target="blank">
+                  <FaFacebookSquare />
+                </a>
               </div>
             </form>
           </div>
@@ -70,9 +101,11 @@ export default function Footer() {
         <div className="lg:hidden space-y-6">
           {/* Top Section */}
           <div>
-            <h2 className="text-xl font-medium mb-4 pt-4">
-              GreenBangla <br/> Courier Service
-            </h2>
+            <Link href="/">
+              <h2 className="text-xl font-medium mb-4 pt-4">
+                GreenBangla <br /> Courier Service
+              </h2>
+            </Link>
             <p className="text-sm leading-relaxed">
               GreenBangla Courier Service is a leading logistics provider in
               Bangladesh, renowned for its efficient and reliable delivery
@@ -87,11 +120,33 @@ export default function Footer() {
             <div>
               <h3 className="font-semibold mb-4 bg-[#ffffff1b] p-4">Pages</h3>
               <ul className="space-y-2 pl-4">
-                <li>About Us</li>
+                <li>
+                  <Link
+                    href="/pages/about-us"
+                    className={`${
+                      pathname === "/pages/about-us"
+                        ? "underline text-yellow-400"
+                        : ""
+                    } hover:text-yellow-400`}
+                  >
+                    About Us
+                  </Link>
+                </li>
                 <li>Our Team</li>
                 <li>Our Project</li>
                 <li>Pricing</li>
-                <li>Contact</li>
+                <li>
+                  <Link
+                    href="/pages/contact-us"
+                    className={`${
+                      pathname === "/pages/contact-us"
+                        ? "underline text-yellow-400"
+                        : ""
+                    } hover:text-yellow-400`}
+                  >
+                    Contact
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
@@ -107,7 +162,9 @@ export default function Footer() {
           </div>
           {/* Subscribe Form */}
           <div>
-            <h3 className="text-center font-light mb-4 p-4 bg-[#ffffff1b]">Subscribe</h3>
+            <h3 className="text-center font-light mb-4 p-4 bg-[#ffffff1b]">
+              Subscribe
+            </h3>
             <form className="space-y-4">
               <input
                 type="email"
@@ -118,12 +175,17 @@ export default function Footer() {
                 <button className="bg-gradient-to-r from-yellow-400 to-yellow-200 px-6 py-2 text-sm font-semibold text-black rounded-sm">
                   Send Now
                 </button>
-                <FaLinkedin />
-                <FaTwitterSquare />
-                <FaFacebookSquare />
+                <a href="https://www.linkedin.com/" target="blank">
+                  <FaLinkedin />
+                </a>
+                <a href="https://www.twiter.com/" target="blank">
+                  <FaTwitterSquare />
+                </a>
+                <a href="https://www.facebook.com/" target="blank">
+                  <FaFacebookSquare />
+                </a>
               </div>
             </form>
-          
           </div>
         </div>
 
