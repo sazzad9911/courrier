@@ -6,6 +6,8 @@ import "jsvectormap/dist/jsvectormap.css";
 import "flatpickr/dist/flatpickr.min.css";
 import "./css/satoshi.css";
 import "./css/style.css";
+import 'react-responsive-pagination/themes/classic.css';
+
 export const metadata: Metadata = {
   title: "Green Bangla Courier Service | Home",
   description: "",

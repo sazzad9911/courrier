@@ -3,3 +3,8 @@
 @tailwind utilities;
 
 
+:root {
+    --pagination-color: #F6B426;
+    --pagination-hover-color: #F6B426;
+    /* etc */
+  }
