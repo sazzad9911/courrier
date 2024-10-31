@@ -93,8 +93,8 @@ const Header = () => {
             </svg>
 
             <div>
-              <span>Mon - Sat 9.00 - 18.00</span>
-              <span className="hidden md:block text-yellow-500">Sunday Closed</span>
+              <p>Mon - Sat 9.00 - 18.00</p>
+              <p className="hidden md:block text-yellow-500">Sunday Closed</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -120,8 +120,8 @@ const Header = () => {
             </svg>
 
             <div>
-              <span>Email</span>
-              <span>contact@logistics.com</span>
+              <p>Email</p>
+              <p>contact@logistics.com</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -144,9 +144,11 @@ const Header = () => {
                 stroke="#F6B426"
               />
             </svg>
-
-            <span>Call Us</span>
-            <span>(00) 112 365 489</span>
+<div>
+  
+<p>Call Us</p>
+            <p>(00) 112 365 489</p>
+</div>
           </div>
         </div>
       </div>
