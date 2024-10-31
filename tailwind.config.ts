@@ -27,8 +27,8 @@ const config: Config = {
         white: "#FFFFFF",
         black: {
           // ...colors.black,
-          DEFAULT: "#1C2434",
-          2: "#010101",
+          DEFAULT: "#091242",
+          2: "#091242",
         },
         red: {
           ...colors.red,
