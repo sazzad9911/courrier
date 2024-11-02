@@ -38,7 +38,7 @@ const SignIn: React.FC = () => {
       loading: "Please wait...",
       success: (res: { data: { userToken: string } }) => {
         Cookies.set("token", res.data.userToken.toString());
-        router.push("/dashboard");
+        window.location.href="/dashboard"
         return "Login successful";
       },
       error: (err: { response: { data: { error: string } } }) => {

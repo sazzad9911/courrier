@@ -1,5 +1,5 @@
-"use client"
-import React, { FormEvent, useState } from "react";
+"use client";
+import React, { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
@@ -8,39 +8,49 @@ import { postApi, putApi } from "../../../functions/API";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import useAuth from "../../../hooks/useAuth";
 
 const OTP: React.FC = () => {
-  const params=useSearchParams()
-  const router=useRouter()
-  const [otp,setOTP]=useState("")
+  const params = useSearchParams();
+  const router = useRouter();
+  const [otp, setOTP] = useState("");
+  const { userData } = useAuth();
 
-  const myPromise = (token:string) => {
+  useEffect(() => {
+    if (userData) {
+      if (userData.isAdmin) {
+        router.replace("/moderator");
+      } else {
+        router.replace("/dashboard");
+      }
+    }
+  }, [userData]);
+
+  const myPromise = (token: string) => {
     return postApi("/apis/auth/create", {
-      phone:params.get("phone"),
-      token:token,
-      email:params.get("email"),
-      name:params.get("name"),
-      businessName:params.get("businessName"),
-      password:params.get("password").split(" ").join("")
-    }); 
-
+      phone: params.get("phone"),
+      token: token,
+      email: params.get("email"),
+      name: params.get("name"),
+      businessName: params.get("businessName"),
+      password: params.get("password").split(" ").join(""),
+    });
   };
-  const verifyCode=()=>{
-    return putApi('/apis/auth/create',{
+  const verifyCode = () => {
+    return putApi("/apis/auth/create", {
       OTP: otp,
-      key:params.get("key")
-    })
-  }
-  const submitData=(token:string)=>{
-    toast.promise(myPromise(token), { 
+      key: params.get("key"),
+    });
+  };
+  const submitData = (token: string) => {
+    toast.promise(myPromise(token), {
       loading: "Please wait...",
       success: (res: { data: { userToken: string } }) => {
         Cookies.set("token", res.data.userToken.toString());
-        router.push("/dashboard");
+        window.location.href = "/dashboard";
         return "Register successful";
       },
-      error: (err: {response:{data:{error:string}}}) => {
+      error: (err: { response: { data: { error: string } } }) => {
         if (err.response) {
           return `${err.response.data.error}`;
         } else {
@@ -48,18 +58,18 @@ const OTP: React.FC = () => {
         }
       },
     });
-  }
-  
+  };
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    toast.promise(verifyCode(), { 
+    toast.promise(verifyCode(), {
       loading: "Please wait...",
       success: (res: { data: { token: string } }) => {
-        submitData(res.data.token)
+        submitData(res.data.token);
         //console.log(params.get("password"))
         return "OTP verification successful";
       },
-      error: (err: {response:{data:{error:string}}}) => {
+      error: (err: { response: { data: { error: string } } }) => {
         if (err.response) {
           return `${err.response.data.error}`;
         } else {
@@ -68,6 +78,7 @@ const OTP: React.FC = () => {
       },
     });
   };
+  if (Cookies.get("token")) return;
   return (
     <DefaultLayout>
       <Breadcrumb pageName="OTP Verification" />
@@ -236,9 +247,14 @@ const OTP: React.FC = () => {
                     6 digit OTP
                   </label>
                   <div className="relative">
-                    <input minLength={6} maxLength={6} required
+                    <input
+                      minLength={6}
+                      maxLength={6}
+                      required
                       type="number"
-                      onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setOTP(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setOTP(e.target.value)
+                      }
                       value={otp}
                       placeholder="Enter your otp"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -308,10 +324,7 @@ const OTP: React.FC = () => {
                 <div className="mt-6 text-center">
                   <p>
                     Have an account?{" "}
-                    <Link
-                      href="/auth/signin"
-                      className="text-primary"
-                    >
+                    <Link href="/auth/signin" className="text-primary">
                       Sign In
                     </Link>
                   </p>

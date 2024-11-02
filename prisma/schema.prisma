@@ -23,4 +23,6 @@ model Users {
   pushToken    String?
   balance      Float   @default(0)
   isAdmin      Boolean @default(false)
+  address      String  @default("")
+  image        String @default("")
 }

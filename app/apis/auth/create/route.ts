@@ -115,7 +115,8 @@ const POST = async (request: NextRequest) => {
                 email:data.email,
                 balance:data.balance,
                 isAdmin:data.isAdmin,
-                pushToken:data.pushToken
+                pushToken:data.pushToken,
+                address:data.address
             }
         })
         const userToken = await encrypt(user.id.toString(), data.isAdmin)

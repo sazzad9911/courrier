@@ -31,7 +31,7 @@ const Settings = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
-                        Full Name
+                        Your Name
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
@@ -135,16 +135,16 @@ const Settings = () => {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
+                      htmlFor="BusinessName"
                     >
-                      Username
+                      Business Name
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
-                      name="Username"
-                      id="Username"
-                      placeholder="devidjhon24"
+                      name="BusinessName"
+                      id="BusinessName"
+                      placeholder="Business Name"
                       defaultValue="devidjhon24"
                     />
                   </div>
@@ -154,7 +154,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
-                      BIO
+                      Address
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -192,9 +192,9 @@ const Settings = () => {
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         name="bio"
                         id="bio"
-                        rows={6}
-                        placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                        rows={2}
+                        placeholder="Write your address here"
+                        defaultValue=" Donec fermentum blandit aliquet."
                       ></textarea>
                     </div>
                   </div>
@@ -292,7 +292,7 @@ const Settings = () => {
                         <span className="text-primary">Click to upload</span> or
                         drag and drop
                       </p>
-                      <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
+                      <p className="mt-1.5"> PNG, JPG or GIF</p>
                       <p>(max, 800 X 800px)</p>
                     </div>
                   </div>

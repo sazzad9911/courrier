@@ -11,7 +11,8 @@ const userSchema = object({
     pushToken:string().default(""),
     balance:number().default(0),
     isAdmin:boolean().default(false),
-    token:string().required()
+    token:string().required(),
+    address:string().required()
 })
 
 

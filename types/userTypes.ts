@@ -8,4 +8,6 @@ export default interface userTypes {
     pushToken?: string | null; // Optional
     balance: number; // Default value 0
     isAdmin: boolean; // Default value false
+    address:string
+    image:string
 }
