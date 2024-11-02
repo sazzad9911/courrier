@@ -9,7 +9,7 @@ import Link from "next/link";
 import SelectGroupOne from "../../components/SelectGroup/SelectGroupOne";
 
 export const metadata: Metadata = {
-  title: "Next.js Tables | TailAdmin - Next.js Dashboard Template",
+  title: "Green Bangla | Merchant Dashboard",
   description:
     "This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 };
