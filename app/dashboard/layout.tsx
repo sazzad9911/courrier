@@ -15,8 +15,13 @@ export default function RootLayout({
   useEffect(() => {
     if (!userData) {
       router.replace("/auth/signin");
+    } else {
+      if (userData.isAdmin) {
+        router.replace("/moderator");
+      }
     }
   }, [userData]);
   if (!Cookies.get("token")) return;
+  if (userData.isAdmin) return;
   return <div>{children}</div>;
 }

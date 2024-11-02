@@ -1,29 +1,27 @@
 "use client";
-import "jsvectormap/dist/jsvectormap.css";
-import "flatpickr/dist/flatpickr.min.css";
-import "../css/satoshi.css";
-import "../css/style.css";
-import React, { useEffect, useState } from "react";
-import Loader from "../components/common/Loader";
-import { usePathname } from "next/navigation";
+
+import { useEffect } from "react";
+import useAuth from "../../hooks/useAuth";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
-
- 
-
+  const { userData } = useAuth();
+  const router = useRouter();
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
- 
-  return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
-      {loading ? <Loader /> : children}
-    </div>
-  );
+    if (!userData) {
+      router.replace("/auth/signin");
+    } else {
+      if (!userData.isAdmin) {
+        router.replace("/dashboard");
+      }
+    }
+  }, [userData]);
+  if (!Cookies.get("token")) return;
+  if (!userData.isAdmin) return;
+  return <div>{children}</div>;
 }

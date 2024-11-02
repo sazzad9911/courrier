@@ -36,9 +36,16 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     toast.promise(myPromise(), {
       loading: "Please wait...",
-      success: (res: { data: { userToken: string } }) => {
+      success: (res: {
+        data: { userToken: string; user: { isAdmin: boolean } };
+      }) => {
         Cookies.set("token", res.data.userToken.toString());
-        window.location.href="/dashboard"
+        if (res.data.user.isAdmin) {
+          window.location.href = "/moderator";
+        } else {
+          window.location.href = "/dashboard";
+        }
+
         return "Login successful";
       },
       error: (err: { response: { data: { error: string } } }) => {
