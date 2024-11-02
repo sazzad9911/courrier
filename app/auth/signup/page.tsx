@@ -62,7 +62,7 @@ const SignUp: React.FC = () => {
       loading: "Please wait...",
       success: (res: { data: { key: string } }) => {
         router.push(`/auth/otp?phone=${formData.phone}&password=${formData.password}
-          &name=${formData.name}&businessName=${formData.businessName}&email=${formData.email}&key=${res.data.key}`);
+          &name=${formData.name}&businessName=${formData.businessName}&email=${formData.email}&key=${res.data.key}&address=${formData.address}`);
         return "OTP has sent to your phone";
       },
       error: (err: {response:{data:{error:string}}}) => {

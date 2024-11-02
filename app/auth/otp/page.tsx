@@ -34,6 +34,7 @@ const OTP: React.FC = () => {
       name: params.get("name"),
       businessName: params.get("businessName"),
       password: params.get("password").split(" ").join(""),
+      address:params.get("address")
     });
   };
   const verifyCode = () => {
