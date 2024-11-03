@@ -25,4 +25,27 @@ model Users {
   isAdmin      Boolean @default(false)
   address      String  @default("")
   image        String @default("")
+  Addparcel    Addparcel[]
+}
+
+
+model Addparcel{
+   
+   id           String  @id @default(auto()) @map("_id") @db.ObjectId
+   userId       String  @db.ObjectId
+   category     String
+   serviceType  String
+   phoneNumber  Float     
+   amount       Float
+   name         String
+   invoiceNumber Float?
+   address      String
+   weight       Float
+   district     String
+   thana        String
+   note         String? 
+   date         DateTime @default(now())
+   status       String  @default("pending")
+   trackingId   String
+   user Users @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
