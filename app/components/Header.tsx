@@ -12,10 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import React from "react";
-import {
-  FaMapMarkerAlt,
-  FaGlobe,
-} from "react-icons/fa";
+import { FaMapMarkerAlt, FaGlobe } from "react-icons/fa";
 
 const Header = () => {
   const pathname = usePathname();
@@ -144,11 +141,10 @@ const Header = () => {
                 stroke="#F6B426"
               />
             </svg>
-<div>
-  
-<p>Call Us</p>
-            <p>(00) 112 365 489</p>
-</div>
+            <div>
+              <p>Call Us</p>
+              <p>(00) 112 365 489</p>
+            </div>
           </div>
         </div>
       </div>
