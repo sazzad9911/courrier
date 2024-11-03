@@ -8,18 +8,7 @@ export const POST = async (request: NextRequest) => {
     const data = await addParcelSchema.validate(await request.json());
     const token = request.headers.get("USER") as string;
     const user = JSON.parse(token) as { id: string; phone: string };
-    function generateTrackingID(): string {
-      const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      let trackingID = "";
-
-      for (let i = 0; i < 7; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        trackingID += characters[randomIndex];
-      }
-
-      return trackingID;
-    }
-    const trakingId = generateTrackingID();
+    const trackingId = await getUniqueTrackingID();
     const parcel = await prisma.addparcel.create({
       data: {
         userId: user.id,
@@ -34,14 +23,46 @@ export const POST = async (request: NextRequest) => {
         district: data.district,
         thana: data.thana,
         note: data.note,
-        trackingId: trakingId,
+        trackingId: trackingId,
       },
     });
+
     return NextResponse.json({
-      message: "Addparcel successfully done ",
+      message: "Addparcel successfully done",
       parcel,
     });
   } catch (error) {
     return errorMessage(error);
   }
 };
+
+function generateTrackingID(): string {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let trackingID = "";
+
+  for (let i = 0; i < 7; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    trackingID += characters[randomIndex];
+  }
+
+  return trackingID;
+}
+
+async function getUniqueTrackingID() {
+  let trackingID: string;
+  let isUnique = false;
+
+  // Keep generating until we find a unique ID
+  while (!isUnique) {
+    trackingID = generateTrackingID();
+    const existingParcel = await prisma.addparcel.findUnique({
+      where:{trackingId:trackingID}
+    });
+    
+    // If no existing parcel is found with this ID, it's unique
+    if (!existingParcel) {
+      isUnique = true;
+    }
+  }
+  return trackingID;
+}

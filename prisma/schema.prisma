@@ -46,6 +46,6 @@ model Addparcel{
    note         String? 
    date         DateTime @default(now())
    status       String  @default("pending")
-   trackingId   String
+   trackingId   String @unique
    user Users @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
