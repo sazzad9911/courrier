@@ -28,7 +28,7 @@ export default function page() {
             <p>Estimate Time of Delivery: 27 Jan 2024</p>
           </div>
         </div>
-        <div className="flex justify-evenly gap-1 py-6">
+        <div className="flex justify-evenly gap-1 py-4 md:py-12">
           <div className="flex flex-col items-center">
             <div className="w-7 h-7 flex justify-center items-center bg-white rounded-full">
               <FaBusinessTime className="text-black"></FaBusinessTime>
