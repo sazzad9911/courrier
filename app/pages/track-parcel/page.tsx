@@ -16,21 +16,21 @@ type TimelineItemProps = {
 
 const TimelineItem: FC<TimelineItemProps> = ({ status, date }) => {
   return (
-    <Flex alignItems="center">
+    <Flex >
       {/* Line and Dot */}
       <VStack>
-        <Circle size="10px" bg="#FFB82B" />
+        <Circle size="15px" bg="#FFB82B" />
         <Divider
           orientation="vertical"
           borderColor="#FFB82B"
           borderWidth="2px"
-          height="80px"
+          height="90px"
         />
       </VStack>
 
       {/* Status Info */}
       <Box ml={4}>
-        <Text fontWeight="bold" color="white" fontSize="lg">
+        <Text fontWeight="semibold" color="white" fontSize="lg">
           {status}
         </Text>
         <Text color="gray.300" fontSize="sm">
