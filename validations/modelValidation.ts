@@ -27,10 +27,6 @@ const addParcelSchema = object({
   note: string().max(300),
 });
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 const Pricing = object({
   from: string(),
   to: string(),
@@ -39,9 +35,6 @@ const Pricing = object({
   weight: number(),
 });
 
-<<<<<<< Updated upstream
-export { Pricing, addParcelSchema, userSchema };
-=======
 const updateUserInformation = object({
   name: string(),
   number: string(),
@@ -51,4 +44,3 @@ const updateUserInformation = object({
 });
 
 export { userSchema, addParcelSchema, updateUserInformation, Pricing };
->>>>>>> Stashed changes
