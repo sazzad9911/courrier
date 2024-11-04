@@ -16,23 +16,22 @@ const userSchema = object({
   address: string().required(),
 });
 
-export { userSchema };
-
 const addParcelSchema = object({
-  userId: string(),
   category: string().required(),
   serviceType: string().required(),
   phoneNumber: number().required(),
   amount: number().required(),
   name: string().required().max(50),
-  invoiceNumber: number(),
+  invoiceNumber: string(),
   address: string().required().max(200),
   weight: number().required(),
   district: string().required(),
   thana: string().required(),
   note: string().max(300),
-  user: string(),
-  trackingId: string(),
 });
 
-export { addParcelSchema };
+
+
+export { userSchema,addParcelSchema };
+
+
