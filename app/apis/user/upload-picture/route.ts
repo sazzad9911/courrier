@@ -1,36 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "../../../../libs/cloudinary";
 import errorMessage from "../../../../validations/errorMessage";
-
-async function fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = (error) => reject(error);
-    });
-}
-
+import prisma from "../../../../libs/prisma";
 
 const handler = async (request: NextRequest) => {
+    const token = request.headers.get("USER") as string
+    const user = JSON.parse(token) as { id: string, phone: string }
     try {
 
         const formData = await request.formData()
         const image = formData.get('image') as File
-        const base64Image = await fileToBase64(image);
-        const result = await cloudinary.uploader.upload(base64Image, {
-            public_id: image.name, // optional: specify a public ID
-            //folder: 'your_folder_name', // optional: specify a folder in Cloudinary
+        const byteData = await image.arrayBuffer()
+        const buffer = Buffer.from(byteData)
+        const mimeType = image.type;
+        const base64String = buffer.toString('base64');
+        const dataUri = `data:${mimeType};base64,${base64String}`;
+        const result = await cloudinary.uploader.upload(dataUri, {
+            public_id: image.name,
         });
 
-        return NextResponse.json({
-            message: 'Image uploaded successfully',
-            url: result.secure_url,
-            publicId: result.public_id,
+        const userRes = await prisma.users.update({
+            where: {
+                id: user.id,
+            },
+            data: {
+                image: result.secure_url
+            }
         })
 
+        return NextResponse.json(userRes)
     } catch (error) {
-        console.log(error)
+
         return errorMessage(error)
     }
 

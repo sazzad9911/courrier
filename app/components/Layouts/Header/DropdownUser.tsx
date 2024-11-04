@@ -8,12 +8,12 @@ import useAuth from "../../../../hooks/useAuth";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const router=useRouter()
-  const {userData}=useAuth()
-  const handleLogout=()=>{
-    Cookies.remove("token")
-    window.location.href="/auth/signin"
-  }
+  const router = useRouter();
+  const { userData } = useAuth();
+  const handleLogout = () => {
+    Cookies.remove("token");
+    window.location.href = "/auth/signin";
+  };
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -30,16 +30,30 @@ const DropdownUser = () => {
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <Image
-            width={112}
-            height={112}
-            src={"/images/user/user.png"}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-          />
+          {userData.image ? (
+            <Image
+              width={112}
+              height={112}
+              className="rounded-full"
+              src={userData.image}
+              style={{
+                width: "auto",
+                height: "auto",
+              }}
+              alt="User"
+            />
+          ) : (
+            <Image
+              width={112}
+              height={112}
+              src={"/images/user/user.png"}
+              style={{
+                width: "auto",
+                height: "auto",
+              }}
+              alt="User"
+            />
+          )}
         </span>
 
         <svg
@@ -90,7 +104,7 @@ const DropdownUser = () => {
                 My Profile
               </Link>
             </li>
-           
+
             <li>
               <Link
                 href="/dashboard/settings"
@@ -117,7 +131,10 @@ const DropdownUser = () => {
               </Link>
             </li>
           </ul>
-          <button onClick={handleLogout} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+          >
             <svg
               className="fill-current"
               width="22"

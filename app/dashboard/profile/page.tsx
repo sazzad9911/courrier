@@ -1,13 +1,37 @@
-"use client"
+"use client";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import Link from "next/link";
 import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
+import { postApi } from "../../../functions/API";
 
 const Profile = () => {
-  const {userData}=useAuth()
+  const { userData, reloadAuth } = useAuth();
+
+  const myPromise = (file: File) => {
+    const form = new FormData();
+    form.append("image", file);
+    return postApi("/apis/user/upload-picture", form);
+  };
+  const handleChangeImage = (file: File) => {
+    toast.promise(myPromise(file), {
+      loading: "Please wait...",
+      success: (res) => {
+        reloadAuth();
+        return "Upload successful";
+      },
+      error: (err: { response: { data: { error: string } } }) => {
+        if (err.response) {
+          return `${err.response.data.error}`;
+        } else {
+          return "An unexpected error occurred.";
+        }
+      },
+    });
+  };
 
   return (
     <DefaultLayout>
@@ -68,16 +92,31 @@ const Profile = () => {
           <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
             <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
               <div className="relative drop-shadow-2">
-                <Image
-                  src={"/images/user/user.png"}
-                  width={160}
-                  height={160}
-                  style={{
-                    width: "auto",
-                    height: "auto",
-                  }}
-                  alt="profile"
-                />
+                {userData.image ? (
+                  <Image
+                    src={userData.image}
+                    width={160}
+                    height={160}
+                    className="rounded-full"
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                    }}
+                    alt="profile"
+                  />
+                ) : (
+                  <Image
+                    src={"/images/user/user.png"}
+                    width={160}
+                    height={160}
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                    }}
+                    alt="profile"
+                  />
+                )}
+
                 <label
                   htmlFor="profile"
                   className="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-primary text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
@@ -104,6 +143,7 @@ const Profile = () => {
                     />
                   </svg>
                   <input
+                    onChange={(e) => handleChangeImage(e.target.files[0])}
                     type="file"
                     name="profile"
                     id="profile"
@@ -142,9 +182,7 @@ const Profile = () => {
                 <h4 className="font-semibold text-black dark:text-white">
                   My Address
                 </h4>
-                <p className="mt-4.5">
-                  {userData.address|| "N/A"}
-                </p>
+                <p className="mt-4.5">{userData.address || "N/A"}</p>
               </div>
 
               <div className="mt-6.5">

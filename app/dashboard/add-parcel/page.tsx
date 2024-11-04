@@ -6,6 +6,7 @@ import { useState } from "react";
 
 const AddParcel = () => {
   const [type, setType] = useState<string>("");
+  const [pickUpType, setPickUpType] = useState("home");
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Add Parcel" />
@@ -184,6 +185,89 @@ const AddParcel = () => {
                     </label>
                   </div>
                 </div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Pick Up From <span className="text-meta-1">*</span>
+                </label>
+                <div className="flex gap-10 mb-4">
+                  <div>
+                    <input
+                      onChange={(e) => setPickUpType(e.target.value)}
+                      type="radio"
+                      id="html"
+                      name="fav_language"
+                      value="home"
+                      defaultChecked
+                    />
+                    <label className="ml-2" htmlFor="home">
+                      Home
+                    </label>
+                  </div>
+                  <div>
+                    <input
+                      onChange={(e) => setPickUpType(e.target.value)}
+                      type="radio"
+                      id="html"
+                      name="fav_language"
+                      value="hub"
+                    />
+                    <label className="ml-2" htmlFor="html">
+                      Hub
+                    </label>
+                  </div>
+                </div>
+                {pickUpType === "home" ? (
+                  <div>
+                    <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                      <div className="w-full xl:w-1/2">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                          Your Phone Number{" "}
+                          <span className="text-meta-1">*</span>
+                        </label>
+                        <input
+                          required
+                          maxLength={80}
+                          type="text"
+                          placeholder="Enter your phone number"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
+                      </div>
+
+                      <div className="w-full xl:w-1/2">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                          Your District <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupOne />
+                      </div>
+                    </div>
+                    <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                      <div className="w-full xl:w-1/2">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                          Your Thana <span className="text-meta-1">*</span>
+                        </label>
+                        <SelectGroupOne />
+                      </div>
+
+                      <div className="w-full xl:w-1/2">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                          Your Address <span className="text-meta-1">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Enter address"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Select Hub <span className="text-meta-1">*</span>
+                    </label>
+                    <SelectGroupOne />
+                  </div>
+                )}
+                <hr className="mb-5 border-primary"/>
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -215,7 +299,7 @@ const AddParcel = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Name <span className="text-meta-1">*</span>
+                      Customer Name <span className="text-meta-1">*</span>
                     </label>
                     <input
                       required
@@ -241,7 +325,7 @@ const AddParcel = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Address <span className="text-meta-1">*</span>
+                      Delivery Address <span className="text-meta-1">*</span>
                     </label>
                     <input
                       required
