@@ -38,7 +38,7 @@ model Addparcel{
    phoneNumber  Float     
    amount       Float
    name         String
-   invoiceNumber Float?
+   invoiceNumber String?
    address      String
    weight       Float
    district     String
