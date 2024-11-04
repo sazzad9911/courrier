@@ -30,7 +30,6 @@ const addParcelSchema = object({
   note: string().max(300),
 });
 
-export { addParcelSchema };
 
 const Pricing = object({
   from: string(),
@@ -39,4 +38,5 @@ const Pricing = object({
   serviceType: string(),
   weight: number(),
 });
-export { Pricing };
+
+export { Pricing, addParcelSchema, userSchema };
