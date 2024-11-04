@@ -1,7 +1,4 @@
-import { time } from "console";
-import { object, string, number, date, InferType, boolean } from "yup";
-const urlRegex =
-  /^(https?:\/\/)?((([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,})|localhost|((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(:\d{1,5})?(\/[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+import { object, string, number, boolean } from "yup";
 
 const userSchema = object({
   businessName: string().required().min(4),
@@ -22,7 +19,7 @@ const addParcelSchema = object({
   phoneNumber: number().required(),
   amount: number().required(),
   name: string().required().max(50),
-  invoiceNumber: string(),
+  invoiceNumber: number(),
   address: string().required().max(200),
   weight: number().required(),
   district: string().required(),
@@ -30,7 +27,10 @@ const addParcelSchema = object({
   note: string().max(300),
 });
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 const Pricing = object({
   from: string(),
   to: string(),
@@ -39,4 +39,16 @@ const Pricing = object({
   weight: number(),
 });
 
+<<<<<<< Updated upstream
 export { Pricing, addParcelSchema, userSchema };
+=======
+const updateUserInformation = object({
+  name: string(),
+  number: string(),
+  email: string(),
+  businessName: string(),
+  address: string(),
+});
+
+export { userSchema, addParcelSchema, updateUserInformation, Pricing };
+>>>>>>> Stashed changes
