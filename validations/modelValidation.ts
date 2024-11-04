@@ -36,3 +36,12 @@ const addParcelSchema = object({
 });
 
 export { addParcelSchema };
+
+const Pricing = object({
+  from: string(),
+  to: string(),
+  category: string(),
+  serviceType: string(),
+  weight: number(),
+});
+export { Pricing };
