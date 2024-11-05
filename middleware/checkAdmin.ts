@@ -25,8 +25,13 @@ const checkAdmin: MiddlewareFactory = (next) => {
                 if (!decode.isAdmin) {
                     return NextResponse.json({ error: "Invalid Admin" }, { status: 404 })
                 }
-                request.headers.set("USER", JSON.stringify(decode))
-                return NextResponse.next()
+                const headers = new Headers(request.headers);
+                headers.set('ADMIN', JSON.stringify(decode));
+                return NextResponse.next({
+                    request: {
+                        headers: headers
+                    }
+                })
             } catch (error) {
                 return NextResponse.json({ error: "Invalid User",code:error }, { status: 404 })
             }
