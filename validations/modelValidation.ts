@@ -31,7 +31,7 @@ const addParcelSchema = object({
   merchantDistrict: string().default(""),
   merchantThana: string().default(""),
   hubId: string().nullable(),
-  charge:number().required()
+  charge: number().required()
 });
 
 const Pricing = object({
@@ -40,7 +40,7 @@ const Pricing = object({
   category: string(),
   serviceType: string(),
   weight: number(),
-  pickUp:string().oneOf(['home','hub'],'Invalid pickup type')
+  pickUp: string().oneOf(['home', 'hub'], 'Invalid pickup type')
 });
 
 const updateUserInformation = object({
@@ -50,5 +50,10 @@ const updateUserInformation = object({
   businessName: string(),
   address: string(),
 });
+const addHubSchema = object({
+  name: string().required(),
+  phone: string().required(),
+  address: string().required(),
+})
 
-export { userSchema, addParcelSchema, updateUserInformation, Pricing };
+export { userSchema, addParcelSchema, updateUserInformation, Pricing,addHubSchema };
