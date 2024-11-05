@@ -26,7 +26,7 @@ const checkAdmin: MiddlewareFactory = (next) => {
                     return NextResponse.json({ error: "Invalid Admin" }, { status: 404 })
                 }
                 const headers = new Headers(request.headers);
-                headers.set('USER', JSON.stringify(decode));
+                headers.set('ADMIN', JSON.stringify(decode));
                 return NextResponse.next({
                     request: {
                         headers: headers
