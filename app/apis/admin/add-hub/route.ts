@@ -16,7 +16,7 @@ export const POST = async (request: NextRequest) => {
     });
     return NextResponse.json(hubResult);
   } catch (error) {
-    return errorMessage(error);
+    return errorMessage(error,null,"name");
   }
 };
 export const GET = async (request: NextRequest) => {
