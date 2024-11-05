@@ -14,57 +14,64 @@ datasource db {
 }
 
 model Users {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
   businessName String
   name         String
-  email        String  @unique
-  phone        String  @unique
+  email        String      @unique
+  phone        String      @unique
   password     String
   pushToken    String?
-  balance      Float   @default(0)
-  isAdmin      Boolean @default(false)
-  address      String  @default("")
-  image        String @default("")
+  balance      Float       @default(0)
+  isAdmin      Boolean     @default(false)
+  address      String      @default("")
+  image        String      @default("")
   Addparcel    Addparcel[]
 }
 
-
-model Addparcel{
-   
-   id           String  @id @default(auto()) @map("_id") @db.ObjectId
-   userId       String  @db.ObjectId
-   category     String
-   serviceType  String
-   pickUpFrom   String
-   phoneNumber  Float     
-   amount       Float
-   name         String
-   invoiceNumber Float?
-   address      String
-   weight       Float
-   district     String
-   thana        String
-   note         String? 
-   date         DateTime @default(now())
-   status       String  @default("pending")
-   trackingId   String @unique
-   user         Users @relation(fields: [userId],references: [id],onDelete: Cascade)
+model Addparcel {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String   @db.ObjectId
+  category         String
+  serviceType      String
+  pickUpFrom       String
+  phoneNumber      String
+  amount           Int
+  name             String
+  invoiceNumber    String?
+  address          String
+  weight           Float
+  district         String
+  thana            String
+  note             String?
+  date             DateTime @default(now())
+  status           String   @default("pending")
+  trackingId       String   @unique
+  user             Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  merchantNumber   String?
+  merchantAddress  String?
+  merchantDistrict String?
+  merchantThana    String?
+  hubId            String?  @db.ObjectId
+  hub              Hublist? @relation(fields: [hubId], references: [id])
+  charge           Float    @default(0)
 }
 
-
-model Pricing{
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  dhakadhaka     Float @default(100)
-  dhakaalloverbangladesh Float @default(130)
-  weight         Float @default(20)
-  regular        Float @default(10)
-  express        Float @default(20)
-  homeDelivery   Float @default(30)
-  pointDelivery  Float @default(20)
+model Pricing {
+  id                     String @id @default(auto()) @map("_id") @db.ObjectId
+  dhakadhaka             Float  @default(100)
+  dhakaalloverbangladesh Float  @default(130)
+  weight                 Float  @default(20)
+  regular                Float  @default(10)
+  express                Float  @default(20)
+  homeDelivery           Float  @default(30)
+  pointDelivery          Float  @default(20)
+  pickUp                 Float  @default(10)
 }
 
-model Hublist{
-   id           String  @id @default(auto()) @map("_id") @db.ObjectId
-   list         String[]
-   password     String @default("update")
+model Hublist {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  name      String      @unique
+  address   String
+  phone     String
+  Addparcel Addparcel[]
 }

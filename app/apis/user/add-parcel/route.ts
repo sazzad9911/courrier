@@ -11,20 +11,10 @@ export const POST = async (request: NextRequest) => {
     const trackingId = await getUniqueTrackingID();
     const parcel = await prisma.addparcel.create({
       data: {
-        userId: user.id,
-        category: data.category,
-        serviceType: data.serviceType,
-        phoneNumber: data.phoneNumber,
-        amount: data.amount,
-        name: data.name,
-        invoiceNumber: data.invoiceNumber,
-        address: data.address,
-        weight: data.weight,
-        district: data.district,
-        thana: data.thana,
-        note: data.note,
-        trackingId: trackingId,
-        pickUpFrom: data.pickUp,
+        ...data, userId: user.id, trackingId: trackingId, weight: data.weight,
+        address: data.address, amount: data.amount, category: data.category,
+        district: data.district, name: data.name, phoneNumber: data.phoneNumber,
+        thana: data.thana, pickUpFrom: data.pickUpFrom, serviceType: data.serviceType,
       },
     });
 
@@ -87,5 +77,5 @@ async function getUniqueTrackingID() {
       isUnique = true;
     }
   }
-  return trackingID;
+  return trackingID.toString();
 }
