@@ -11,6 +11,10 @@ interface ServiceTypePrice {
   homeDelivery: number;
   pointDelivery: number;
 }
+interface pickUpTypePrice {
+  pickUpHome: number;
+  pickUpHub: number;
+}
 
 type WeightData = { weight: number } | null;
 
@@ -28,7 +32,7 @@ export const POST = async (request: NextRequest) => {
           })
         )?.dhakaalloverbangladesh;
 
-    const [categoryPriceData, serviceTypePriceData, weightData] =
+    const [categoryPriceData, serviceTypePriceData, weightData, picUpData] =
       await Promise.all([
         (data.category === "regular"
           ? prisma.pricing.findFirst({ select: { regular: true } })
@@ -43,6 +47,11 @@ export const POST = async (request: NextRequest) => {
         prisma.pricing.findFirst({
           select: { weight: true },
         }) as Promise<WeightData>,
+        (data.pickUp === "home"
+          ? prisma.pricing.findFirst({ select: { pickUpHome: true } })
+          : prisma.pricing.findFirst({
+              select: { pickUpHub: true },
+            })) as Promise<pickUpTypePrice>,
       ]);
 
     const categoryPrice =
@@ -53,13 +62,16 @@ export const POST = async (request: NextRequest) => {
       data.serviceType === "homeDelivery"
         ? serviceTypePriceData?.homeDelivery
         : serviceTypePriceData?.pointDelivery;
+    const pickUpPrice =
+      data.pickUp === "home" ? picUpData?.pickUpHome : picUpData?.pickUpHub;
 
     const multipliedWeight = data.weight * (weightData?.weight || 1);
-    console.log(locationPrice, categoryPrice, serviceTypePrice);
+    // console.log(locationPrice, categoryPrice, serviceTypePrice);
     const total =
       (locationPrice || 0) +
       (categoryPrice || 0) +
       (serviceTypePrice || 0) +
+      (pickUpPrice || 0) +
       multipliedWeight;
 
     return NextResponse.json(total);

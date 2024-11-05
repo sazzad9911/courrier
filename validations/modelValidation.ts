@@ -14,24 +14,40 @@ const userSchema = object({
 });
 
 const addParcelSchema = object({
-  category: string().required('Category is required').oneOf(['regular', 'express', 'pick&drop'], 'Invalid type category'),
-  serviceType: string().oneOf(['home', 'point'], 'Invalid type serviceType').required('Service type is required'),
-  pickUpFrom: string().required('Pick-up location is required').oneOf(['home', 'hub'], 'Invalid type pickUpFrom'),
-  phoneNumber: string().typeError('Phone number must be a number').required('Phone number is required'),
-  amount: number().typeError('Amount must be a number').required('Amount is required'),
-  name: string().required('Name is required').max(150, 'Name must be at most 50 characters'),
+  category: string()
+    .required("Category is required")
+    .oneOf(["regular", "express", "pick&drop"], "Invalid type category"),
+  serviceType: string()
+    .oneOf(["home", "point"], "Invalid type serviceType")
+    .required("Service type is required"),
+  pickUpFrom: string()
+    .required("Pick-up location is required")
+    .oneOf(["home", "hub"], "Invalid type pickUpFrom"),
+  phoneNumber: string()
+    .typeError("Phone number must be a number")
+    .required("Phone number is required"),
+  amount: number()
+    .typeError("Amount must be a number")
+    .required("Amount is required"),
+  name: string()
+    .required("Name is required")
+    .max(150, "Name must be at most 50 characters"),
   invoiceNumber: string().default(""), // Nullable to handle optional values like `undefined` or `null`
-  address: string().required('Address is required').max(200, 'Address must be at most 200 characters'),
-  weight: number().typeError('Weight must be a number').required('Weight is required'),
-  district: string().required('District is required'),
-  thana: string().required('Thana is required'),
-  note: string().default("").max(300, 'Note must be at most 300 characters'), // Nullable for optional fields
+  address: string()
+    .required("Address is required")
+    .max(200, "Address must be at most 200 characters"),
+  weight: number()
+    .typeError("Weight must be a number")
+    .required("Weight is required"),
+  district: string().required("District is required"),
+  thana: string().required("Thana is required"),
+  note: string().default("").max(300, "Note must be at most 300 characters"), // Nullable for optional fields
   merchantNumber: string().default(""), // Nullable for optional fields
   merchantAddress: string().default(""),
   merchantDistrict: string().default(""),
   merchantThana: string().default(""),
   hubId: string().nullable(),
-  charge: number().required()
+  charge: number().required(),
 });
 
 const Pricing = object({
@@ -40,7 +56,19 @@ const Pricing = object({
   category: string(),
   serviceType: string(),
   weight: number(),
-  pickUp: string().oneOf(['home', 'hub'], 'Invalid pickup type')
+  pickUp: string().oneOf(["home", "hub"], "Invalid pickup type"),
+});
+
+const updatePricing = object({
+  dhakaToDhaka: number(),
+  dhakaAllOverBangladesh: number(),
+  OneKgWeight: number(),
+  regular: number(),
+  express: number(),
+  homeDelivery: number(),
+  poinDelivery: number(),
+  pickUpHome: number(),
+  pickUpHub: number(),
 });
 
 const updateUserInformation = object({
@@ -54,6 +82,13 @@ const addHubSchema = object({
   name: string().required(),
   phone: string().required(),
   address: string().required(),
-})
+});
 
-export { userSchema, addParcelSchema, updateUserInformation, Pricing,addHubSchema };
+export {
+  userSchema,
+  addParcelSchema,
+  updateUserInformation,
+  Pricing,
+  updatePricing,
+  addHubSchema,
+};

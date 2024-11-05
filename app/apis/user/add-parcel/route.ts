@@ -11,10 +11,19 @@ export const POST = async (request: NextRequest) => {
     const trackingId = await getUniqueTrackingID();
     const parcel = await prisma.addparcel.create({
       data: {
-        ...data, userId: user.id, trackingId: trackingId, weight: data.weight,
-        address: data.address, amount: data.amount, category: data.category,
-        district: data.district, name: data.name, phoneNumber: data.phoneNumber,
-        thana: data.thana, pickUpFrom: data.pickUpFrom, serviceType: data.serviceType,
+        ...data,
+        userId: user.id,
+        trackingId: trackingId,
+        weight: data.weight,
+        address: data.address,
+        amount: data.amount,
+        category: data.category,
+        district: data.district,
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        thana: data.thana,
+        pickUpFrom: data.pickUpFrom,
+        serviceType: data.serviceType,
       },
     });
 
