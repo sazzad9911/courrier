@@ -16,6 +16,7 @@ const userSchema = object({
 const addParcelSchema = object({
   category: string().required(),
   serviceType: string().required(),
+  pickUp: string().required(),
   phoneNumber: number().required(),
   amount: number().required(),
   name: string().required().max(50),

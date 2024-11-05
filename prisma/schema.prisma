@@ -35,6 +35,7 @@ model Addparcel{
    userId       String  @db.ObjectId
    category     String
    serviceType  String
+   pickUpFrom   String
    phoneNumber  Float     
    amount       Float
    name         String
@@ -47,7 +48,7 @@ model Addparcel{
    date         DateTime @default(now())
    status       String  @default("pending")
    trackingId   String @unique
-   user Users @relation(fields: [userId],references: [id],onDelete: Cascade)
+   user         Users @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
 
 
@@ -60,4 +61,10 @@ model Pricing{
   express        Float @default(20)
   homeDelivery   Float @default(30)
   pointDelivery  Float @default(20)
+}
+
+model Hublist{
+   id           String  @id @default(auto()) @map("_id") @db.ObjectId
+   list         String[]
+   password     String @default("update")
 }

@@ -24,6 +24,7 @@ export const POST = async (request: NextRequest) => {
         thana: data.thana,
         note: data.note,
         trackingId: trackingId,
+        pickUpFrom: data.pickUp,
       },
     });
 
@@ -38,26 +39,25 @@ export const POST = async (request: NextRequest) => {
 
 export const GET = async (request: NextRequest) => {
   const take = request.nextUrl.searchParams.get("take");
-  const skip = request.nextUrl.searchParams.get("skip")
+  const skip = request.nextUrl.searchParams.get("skip");
   try {
     const token = request.headers.get("USER") as string;
     const user = JSON.parse(token) as { id: string; phone: string };
     const total = await prisma.addparcel.count({
-      where: { userId: user.id }
-    })
+      where: { userId: user.id },
+    });
     const result = await prisma.addparcel.findMany({
       where: {
         userId: user.id,
       },
       take: parseInt(take) || undefined,
-      skip: parseInt(skip) || undefined
-    })
-    return NextResponse.json({ result, total })
+      skip: parseInt(skip) || undefined,
+    });
+    return NextResponse.json({ result, total });
   } catch (error) {
-    return errorMessage(error)
+    return errorMessage(error);
   }
-
-}
+};
 
 function generateTrackingID(): string {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -79,7 +79,7 @@ async function getUniqueTrackingID() {
   while (!isUnique) {
     trackingID = generateTrackingID();
     const existingParcel = await prisma.addparcel.findUnique({
-      where: { trackingId: trackingID }
+      where: { trackingId: trackingID },
     });
 
     // If no existing parcel is found with this ID, it's unique
