@@ -1,9 +1,8 @@
 "use client";
-import { useState } from "react";
-import { Package } from "../../types/package";
+import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
-
+// import { getApi } from "../../../functions/API";
 const packageData: Package[] = [
   {
     name: "Free package",
@@ -30,10 +29,18 @@ const packageData: Package[] = [
     status: "Pending",
   },
 ];
-
 const ConsignmentTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
+  // const [packageData, addPackageData] = useState(null);
+  
+  // useEffect(() => {
+  //   getApi("http://localhost:3000/apis/user/add-parcel?take&skip")
+  //     .then((res) => {
+  //       addPackageData(res.data)
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
@@ -58,7 +65,7 @@ const ConsignmentTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem, key) => (
+            {packageData?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -151,7 +158,7 @@ const ConsignmentTable = () => {
         </table>
       </div>
       <ResponsivePagination
-        total={10}
+        total={5}
         current={currentPage}
         onPageChange={setCurrentPage}
       />
