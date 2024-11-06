@@ -58,6 +58,7 @@ model Addparcel {
 
 model Pricing {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
+  // adminId                String @db.ObjectId
   dhakadhaka             Float  @default(100)
   dhakaalloverbangladesh Float  @default(130)
   weight                 Float  @default(20)
