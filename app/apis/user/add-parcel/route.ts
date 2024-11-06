@@ -39,7 +39,7 @@ export const POST = async (request: NextRequest) => {
 export const GET = async (request: NextRequest) => {
   const take = request.nextUrl.searchParams.get("take");
   const skip = request.nextUrl.searchParams.get("skip");
-  const id = request.nextUrl.searchParams.get("id");
+  const trackingId = request.nextUrl.searchParams.get("trackingId");
   try {
     const token = request.headers.get("USER") as string;
     const user = JSON.parse(token) as { id: string; phone: string };
@@ -49,16 +49,16 @@ export const GET = async (request: NextRequest) => {
     const result = await prisma.addparcel.findMany({
       where: {
         userId: user.id,
-        id: id ? id : undefined
+        trackingId: trackingId ? trackingId : undefined
       },
       take: parseInt(take) || undefined,
       skip: parseInt(skip) || undefined,
       include:{
-        rider:id?true:false,
-        TrackParcel:id?true:false,
+        rider:trackingId?true:false,
+        TrackParcel:trackingId?true:false,
       }
     });
-    return NextResponse.json({ result, total });
+    return NextResponse.json(trackingId?result[0]:{ result, total });
   } catch (error) {
     return errorMessage(error);
   }
