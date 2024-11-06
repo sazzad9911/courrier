@@ -11,7 +11,13 @@ export const GET = async (request: NextRequest) => {
         },
         include:{
           rider:true,
-          TrackParcel:true
+          TrackParcel:true,
+          user:{
+            select:{
+                name:true,
+                phone:true
+            }
+          }
         }
       });
       return NextResponse.json(result);
