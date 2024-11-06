@@ -145,7 +145,7 @@ export default function PriceTable() {
                   </div>
                 </div>
 
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-black hover:bg-opacity-90">
                   Update
                 </button>
               </div>
