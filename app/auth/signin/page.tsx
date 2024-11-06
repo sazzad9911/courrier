@@ -13,9 +13,12 @@ import useAuth from "../../../hooks/useAuth";
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordShow, setPasswordShow] = useState(false);
   const router = useRouter();
   const { userData } = useAuth();
-
+const handlePasswordShow=()=>{
+  setPasswordShow(!passwordShow)
+}
   useEffect(() => {
     if (userData) {
       if (userData.isAdmin) {
@@ -268,13 +271,13 @@ const SignIn: React.FC = () => {
                         setPassword(e.target.value)
                       }
                       value={password}
-                      type="password"
+                      type={passwordShow ? 'text':'password'}
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
-                      <svg
+                      <svg onClick={handlePasswordShow} 
                         className="fill-current"
                         width="22"
                         height="22"

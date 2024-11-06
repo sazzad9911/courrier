@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Package } from "../../types/package";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
-// import { getApi } from "../../../functions/API";
+
 const packageData: Package[] = [
   {
     name: "Free package",
@@ -29,35 +30,27 @@ const packageData: Package[] = [
     status: "Pending",
   },
 ];
-const ConsignmentTable = () => {
+
+const HubListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
-  // const [packageData, addPackageData] = useState(null);
-  
-  // useEffect(() => {
-  //   getApi("http://localhost:3000/apis/user/add-parcel?take&skip")
-  //     .then((res) => {
-  //       addPackageData(res.data)
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
-                Customer Name & Payment
+              <th className=" px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
+                No
               </th>
               <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
-                Id & Charge
+                Name
               </th>
               <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
-                Date
+                Address
               </th>
               <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
-                Status
+                Phone
               </th>
               <th className="px-4 py-4 font-medium text-black dark:text-white">
                 Actions
@@ -65,19 +58,15 @@ const ConsignmentTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData?.map((packageItem, key) => (
+            {packageData.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.name}
-                  </h5>
-                  <p className="text-sm">${packageItem.price}</p>
+                  <h5 className="font-medium text-black dark:text-white">01</h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
                     {packageItem.name}
                   </h5>
-                  <p className="text-sm">${packageItem.price}</p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <p className="text-black dark:text-white">
@@ -85,42 +74,48 @@ const ConsignmentTable = () => {
                   </p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <p
-                    className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                      packageItem.status === "Paid"
-                        ? "bg-success text-success"
-                        : packageItem.status === "Unpaid"
-                        ? "bg-danger text-danger"
-                        : "bg-warning text-warning"
-                    }`}
-                  >
-                    {packageItem.status}
-                  </p>
+                  <h5 className="font-medium text-black dark:text-white">
+                    {packageItem.name}
+                  </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
+                    
                     <button
-                      onClick={() =>
-                        router.push("/dashboard/consignments/54352")
-                      }
+                      onClick={() => router.push("/moderator/hub/54352")}
                       className="hover:text-primary"
                     >
                       <svg
-                        className="fill-current"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
+                        width="19"
+                        height="19"
+                        viewBox="0 0 19 19"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <path
-                          d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                          fill=""
-                        />
-                        <path
-                          d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                          fill=""
-                        />
+                        <g clip-path="url(#clip0_5110_14)">
+                          <path
+                            d="M16.9167 4.85454L9.76171 12.0095C9.04921 12.722 6.93419 13.052 6.46169 12.5795C5.98919 12.107 6.31169 9.99201 7.02419 9.27951L14.1867 2.11702C14.3633 1.92431 14.5772 1.76941 14.8154 1.66163C15.0535 1.55386 15.311 1.49544 15.5724 1.48993C15.8337 1.48443 16.0935 1.53194 16.336 1.6296C16.5785 1.72725 16.7987 1.87305 16.9832 2.05815C17.1678 2.24325 17.313 2.46383 17.41 2.70657C17.507 2.94932 17.5538 3.2092 17.5476 3.47054C17.5414 3.73187 17.4822 3.98927 17.3738 4.22713C17.2654 4.46499 17.1099 4.67844 16.9167 4.85454Z"
+                            className="stroke-current"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.20679 3.05444H5.45679C4.66113 3.05444 3.89812 3.37051 3.33551 3.93312C2.7729 4.49573 2.45679 5.25879 2.45679 6.05444V13.5544C2.45679 14.3501 2.7729 15.1132 3.33551 15.6757C3.89812 16.2384 4.66113 16.5544 5.45679 16.5544H13.7068C15.3643 16.5544 15.9568 15.2044 15.9568 13.5544V9.80444"
+                            className="stroke-current"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_5110_14">
+                            <rect
+                              width="18"
+                              height="18"
+                              fill="white"
+                              transform="translate(0.956787 0.0544434)"
+                            />
+                          </clipPath>
+                        </defs>
                       </svg>
                     </button>
                     <button className="hover:text-primary">
@@ -158,7 +153,7 @@ const ConsignmentTable = () => {
         </table>
       </div>
       <ResponsivePagination
-        total={5}
+        total={10}
         current={currentPage}
         onPageChange={setCurrentPage}
       />
@@ -166,4 +161,4 @@ const ConsignmentTable = () => {
   );
 };
 
-export default ConsignmentTable;
+export default HubListTable;

@@ -21,6 +21,7 @@ interface User {
 }
 
 const SignUp: React.FC = () => {
+  const [passwordShow, setPasswordShow] = useState(false);
   const router = useRouter();
   const [formData, setFormData] = useState<User>({
     businessName: "", // Required, should be provided by the user
@@ -47,7 +48,9 @@ const SignUp: React.FC = () => {
       phoneNumber: formData.phone,
     });
   };
-
+  const handlePasswordShow=()=>{
+    setPasswordShow(!passwordShow)
+  }
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -451,7 +454,7 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="password"
+                     type={passwordShow ? 'text':'password'}
                       required
                       onChange={(e) =>
                         setFormData({
@@ -466,6 +469,7 @@ const SignUp: React.FC = () => {
 
                     <span className="absolute right-4 top-4">
                       <svg
+                      onClick={handlePasswordShow}
                         className="fill-current"
                         width="22"
                         height="22"
@@ -495,7 +499,7 @@ const SignUp: React.FC = () => {
                   <div className="relative">
                     <input
                       required
-                      type="password"
+                      type={passwordShow ? 'text':'password'}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
@@ -509,6 +513,7 @@ const SignUp: React.FC = () => {
 
                     <span className="absolute right-4 top-4">
                       <svg
+                      onClick={handlePasswordShow}
                         className="fill-current"
                         width="22"
                         height="22"
