@@ -267,7 +267,7 @@ const AddParcel = () => {
                     <SelectGroupOne />
                   </div>
                 )}
-                <hr className="mb-5 border-primary"/>
+                <hr className="mb-5 border-primary" />
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -375,7 +375,12 @@ const AddParcel = () => {
                   ></textarea>
                 </div>
 
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-black hover:bg-opacity-90">
+                <label className="container-checkbox">
+                  Delivery charge 60 BDT. Want to confirm?
+                  <input type="checkbox" />
+                  <span className="checkmark mt-1"></span>
+                </label>
+                <button className="flex w-full mt-5 justify-center rounded bg-primary p-3 font-medium text-black hover:bg-opacity-90">
                   Submit
                 </button>
               </div>
