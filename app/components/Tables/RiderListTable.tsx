@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Package } from "../../types/package";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
@@ -87,31 +87,9 @@ const RiderListTable = () => {
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary">
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          opacity="0.5"
-                          d="M2.25 11.25C2.25 13.3713 2.25 14.4319 2.90901 15.091C3.56802 15.75 4.62868 15.75 6.75 15.75H11.25C13.3713 15.75 14.4319 15.75 15.091 15.091C15.75 14.4319 15.75 13.3713 15.75 11.25"
-                          className="stroke-current"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M9 12V2.25M9 2.25L12 5.53125M9 2.25L6 5.53125"
-                          className="stroke-current"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </button>
+                    <ImageUpload />
                     <button
-                      onClick={() => router.push("/moderator/hub/54352")}
+                      onClick={() => router.push("/moderator/rider/54352")}
                       className="hover:text-primary"
                     >
                       <svg
@@ -191,3 +169,48 @@ const RiderListTable = () => {
 };
 
 export default RiderListTable;
+
+
+const ImageUpload = () => {
+  const ref = useRef<HTMLInputElement>(null);
+
+  const handleClick = () => {
+    ref.current?.click();
+  };
+
+  return (
+    <div>
+      <input
+        ref={ref}
+        type="file"
+        accept="image/*"
+        className="w-0 h-0"
+        style={{ display: "none" }} // Ensures input is hidden
+      />
+      <button onClick={handleClick} className="hover:text-primary">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 18 18"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            opacity="0.5"
+            d="M2.25 11.25C2.25 13.3713 2.25 14.4319 2.90901 15.091C3.56802 15.75 4.62868 15.75 6.75 15.75H11.25C13.3713 15.75 14.4319 15.75 15.091 15.091C15.75 14.4319 15.75 13.3713 15.75 11.25"
+            className="stroke-current"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M9 12V2.25M9 2.25L12 5.53125M9 2.25L6 5.53125"
+            className="stroke-current"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+  );
+};
+
