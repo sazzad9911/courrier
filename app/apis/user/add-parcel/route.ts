@@ -39,6 +39,7 @@ export const POST = async (request: NextRequest) => {
 export const GET = async (request: NextRequest) => {
   const take = request.nextUrl.searchParams.get("take");
   const skip = request.nextUrl.searchParams.get("skip");
+  const id = request.nextUrl.searchParams.get("id");
   try {
     const token = request.headers.get("USER") as string;
     const user = JSON.parse(token) as { id: string; phone: string };
@@ -48,6 +49,7 @@ export const GET = async (request: NextRequest) => {
     const result = await prisma.addparcel.findMany({
       where: {
         userId: user.id,
+        id: id ? id : undefined
       },
       take: parseInt(take) || undefined,
       skip: parseInt(skip) || undefined,
