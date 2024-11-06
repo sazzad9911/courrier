@@ -8,19 +8,6 @@ export const POST = async (request: NextRequest) => {
     // Validate incoming data using schema validation
     const data = await updatePricing.validate(await request.json());
 
-    // Extract and parse the user information from the token
-    const token = request.headers.get("ADMIN") as string;
-    const user = JSON.parse(token) as { id: string; phone: string };
-
-    // Check if user exists and is an admin
-    const adminUser = await prisma.users.findFirst({ where: { id: user.id } });
-    if (!adminUser || !adminUser.isAdmin) {
-      return NextResponse.json(
-        { error: "Unauthorized: You don't have permission to update pricing" },
-        { status: 403 }
-      );
-    }
-
     // Perform the update operation
     await prisma.pricing.updateMany({
       where: { pickUpHub: 0 },

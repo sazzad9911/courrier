@@ -85,7 +85,7 @@ model Rider {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   phone     String
-  image     String
+  image     String?
   nid       String
   password  String
   Addparcel Addparcel[]

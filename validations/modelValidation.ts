@@ -84,6 +84,13 @@ const addHubSchema = object({
   address: string().required(),
 });
 
+const riderSchema = object({
+  riderName: string().required().max(50),
+  riderNumber: string().required(),
+  riderNID: string().required(),
+  riderPassword: string().required(),
+});
+
 export {
   userSchema,
   addParcelSchema,
@@ -91,4 +98,5 @@ export {
   Pricing,
   updatePricing,
   addHubSchema,
+  riderSchema,
 };
