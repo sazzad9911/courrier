@@ -66,7 +66,7 @@ const updatePricing = object({
   regular: number(),
   express: number(),
   homeDelivery: number(),
-  poinDelivery: number(),
+  pointDelivery: number(),
   pickUpHome: number(),
   pickUpHub: number(),
 });
