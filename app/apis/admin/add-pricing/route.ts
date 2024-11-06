@@ -31,17 +31,25 @@ export const POST = async (request: NextRequest) => {
         regular: data.regular,
         express: data.express,
         homeDelivery: data.homeDelivery,
-        pointDelivery: data.poinDelivery, // fixed typo
+        pointDelivery: data.pointDelivery, // fixed typo
         pickUpHome: data.pickUpHome,
       },
     });
 
     // Fetch and return the updated records to display the latest data
-    // const updatedRecords = await prisma.pricing.findMany({
-    //   where: { pickUpHub: 0 },
-    // });
 
     return NextResponse.json({ message: "price update successfully done." });
+  } catch (error) {
+    return errorMessage(error);
+  }
+};
+
+export const GET = async () => {
+  try {
+    const updatedRecords = await prisma.pricing.findFirst({
+      where: { pickUpHub: 0 },
+    });
+    return NextResponse.json(updatedRecords);
   } catch (error) {
     return errorMessage(error);
   }
