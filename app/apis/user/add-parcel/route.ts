@@ -53,6 +53,10 @@ export const GET = async (request: NextRequest) => {
       },
       take: parseInt(take) || undefined,
       skip: parseInt(skip) || undefined,
+      include:{
+        rider:id?true:false,
+        TrackParcel:id?true:false,
+      }
     });
     return NextResponse.json({ result, total });
   } catch (error) {

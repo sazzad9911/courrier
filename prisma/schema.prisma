@@ -29,8 +29,8 @@ model Users {
 }
 
 model Addparcel {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId           String   @db.ObjectId
+  id               String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String        @db.ObjectId
   category         String
   serviceType      String
   pickUpFrom       String
@@ -43,17 +43,20 @@ model Addparcel {
   district         String
   thana            String
   note             String?
-  date             DateTime @default(now())
-  status           String   @default("pending")
-  trackingId       String   @unique
-  user             Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date             DateTime      @default(now())
+  status           String        @default("pending")
+  trackingId       String        @unique
+  user             Users         @relation(fields: [userId], references: [id], onDelete: Cascade)
   merchantNumber   String?
   merchantAddress  String?
   merchantDistrict String?
   merchantThana    String?
-  hubId            String?  @db.ObjectId
-  hub              Hublist? @relation(fields: [hubId], references: [id])
-  charge           Float    @default(0)
+  hubId            String?       @db.ObjectId
+  hub              Hublist?      @relation(fields: [hubId], references: [id])
+  charge           Float         @default(0)
+  riderId          String?       @db.ObjectId
+  rider            Rider?        @relation(fields: [riderId], references: [id])
+  TrackParcel      TrackParcel[]
 }
 
 model Pricing {
@@ -75,4 +78,23 @@ model Hublist {
   address   String
   phone     String
   Addparcel Addparcel[]
+}
+
+model Rider {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  phone     String
+  image     String
+  nid       String
+  password  String
+  Addparcel Addparcel[]
+  date      DateTime    @default(now())
+}
+
+model TrackParcel {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  date     DateTime  @default(now())
+  ststus   String
+  parcelId String    @db.ObjectId
+  parcel   Addparcel @relation(fields: [parcelId], references: [id])
 }
