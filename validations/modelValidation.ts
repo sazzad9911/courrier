@@ -89,6 +89,7 @@ const riderSchema = object({
   riderNumber: string().required(),
   riderNID: string().required(),
   riderPassword: string().required(),
+  image:string().default("")
 });
 
 export {

@@ -27,6 +27,7 @@ export const POST = async (request: NextRequest) => {
         phone: data.riderNumber,
         nid: data.riderNID,
         password: hassPassword,
+        image: data.image
       },
     });
     return NextResponse.json({

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
+import { Package } from "../../types/package";
 // import { getApi } from "../../../functions/API";
 const packageData: Package[] = [
   {
