@@ -26,6 +26,8 @@ model Users {
   address      String      @default("")
   image        String      @default("")
   Addparcel    Addparcel[]
+  fraud        Boolean     @default(false)
+  riderReport  FraudReport[]
 }
 
 model Addparcel {
@@ -90,6 +92,7 @@ model Rider {
   password  String
   Addparcel Addparcel[]
   date      DateTime    @default(now())
+  fraudReport FraudReport[]
 }
 
 model TrackParcel {
@@ -98,4 +101,14 @@ model TrackParcel {
   ststus   String
   parcelId String    @db.ObjectId
   parcel   Addparcel @relation(fields: [parcelId], references: [id])
+}
+
+model FraudReport {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId
+  riderId   String @db.ObjectId
+  User      Users    @relation(fields: [userId], references: [id])
+  Rider     Rider   @relation(fields: [riderId], references: [id])
+
+  @@unique([userId, riderId]) // Ensures a rider can't flag the same user more than once
 }
