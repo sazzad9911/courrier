@@ -1,9 +1,62 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import SelectGroupOne from "../../components/SelectGroup/SelectGroupOne";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
+import { getApi, postApi } from "../../../functions/API";
+
+import toast from "react-hot-toast";
 
 export default function Pricing() {
+  const [districts, setDistricts] = useState<string[]>([]);
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [category, setCategory] = useState("");
+  const [serviceType, setServiceType] = useState("");
+  const [weight, setWeight] = useState("");
+  const [pickUp, setPickUp] = useState("");
+  // const [submitted, setSubmitted] = useState(false);
+  const [responseData, setResponseData] = useState(null);
+  useEffect(() => {
+    const fetchDistricts = async () => {
+      try {
+        const response = await getApi("/apis/district");
+        setDistricts(response.data);
+      } catch (error) {
+        console.log(error.response.data.error);
+        toast.error(`${error.response.data.error}`);
+      }
+    };
+
+    fetchDistricts();
+  }, []);
+
+  // Trigger API call when form is submitted and dependencies change
+  const handleSubmit = async () => {
+    if (!from || !to || !category || !serviceType) {
+      toast("Please fill in all required fields.");
+      return;
+    }
+
+    const data = {
+      from,
+      to,
+      category,
+      serviceType,
+      weight: weight || null,
+      pickUp,
+    };
+    try {
+      const response = await postApi("/apis/user/pricing", data);
+      setResponseData(response);
+      // console.log("API Response:", response);
+      // Display response in UI if needed
+    } catch (error) {
+      toast.error(`${error.response.data.error}`);
+    }
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Calculate Price" />
@@ -15,38 +68,46 @@ export default function Pricing() {
                 Information Form
               </h3>
             </div>
-            <form action="#">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+            >
               <div className="p-6.5">
+                {/* From and To Selection */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      From <span className="text-meta-1">*</span>
-                    </label>
-                    <SelectGroupOne />
-                  </div>
-
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      To <span className="text-meta-1">*</span>
-                    </label>
-                    <SelectGroupOne />
-                  </div>
+                  <SelectGroupOne
+                    label="From"
+                    selectedValue={from}
+                    onSelect={setFrom}
+                    options={districts}
+                  />
+                  <SelectGroupOne
+                    label="To"
+                    selectedValue={to}
+                    onSelect={setTo}
+                    options={districts}
+                  />
                 </div>
+
+                {/* Category and Service Type Selection */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Category <span className="text-meta-1">*</span>
-                    </label>
-                    <SelectGroupOne />
-                  </div>
-
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Service Type <span className="text-meta-1">*</span>
-                    </label>
-                    <SelectGroupOne />
-                  </div>
+                  <SelectGroupOne
+                    label="Category"
+                    selectedValue={category}
+                    onSelect={setCategory}
+                    options={["Regular", "Express"]}
+                  />
+                  <SelectGroupOne
+                    label="Service Type"
+                    selectedValue={serviceType}
+                    onSelect={setServiceType}
+                    options={["Home Delivery", "Point Delivery"]}
+                  />
                 </div>
+
+                {/* Weight Input */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -54,18 +115,40 @@ export default function Pricing() {
                     </label>
                     <input
                       type="number"
-                      placeholder="Type your message"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    ></input>
+                      value={weight}
+                      onChange={(e) => setWeight(e.target.value)}
+                      placeholder="Type your weight"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
                   </div>
+                  <SelectGroupOne
+                    label="Pick Up"
+                    selectedValue={pickUp}
+                    onSelect={setPickUp}
+                    options={["Home", "Hub"]}
+                  />
                 </div>
+                {responseData && (
+                  <div className="flex justify-center">
+                    <div className="lg:w-[4vw] lg:h-[1.5vw] w-[14vw] h-[8vw] bg-red-500 text-yellow-50 rounded-lg flex justify-center items-center">
+                      {responseData.data}
+                    </div>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-[100px] flex justify-center items-center h-[100px] bg-gray-200 rounded-full mx-auto my-5"
+                >
+                  Calculate Price
+                </button>
               </div>
             </form>
-            <div className="">
+            {/* <div className="">
               <div className="w-[100px] flex justify-center items-center h-[100px] bg-gray-200 rounded-full mx-auto my-5">
                 50 BDT
               </div>
-            </div>
+            </div> */}
             <CheckBox text="১% ক্যাশ অন ডেলিভারি ও রিস্ক ম্যানেজমেন্ট চার্জ প্রযোজ্য" />
             <CheckBox text="পার্সেল সাইজের কারণে ডেলিভারি মাশুল পরিবর্তিত হতে পারে" />
             <CheckBox text="উক্ত চার্জসমূহ ভ্যাট ও ট্যাক্স ব্যাতিত" />

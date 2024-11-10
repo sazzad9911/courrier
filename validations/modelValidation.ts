@@ -56,7 +56,7 @@ const Pricing = object({
   category: string(),
   serviceType: string(),
   weight: number(),
-  pickUp: string().oneOf(["home", "hub"], "Invalid pickup type"),
+  pickUp: string().oneOf(["Home", "Hub"], "Invalid pickup type"),
 });
 
 const updatePricing = object({
@@ -89,7 +89,7 @@ const riderSchema = object({
   riderNumber: string().required(),
   riderNID: string().required(),
   riderPassword: string().required(),
-  image:string().default("")
+  image: string().default(""),
 });
 
 export {

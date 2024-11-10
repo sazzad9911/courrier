@@ -21,7 +21,7 @@ type WeightData = { weight: number } | null;
 export const POST = async (request: NextRequest) => {
   try {
     const data = await Pricing.validate(await request.json());
-    const isDhaka = data.from === data.to;
+    const isDhaka = data.from === "Dhaka" && data.to === "Dhaka";
 
     const locationPrice = isDhaka
       ? (await prisma.pricing.findFirst({ select: { dhakadhaka: true } }))
@@ -34,12 +34,12 @@ export const POST = async (request: NextRequest) => {
 
     const [categoryPriceData, serviceTypePriceData, weightData, picUpData] =
       await Promise.all([
-        (data.category === "regular"
+        (data.category === "Regular"
           ? prisma.pricing.findFirst({ select: { regular: true } })
           : prisma.pricing.findFirst({
               select: { express: true },
             })) as Promise<CategoryPrice>,
-        (data.serviceType === "homeDelivery"
+        (data.serviceType === "Home Delivery"
           ? prisma.pricing.findFirst({ select: { homeDelivery: true } })
           : prisma.pricing.findFirst({
               select: { pointDelivery: true },
@@ -47,7 +47,7 @@ export const POST = async (request: NextRequest) => {
         prisma.pricing.findFirst({
           select: { weight: true },
         }) as Promise<WeightData>,
-        (data.pickUp === "home"
+        (data.pickUp === "Home"
           ? prisma.pricing.findFirst({ select: { pickUpHome: true } })
           : prisma.pricing.findFirst({
               select: { pickUpHub: true },
@@ -55,15 +55,15 @@ export const POST = async (request: NextRequest) => {
       ]);
 
     const categoryPrice =
-      data.category === "regular"
+      data.category === "Regular"
         ? categoryPriceData?.regular
         : categoryPriceData?.express;
     const serviceTypePrice =
-      data.serviceType === "homeDelivery"
+      data.serviceType === "Home Delivery"
         ? serviceTypePriceData?.homeDelivery
         : serviceTypePriceData?.pointDelivery;
     const pickUpPrice =
-      data.pickUp === "home" ? picUpData?.pickUpHome : picUpData?.pickUpHub;
+      data.pickUp === "Home" ? picUpData?.pickUpHome : picUpData?.pickUpHub;
 
     const multipliedWeight = data.weight * (weightData?.weight || 1);
     // console.log(locationPrice, categoryPrice, serviceTypePrice);
