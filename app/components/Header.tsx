@@ -249,20 +249,20 @@ const Header = () => {
               }`}
             >
               <FaMapMarkerAlt />
-              <span>Track Parcel</span>
+              <span>{language === 'en'?'Track Parcel':'ট্র্যাক পার্সেল'}</span>
             </Link>
             <LanguageToggleButton></LanguageToggleButton>
             <Link
               href="/auth/signup"
               className="border border-white px-4 py-2 rounded-md hover:bg-yellow-500 hover:border-transparent"
             >
-              Register
+              {language === 'en'?'Register':'রেজিস্টার'}
             </Link>
             <Link
               href="/auth/signin"
               className="bg-green-600 px-4 py-2 rounded-md hover:bg-green-700"
             >
-              Login
+              {language === 'en'?'Login':'লগইন'}
             </Link>
           </div>
           <div onClick={onOpen} className="lg:hidden cursor-pointer">
@@ -289,7 +289,7 @@ const Header = () => {
         <DrawerOverlay />
         <DrawerContent bg="green.900">
           <DrawerCloseButton color="white" />
-          <DrawerHeader textColor="white">Menu</DrawerHeader>
+          <DrawerHeader textColor="white">{language === 'en'?'Menu':'মেনু'}</DrawerHeader>
           <DrawerBody>
             <ul className="space-y-4 text-white">
               <li>
@@ -300,7 +300,7 @@ const Header = () => {
                     pathname === "/" ? "underline text-yellow-400" : ""
                   } hover:text-yellow-400`}
                 >
-                  HOME
+                  {language === 'en'?'HOME':'হোম'}
                 </Link>
               </li>
               <li>
@@ -313,7 +313,7 @@ const Header = () => {
                       : ""
                   } hover:text-yellow-400`}
                 >
-                  COVERAGE
+                  {language === 'en'?'COVERAGE':'কাভারেজ'}
                 </Link>
               </li>
               <li>
@@ -326,7 +326,7 @@ const Header = () => {
                       : ""
                   } hover:text-yellow-400`}
                 >
-                  ABOUT US
+                  {language === 'en'?'ABOUT US':'এবাউট উস'}
                 </Link>
               </li>
               <li>
@@ -339,7 +339,7 @@ const Header = () => {
                       : ""
                   } hover:text-yellow-400`}
                 >
-                  CONTACT US
+                 {language === 'en'?'CONTACT US':'কন্টাক্ট উস'}
                 </Link>
               </li>
               <li>
@@ -351,7 +351,7 @@ const Header = () => {
                   }`}
                 >
                   <FaMapMarkerAlt />
-                  <span>Track Parcel</span>
+                  <span>{language === 'en'?'Track Parcel':'ট্র্যাক পার্সেল'}</span>
                 </Link>
               </li>
               <li>
@@ -363,14 +363,14 @@ const Header = () => {
                   onClick={onClose}
                   className="border border-white px-4 py-2 rounded-md hover:bg-yellow-500 hover:border-transparent"
                 >
-                  Register
+                  {language === 'en'?'Register':'রেজিস্টার'}
                 </Link>
                 <Link
                   href="/auth/signin"
                   onClick={onClose}
                   className="bg-green-600 px-4 py-2 rounded-md hover:bg-green-700"
                 >
-                  Login
+                  {language === 'en'?'Login':'লগইন'}
                 </Link>
               </li>
             </ul>
