@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import DefaultLayout from "../../../components/Layouts/DefaultLayout";
 import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 import {
@@ -13,9 +13,11 @@ import {
 import Image from "next/image";
 import { LuPackageOpen } from "react-icons/lu";
 import AdminLayout from "../../../components/Layouts/AdminLayout";
+import SelectGroupOne from "../../../components/SelectGroup/SelectGroupOne";
 
 export default function Parcel() {
   const { id } = useParams();
+  const [status, setStatus] = useState("packaging");
   return (
     <AdminLayout>
       <Breadcrumb pageName={`Parcel Id: ${id}`} />
@@ -39,9 +41,22 @@ export default function Parcel() {
                 Status:{" "}
                 <span className="font-thin text-yellow-600">PENDING</span>
               </p>
-              <button className="bg-green-600 text-white px-3 py-1 rounded-sm my-3">
-                Track Now
-              </button>
+              {status === "pending" ? (
+                <button className="bg-green-600 text-white px-3 py-1 rounded-sm my-3">
+                  Mark as Processing
+                </button>
+              ) : status === "processing" ? (
+                <button className="bg-green-600 text-white px-3 py-1 rounded-sm my-3">
+                  Mark as Packaging
+                </button>
+              ) : status === "packaging" ? (
+                <div className="w-10/12 flex flex-col gap-2">
+                  <label>Select Delivery Person</label>
+                  <SelectGroupOne />
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             <div>
               <h3 className="font-medium text-black dark:text-white">
@@ -61,9 +76,13 @@ export default function Parcel() {
               <p className="font-semibold text-lg my-1">
                 Phone Number: <span className="font-thin ">+8801633423423</span>
               </p>
-              <button className="bg-red-600 text-white px-3 py-1 rounded-sm my-3">
-                Cancel Now
-              </button>
+              {status === "pending" ? (
+                <button className="bg-red-600 text-white px-3 py-1 rounded-sm my-3">
+                  Cancel Now
+                </button>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -122,7 +141,10 @@ export default function Parcel() {
                   01834324543
                 </div>
               </div>
-              <button onClick={() => (window.location.href = `tel:0173233223`)} className="bg-blue-600 text-white  px-6 rounded-md h-[40px]">
+              <button
+                onClick={() => (window.location.href = `tel:0173233223`)}
+                className="bg-blue-600 text-white  px-6 rounded-md h-[40px]"
+              >
                 Call
               </button>
             </div>
