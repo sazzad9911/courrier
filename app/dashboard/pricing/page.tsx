@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import SelectGroupOne from "../../components/SelectGroup/SelectGroupOne";
+import SelectForPricing from "../../components/SelectGroup/SelectForPricing";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import { getApi, postApi } from "../../../functions/API";
@@ -77,13 +77,13 @@ export default function Pricing() {
               <div className="p-6.5">
                 {/* From and To Selection */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <SelectGroupOne
+                  <SelectForPricing
                     label="From"
                     selectedValue={from}
                     onSelect={setFrom}
                     options={districts}
                   />
-                  <SelectGroupOne
+                  <SelectForPricing
                     label="To"
                     selectedValue={to}
                     onSelect={setTo}
@@ -93,13 +93,13 @@ export default function Pricing() {
 
                 {/* Category and Service Type Selection */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <SelectGroupOne
+                  <SelectForPricing
                     label="Category"
                     selectedValue={category}
                     onSelect={setCategory}
                     options={["Regular", "Express"]}
                   />
-                  <SelectGroupOne
+                  <SelectForPricing
                     label="Service Type"
                     selectedValue={serviceType}
                     onSelect={setServiceType}
@@ -121,7 +121,7 @@ export default function Pricing() {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-                  <SelectGroupOne
+                  <SelectForPricing
                     label="Pick Up"
                     selectedValue={pickUp}
                     onSelect={setPickUp}
