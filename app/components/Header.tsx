@@ -11,10 +11,13 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import React from "react";
-import { FaMapMarkerAlt, FaGlobe } from "react-icons/fa";
+import React, { useContext } from "react";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import LanguageToggleButton from "./LanguageToggleButton";
+import { LanguageContext } from "./Providers/LanguageProvider";
 
 const Header = () => {
+  const { language } = useContext(LanguageContext);
   const pathname = usePathname();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -158,7 +161,7 @@ const Header = () => {
                 }`}
                 href="/"
               >
-                HOME
+                {language === 'en'?'HOME':'হোম'}
               </Link>
             </li>
             <li className="hover:text-yellow-400">
@@ -170,7 +173,9 @@ const Header = () => {
                 }`}
                 href="/pages/coverage"
               >
-                COVERAGE
+              
+                {language === 'en'?'COVERAGE':'কাভারেজ'}
+           
               </Link>
             </li>
             <li className="hover:text-yellow-400">
@@ -182,7 +187,7 @@ const Header = () => {
                     : ""
                 }`}
               >
-                ABOUT US
+               {language === 'en'?'ABOUT US':'এবাউট উস'}
               </Link>
             </li>
             <li className="hover:text-yellow-400">
@@ -194,7 +199,7 @@ const Header = () => {
                     : ""
                 }`}
               >
-                CONTACT US
+               {language === 'en'?'CONTACT US':'কন্টাক্ট উস'}
               </Link>
             </li>
           </ul>
@@ -246,13 +251,7 @@ const Header = () => {
               <FaMapMarkerAlt />
               <span>Track Parcel</span>
             </Link>
-            <a
-              href="#lang"
-              className="flex items-center space-x-2 hover:text-yellow-500 text-yellow-400"
-            >
-              <FaGlobe />
-              <span>EN</span>
-            </a>
+            <LanguageToggleButton></LanguageToggleButton>
             <Link
               href="/auth/signup"
               className="border border-white px-4 py-2 rounded-md hover:bg-yellow-500 hover:border-transparent"
@@ -356,13 +355,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#lang"
-                  className="flex items-center space-x-2 hover:text-yellow-500 text-yellow-400"
-                >
-                  <FaGlobe />
-                  <span>EN</span>
-                </a>
+                <LanguageToggleButton></LanguageToggleButton>
               </li>
               <li className="space-x-4">
                 <Link

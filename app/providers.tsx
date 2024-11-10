@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
+import { LanguageProvider } from "./components/Providers/LanguageProvider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const params = usePathname();
@@ -22,6 +23,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     );
   }
   return (
+    <LanguageProvider>
     <Suspense>
       <AuthProvider>
         <ChakraProvider>
@@ -33,5 +35,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         </ChakraProvider>
       </AuthProvider>
     </Suspense>
+    </LanguageProvider>
   );
 }
