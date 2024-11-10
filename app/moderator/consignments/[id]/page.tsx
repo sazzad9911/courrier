@@ -12,11 +12,12 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 import { LuPackageOpen } from "react-icons/lu";
+import AdminLayout from "../../../components/Layouts/AdminLayout";
 
 export default function Parcel() {
   const { id } = useParams();
   return (
-    <DefaultLayout>
+    <AdminLayout>
       <Breadcrumb pageName={`Parcel Id: ${id}`} />
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -154,6 +155,6 @@ export default function Parcel() {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </AdminLayout>
   );
 }
