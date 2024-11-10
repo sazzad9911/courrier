@@ -1,9 +1,11 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import { FaFacebookSquare, FaLinkedin, FaTwitterSquare } from "react-icons/fa";
 import { usePathname } from "next/navigation";
+import { LanguageContext } from "./Providers/LanguageProvider";
 export default function Footer() {
+  const { language } = useContext(LanguageContext);
   const pathname = usePathname();
   return (
     <footer className="bg-[#172557] text-white pb-10">
@@ -215,8 +217,8 @@ export default function Footer() {
                 </svg>
 
                 <div>
-                  <p>Mon - Sat 9.00 - 18.00</p>
-                  <p className=" text-yellow-500">Sunday Closed</p>
+                  <p>{language === 'en'?'Mon - Sat 9.00 - 18.00':'সোম - শনি ৯.০০ - ১৮.০০'}</p>
+                  <p className=" text-yellow-500">{language === 'en'?'Sunday Closed':'রবিবার বন্ধ'}</p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -242,7 +244,7 @@ export default function Footer() {
                 </svg>
 
                 <div>
-                  <p>Email</p>
+                  <p>{language === 'en'?'Email':'ইমেইল'}</p>
                   <p>contact@logistics.com</p>
                 </div>
               </div>
@@ -268,7 +270,7 @@ export default function Footer() {
                 </svg>
 
                 <div>
-                  <p>Call Us</p>
+                  <p>{language === 'en'?'Call Us':'কল করুন'}</p>
                   <p>(00) 112 365 489</p>
                 </div>
               </div>

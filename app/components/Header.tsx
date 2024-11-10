@@ -65,7 +65,7 @@ const Header = () => {
               </svg>
             </div>
             <span className="font-light text-xl w-40">
-              Green Bangla Courier Service
+              {language === 'en'?'Green Bangla Courier Service':'গ্রীন বাংলা কুরিয়ার সার্ভিস'}
             </span>
           </div>
         </Link>
@@ -93,8 +93,8 @@ const Header = () => {
             </svg>
 
             <div>
-              <p>Mon - Sat 9.00 - 18.00</p>
-              <p className="hidden md:block text-yellow-500">Sunday Closed</p>
+              <p>{language === 'en'?'Mon - Sat 9.00 - 18.00':'সোম - শনি ৯.০০ - ১৮.০০'}</p>
+              <p className="hidden md:block text-yellow-500">{language === 'en'?'Sunday Closed':'রবিবার বন্ধ'}</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -120,7 +120,7 @@ const Header = () => {
             </svg>
 
             <div>
-              <p>Email</p>
+              <p>{language === 'en'?'Email':'ইমেইল'}</p>
               <p>contact@logistics.com</p>
             </div>
           </div>
@@ -145,7 +145,7 @@ const Header = () => {
               />
             </svg>
             <div>
-              <p>Call Us</p>
+              <p>{language === 'en'?'Call Us':'কল করুন'}</p>
               <p>(00) 112 365 489</p>
             </div>
           </div>
