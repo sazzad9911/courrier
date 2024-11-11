@@ -1,39 +1,26 @@
 "use client";
-import { useState } from "react";
-import { Package } from "../../types/package";
+import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
-
-const packageData: Package[] = [
-  {
-    name: "Free package",
-    price: 0.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Business Package",
-    price: 99.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Unpaid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Pending",
-  },
-];
+import { getApi } from "../../../functions/API";
+import toast from "react-hot-toast";
 
 const HubListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [hubs, setHubs] = useState([]);
   const router = useRouter();
+  useEffect(() => {
+    const hubList = async () => {
+      try {
+        const response = await getApi("/apis/admin/add-hub");
+        console.log(response.data);
+        setHubs(response.data);
+      } catch (error) {
+        toast(`${error.response.data.error.message}`);
+      }
+    };
+    hubList();
+  }, []);
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
@@ -58,31 +45,30 @@ const HubListTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem, key) => (
+            {hubs.map((hub, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">01</h5>
+                  <h5 className="font-medium text-black dark:text-white">
+                    {key + 1}{" "}
+                  </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.name}
+                    {hub.name}
                   </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.invoiceDate}
-                  </p>
+                  <p className="text-black dark:text-white">{hub.address}</p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.name}
+                    {hub.phone}
                   </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    
                     <button
-                      onClick={() => router.push("/moderator/hub/54352")}
+                      onClick={() => router.push(`/moderator/hub/${hub.id}`)}
                       className="hover:text-primary"
                     >
                       <svg
@@ -155,7 +141,7 @@ const HubListTable = () => {
       <ResponsivePagination
         total={10}
         current={currentPage}
-        onPageChange={setCurrentPage}
+        onPageChange={(page) => setCurrentPage(page)} // Ensure `page` is a number
       />
     </div>
   );
