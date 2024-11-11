@@ -13,32 +13,32 @@ export const POST = async (request: NextRequest) => {
   const { oldPassword, newPassword, retypePassword } =
     (await request.json()) as requestTypes;
   if (!oldPassword || !newPassword || !retypePassword) {
-    return NextResponse.json({ error: "Some fields are required" });
+    return NextResponse.json({ error: "Some fields are required" }, { status: 404 });
   }
 
   if (oldPassword === newPassword) {
     return NextResponse.json({
       error: "Old password and new password are the same!",
-    });
+    },{ status: 404 });
   }
 
   if (newPassword !== retypePassword) {
-    return NextResponse.json({ error: "Passwords do not match" });
+    return NextResponse.json({ error: "Passwords do not match" },{ status: 404 });
   }
 
   const token = request.headers.get("USER") as string;
   const user = token
     ? (JSON.parse(token) as {
-        id: string;
-        phone: string;
-        tokenExpiration: string;
-      })
+      id: string;
+      phone: string;
+      tokenExpiration: string;
+    })
     : null;
 
   if (!user || new Date() > new Date(user.tokenExpiration)) {
     return NextResponse.json({
       error: "User not authenticated or session expired",
-    });
+    },{ status: 404 });
   }
 
   try {
@@ -47,7 +47,7 @@ export const POST = async (request: NextRequest) => {
     });
 
     if (!existingUser || existingUser.password !== md5(oldPassword)) {
-      return NextResponse.json({ error: "Old password is incorrect" });
+      return NextResponse.json({ error: "Old password is incorrect" },{ status: 404 });
     }
 
     const encryptedPassword = md5(newPassword);
