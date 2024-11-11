@@ -2,28 +2,45 @@
 import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
-import { getApi } from "../../../functions/API";
+import { getApi, deleteApi } from "../../../functions/API";
 import toast from "react-hot-toast";
 
 const HubListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hubs, setHubs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  const fetchHubList = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getApi("/apis/admin/add-hub");
+      setHubs(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      toast(`${error.response.data.error.message}`);
+    }
+  };
+
   useEffect(() => {
-    const hubList = async () => {
-      try {
-        const response = await getApi("/apis/admin/add-hub");
-        console.log(response.data);
-        setHubs(response.data);
-      } catch (error) {
-        toast(`${error.response.data.error.message}`);
-      }
-    };
-    hubList();
+    fetchHubList();
   }, []);
+
+  const hubListDelete = async (hubId) => {
+    try {
+      await deleteApi(`/apis/admin/add-hub?id=${hubId}`);
+      toast.success("Hub deleted successfully");
+      fetchHubList(); // Refresh list after delete
+    } catch (error) {
+      toast(`${error.response.data.error.message}`);
+    }
+  };
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
+        {isLoading && (
+          <p className="text-center text-gray-500">Loading hubs...</p>
+        )}
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -104,7 +121,10 @@ const HubListTable = () => {
                         </defs>
                       </svg>
                     </button>
-                    <button className="hover:text-primary">
+                    <button
+                      className="hover:text-primary"
+                      onClick={() => hubListDelete(hub.id)}
+                    >
                       <svg
                         className="fill-current"
                         width="18"

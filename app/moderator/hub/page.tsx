@@ -1,6 +1,5 @@
 import React from "react";
 import AdminLayout from "../../components/Layouts/AdminLayout";
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import HubListTable from "../../components/Tables/HubListTable";
 import AddBreadcrumb from "../../components/Breadcrumbs/AddBreadcrumb";
 
