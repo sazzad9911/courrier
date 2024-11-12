@@ -80,15 +80,15 @@ const updateUserInformation = object({
 });
 const addHubSchema = object({
   name: string().required(),
-  phone: string().required(),
+  phone: string().required().max(11).min(11),
   address: string().required(),
 });
 
 const riderSchema = object({
   riderName: string().required().max(50),
-  riderNumber: string().required(),
+  riderNumber: string().required().max(11).min(11),
   riderNID: string().required(),
-  riderPassword: string().required(),
+  riderPassword: string().required("Password is required"),
   image: string().default(""),
 });
 

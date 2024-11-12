@@ -53,8 +53,7 @@ const EditHub = ({ params }) => {
       toast.success("Hub details updated successfully.");
       router.replace("/moderator/hub");
     } catch (error) {
-      console.error("Failed to update hub details:", error);
-      toast.error("Failed to update hub details.");
+      toast.error(`${error.response.data.error}`);
     }
   };
 

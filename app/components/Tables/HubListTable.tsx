@@ -18,7 +18,7 @@ const HubListTable = () => {
       setHubs(response.data);
       setIsLoading(false);
     } catch (error) {
-      toast(`${error.response.data.error.message}`);
+      toast(`${error.response.data.error}`);
     }
   };
 
@@ -32,7 +32,7 @@ const HubListTable = () => {
       toast.success("Hub deleted successfully");
       fetchHubList(); // Refresh list after delete
     } catch (error) {
-      toast(`${error.response.data.error.message}`);
+      toast(`${error.response.data.error}`);
     }
   };
   return (

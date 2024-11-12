@@ -42,8 +42,7 @@ export const PUT = async (request: NextRequest) => {
     });
     return NextResponse.json({ message: "hub Info update successfully done " });
   } catch (error) {
-    errorMessage(error);
-    return NextResponse.json({ error: "hub Info Update Fail" });
+    return errorMessage(error);
   }
 };
 
@@ -56,7 +55,6 @@ export const DELETE = async (request: NextRequest) => {
     });
     return NextResponse.json({ message: "Hub delete successful" });
   } catch (error) {
-    errorMessage(error);
-    return NextResponse.json({ error: "Delete Fail" });
+    return errorMessage(error);
   }
 };
