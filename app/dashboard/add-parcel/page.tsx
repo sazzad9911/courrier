@@ -2,10 +2,10 @@
 import { getApi } from "../../../functions/API";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
-import SelectGroupOne from "../../components/SelectGroup/SelectGroupOne";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import SelectForDistrict from "../../components/SelectGroup/SelectForDistrict";
+import SelectForHub from "../../components/SelectGroup/SelectForHub";
 const AddParcel = () => {
   const [districts, setDistricts] = useState<string[]>([]);
   const [thanaOfDistrict, setThanaOfDistrict] = useState<string[]>([]);
@@ -30,22 +30,22 @@ const AddParcel = () => {
   const [merchantThana, setMerchantThana] = useState<string>("");
   const [charge, setCharge] = useState<string>("60");
   const [isChargeConfirmed, setIsChargeConfirmed] = useState<boolean>(false);
-  const [hubId, setHubId] = useState<number | null>(null);
-  const [hubNames, setHubNames] = useState<number | null>(null);
+  const [hub, setHub] = useState(null);
+  const [hubNames, setHubNames] = useState<string[] | null>(null);
 
-  //   useEffect(() => {
-  //     const fetchHun = async () => {
-  //       try {
-  //         const response = await getApi("/apis/admin/add-hub");
-  //         setHubNames(response.data);
-  //       } catch (error) {
-  //         console.log(error.response.data.error);
-  //         toast.error(`${error.response.data.error}`);
-  //       }
-  //     };
+    useEffect(() => {
+      const fetchHub = async () => {
+        try {
+          const response = await getApi("/apis/user/all-hub");
+          setHubNames(response.data);
+        } catch (error) {
+          console.log(error.response.data.error);
+          toast.error(`${error.response.data.error}`);
+        }
+      };
 
-  //     fetchHun();
-  //   }, []);
+      fetchHub();
+    }, []);
   // console.log(hubNames);
 
   //fetch district
@@ -101,7 +101,7 @@ const AddParcel = () => {
     }
     const formData = {
       category,
-      hubId,
+      hubId:hub,
       serviceType,
       pickUpFrom,
       phoneNumber,
@@ -398,7 +398,12 @@ const AddParcel = () => {
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Select Hub <span className="text-meta-1">*</span>
                     </label>
-                    <SelectGroupOne />
+                    <SelectForHub
+                      label="Hub"
+                      selectedValue={hub?.name}
+                      onSelect={setHub}
+                      options={hubNames}
+                    />
                   </div>
                 )}
                 <hr className="mb-5 border-primary" />
