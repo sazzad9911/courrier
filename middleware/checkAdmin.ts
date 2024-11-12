@@ -27,6 +27,9 @@ const checkAdmin: MiddlewareFactory = (next) => {
                 }
                 const headers = new Headers(request.headers);
                 headers.set('ADMIN', JSON.stringify(decode));
+                headers.set("Access-Control-Allow-Origin", "*");
+                headers.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+                headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
                 return NextResponse.next({
                     request: {
                         headers: headers
