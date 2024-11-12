@@ -32,20 +32,21 @@ const AddParcel = () => {
   const [isChargeConfirmed, setIsChargeConfirmed] = useState<boolean>(false);
   const [hub, setHub] = useState(null);
   const [hubNames, setHubNames] = useState<string[] | null>(null);
+  // console.log(hub);
 
-    useEffect(() => {
-      const fetchHub = async () => {
-        try {
-          const response = await getApi("/apis/user/all-hub");
-          setHubNames(response.data);
-        } catch (error) {
-          console.log(error.response.data.error);
-          toast.error(`${error.response.data.error}`);
-        }
-      };
+  useEffect(() => {
+    const fetchHub = async () => {
+      try {
+        const response = await getApi("/apis/user/all-hub");
+        setHubNames(response.data);
+      } catch (error) {
+        console.log(error.response.data.error);
+        toast.error(`${error.response.data.error}`);
+      }
+    };
 
-      fetchHub();
-    }, []);
+    fetchHub();
+  }, []);
   // console.log(hubNames);
 
   //fetch district
@@ -101,7 +102,7 @@ const AddParcel = () => {
     }
     const formData = {
       category,
-      hubId:hub,
+      hubId: hub,
       serviceType,
       pickUpFrom,
       phoneNumber,
@@ -400,7 +401,6 @@ const AddParcel = () => {
                     </label>
                     <SelectForHub
                       label="Hub"
-                      selectedValue={hub?.name}
                       onSelect={setHub}
                       options={hubNames}
                     />

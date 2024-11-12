@@ -3,14 +3,12 @@ import React from "react";
 
 interface SelectGroupOneProps {
   label: string;
-  selectedValue: string;
   onSelect: (value) => void;
   options: string[];
 }
 
 const SelectForHub: React.FC<SelectGroupOneProps> = ({
   label,
-  selectedValue,
   onSelect,
   options,
 }) => {
@@ -22,14 +20,13 @@ const SelectForHub: React.FC<SelectGroupOneProps> = ({
       
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
-          value={selectedValue}
           onChange={(e) => onSelect(e.target.value)}
           className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         >
-          <option value="" disabled>
+          <option>
             Select your {label.toLowerCase()}
           </option>
-          {options.map((option) => (
+          {options?.map((option) => (
             <option key={option?.id} value={option?.id}>
               {option?.name}
             </option>
