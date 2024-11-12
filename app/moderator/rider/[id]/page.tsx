@@ -1,7 +1,36 @@
+"use client";
+import { useEffect, useState } from "react";
 import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 import AdminLayout from "../../../components/Layouts/AdminLayout";
+import { getApi } from "../../../../functions/API";
+import toast from "react-hot-toast";
 
-const Edit = () => {
+const Edit = ({ params }) => {
+  const { id } = params;
+  const [formData, setFormData] = useState({
+    riderName: "",
+    riderNumber: "",
+    riderNid: "",
+  });
+
+  useEffect(() => {
+    const fetchRiderDetails = async () => {
+      try {
+        const response = await getApi(`/apis/admin/get-single-rider?id=${id}`);
+        const { name, phone, nid } = response.data;
+        setFormData({
+          riderName: name || "",
+          riderNumber: phone || "",
+          riderNid: nid || "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch hub details:", error);
+        toast.error("Unable to fetch hub details.");
+      }
+    };
+    fetchRiderDetails();
+  }, []);
+
   return (
     <AdminLayout>
       <Breadcrumb pageName="Edit Rider" />
@@ -26,6 +55,10 @@ const Edit = () => {
                       type="text"
                       placeholder="Enter your hub name"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      value={formData.riderName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, riderName: e.target.value })
+                      }
                     />
                   </div>
 
@@ -37,6 +70,13 @@ const Edit = () => {
                       type="text"
                       placeholder="Enter your hub number"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      value={formData.riderNumber}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          riderNumber: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -50,6 +90,10 @@ const Edit = () => {
                       type="text"
                       placeholder="Enter your hub name"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      value={formData.riderNid}
+                      onChange={(e) =>
+                        setFormData({ ...formData, riderNid: e.target.value })
+                      }
                     />
                   </div>
 
@@ -64,7 +108,7 @@ const Edit = () => {
                     />
                   </div>
                 </div>
-                
+
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-black hover:bg-opacity-90">
                   Submit
                 </button>

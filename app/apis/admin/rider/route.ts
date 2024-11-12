@@ -27,7 +27,7 @@ export const POST = async (request: NextRequest) => {
         phone: data.riderNumber,
         nid: data.riderNID,
         password: hassPassword,
-        image: data.image
+        image: data.image,
       },
     });
     return NextResponse.json({
@@ -41,8 +41,16 @@ export const POST = async (request: NextRequest) => {
 
 export const GET = async () => {
   try {
-    const allRider = await prisma.rider.findMany({});
-    return NextResponse.json({ allRider });
+    const allRider = await prisma.rider.findMany({
+      select: {
+        id: true,
+        name: true,
+        nid: true,
+        phone: true,
+        image: true,
+      },
+    });
+    return NextResponse.json(allRider);
   } catch (error) {
     errorMessage(error);
     return NextResponse.json({ error: "Rider account Getting  Error" });
@@ -75,12 +83,32 @@ export const DELETE = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const riderId = searchParams.get("id");
-    await prisma.rider.delete({
-      where: { id: riderId },
+
+    if (!riderId) {
+      return NextResponse.json(
+        { error: "Rider ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // Use a transaction to delete associated FraudReports first, then the Rider
+    await prisma.$transaction([
+      prisma.fraudReport.deleteMany({
+        where: { riderId: riderId },
+      }),
+      prisma.rider.delete({
+        where: { id: riderId },
+      }),
+    ]);
+
+    return NextResponse.json({
+      message: "Rider info and related FraudReports deleted successfully",
     });
-    return NextResponse.json({ message: "Rider info Delete successful" });
   } catch (error) {
-    errorMessage(error);
-    return NextResponse.json({ error: "Rider info Delete Error" });
+    console.error("Rider info Delete Error:", error);
+    return NextResponse.json(
+      { error: "Rider info Delete Error" },
+      { status: 500 }
+    );
   }
 };

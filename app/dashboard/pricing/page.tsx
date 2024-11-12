@@ -97,7 +97,7 @@ export default function Pricing() {
                     label="Category"
                     selectedValue={category}
                     onSelect={setCategory}
-                    options={["Regular", "Express"]}
+                    options={["Regular", "Express", "Pick and Drop"]}
                   />
                   <SelectForPricing
                     label="Service Type"

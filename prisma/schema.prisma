@@ -69,6 +69,7 @@ model Pricing {
   weight                 Float  @default(20)
   regular                Float  @default(10)
   express                Float  @default(20)
+  pickAnddrop            Float  @default(15)
   homeDelivery           Float  @default(30)
   pointDelivery          Float  @default(20)
   pickUpHome             Float  @default(10)

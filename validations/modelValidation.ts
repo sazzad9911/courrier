@@ -16,13 +16,13 @@ const userSchema = object({
 const addParcelSchema = object({
   category: string()
     .required("Category is required")
-    .oneOf(["regular", "express", "pick&drop"], "Invalid type category"),
+    .oneOf(["Regular", "Express", "pick&drop"], "Invalid type category"),
   serviceType: string()
-    .oneOf(["home", "point"], "Invalid type serviceType")
+    .oneOf(["Home Delivery", "Point Delivery"], "Invalid type serviceType")
     .required("Service type is required"),
   pickUpFrom: string()
     .required("Pick-up location is required")
-    .oneOf(["home", "hub"], "Invalid type pickUpFrom"),
+    .oneOf(["Home", "Hub"], "Invalid type pickUpFrom"),
   phoneNumber: string()
     .typeError("Phone number must be a number")
     .required("Phone number is required"),

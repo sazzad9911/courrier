@@ -6,6 +6,7 @@ import prisma from "../../../../libs/prisma";
 interface CategoryPrice {
   regular: number;
   express: number;
+  pickAnddrop: number;
 }
 interface ServiceTypePrice {
   homeDelivery: number;
@@ -36,8 +37,10 @@ export const POST = async (request: NextRequest) => {
       await Promise.all([
         (data.category === "Regular"
           ? prisma.pricing.findFirst({ select: { regular: true } })
+          : data.category === "Express"
+          ? prisma.pricing.findFirst({ select: { express: true } })
           : prisma.pricing.findFirst({
-              select: { express: true },
+              select: { pickAnddrop: true },
             })) as Promise<CategoryPrice>,
         (data.serviceType === "Home Delivery"
           ? prisma.pricing.findFirst({ select: { homeDelivery: true } })
@@ -57,16 +60,20 @@ export const POST = async (request: NextRequest) => {
     const categoryPrice =
       data.category === "Regular"
         ? categoryPriceData?.regular
-        : categoryPriceData?.express;
+        : data.category === "Express"
+        ? categoryPriceData?.express
+        : categoryPriceData?.pickAnddrop;
+
     const serviceTypePrice =
       data.serviceType === "Home Delivery"
         ? serviceTypePriceData?.homeDelivery
         : serviceTypePriceData?.pointDelivery;
+
     const pickUpPrice =
       data.pickUp === "Home" ? picUpData?.pickUpHome : picUpData?.pickUpHub;
 
     const multipliedWeight = data.weight * (weightData?.weight || 1);
-    // console.log(locationPrice, categoryPrice, serviceTypePrice);
+
     const total =
       (locationPrice || 0) +
       (categoryPrice || 0) +
@@ -76,6 +83,16 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json(total);
   } catch (error) {
+    console.log(error);
     return errorMessage(error);
+  }
+};
+
+export const GET = async () => {
+  try {
+    const price = await prisma.pricing.findFirst({});
+    return NextResponse.json(price);
+  } catch (error) {
+    errorMessage(error);
   }
 };

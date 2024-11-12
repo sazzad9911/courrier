@@ -1,43 +1,47 @@
 "use client";
-import { useRef, useState } from "react";
-import { Package } from "../../types/package";
+import { useEffect, useRef, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-
-const packageData: Package[] = [
-  {
-    name: "Free package",
-    price: 0.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Business Package",
-    price: 99.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Unpaid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Pending",
-  },
-];
+import { deleteApi, getApi } from "../../../functions/API";
+import toast from "react-hot-toast";
 
 const RiderListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [riders, setRiders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const fetchRiderList = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getApi("/apis/admin/rider");
+      console.log(response);
+      setRiders(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      toast(`${error.response.data.error.message}`);
+    }
+  };
+  useEffect(() => {
+    fetchRiderList();
+  }, []);
+  const riderDelete = async (riderId) => {
+    try {
+      const response = await deleteApi(`/apis/admin/rider?id=${riderId}`);
+      console.log(response);
+      toast.success("Rider deleted successfully");
+      fetchRiderList();
+    } catch (error) {
+      toast(`${error.response.data.error.message}`);
+    }
+  };
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
+        {isLoading && (
+          <p className="text-center text-gray-500">Loading Riders...</p>
+        )}
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -59,10 +63,12 @@ const RiderListTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem, key) => (
+            {riders.map((rider, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">01</h5>
+                  <h5 className="font-medium text-black dark:text-white">
+                    {key + 1}{" "}
+                  </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 flex items-center gap-4  dark:border-strokedark xl:pl-11">
                   <Image
@@ -72,24 +78,24 @@ const RiderListTable = () => {
                     src={"/images/user/user.png"}
                   />
                   <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.name}
+                    {rider.name}
                   </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.invoiceDate}
-                  </p>
+                  <p className="text-black dark:text-white">{rider.nid}</p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.name}
+                    {rider.phone}
                   </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
                     <ImageUpload />
                     <button
-                      onClick={() => router.push("/moderator/rider/54352")}
+                      onClick={() =>
+                        router.push(`/moderator/rider/${rider.id}`)
+                      }
                       className="hover:text-primary"
                     >
                       <svg
@@ -125,7 +131,10 @@ const RiderListTable = () => {
                         </defs>
                       </svg>
                     </button>
-                    <button className="hover:text-primary">
+                    <button
+                      className="hover:text-primary"
+                      onClick={() => riderDelete(rider.id)}
+                    >
                       <svg
                         className="fill-current"
                         width="18"
@@ -170,7 +179,6 @@ const RiderListTable = () => {
 
 export default RiderListTable;
 
-
 const ImageUpload = () => {
   const ref = useRef<HTMLInputElement>(null);
 
@@ -213,4 +221,3 @@ const ImageUpload = () => {
     </div>
   );
 };
-
