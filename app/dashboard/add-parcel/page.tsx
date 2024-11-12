@@ -190,7 +190,7 @@ const AddParcel = () => {
                   <div
                     onClick={() => setCategory("Regular")}
                     className={`${
-                      category === "regular" ? "bg-primary" : "bg-[#D9D9D9]"
+                      category === "Regular" ? "bg-primary" : "bg-[#D9D9D9]"
                     } hover:bg-yellow-100 w-[120px] rounded-md p-3 cursor-pointer`}
                   >
                     <div className="w-8 h-8 bg-black rounded-full flex justify-center items-center mx-auto ">
@@ -237,7 +237,7 @@ const AddParcel = () => {
                   <div
                     onClick={() => setCategory("Express")}
                     className={`${
-                      category === "express" ? "bg-primary" : "bg-[#D9D9D9]"
+                      category === "Express" ? "bg-primary" : "bg-[#D9D9D9]"
                     } hover:bg-yellow-100 w-[120px] rounded-md p-3 cursor-pointer`}
                   >
                     <div className="w-8 h-8 bg-black rounded-full flex justify-center items-center mx-auto ">
