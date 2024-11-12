@@ -20,14 +20,17 @@ const SelectForHub: React.FC<SelectGroupOneProps> = ({
       
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
-          onChange={(e) => onSelect(e.target.value)}
+          onChange={(e) => {
+            const selectedValue = e.target.value ? JSON.parse(e.target.value) : null;
+            onSelect(selectedValue);
+          }}
           className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         >
           <option>
             Select your {label.toLowerCase()}
           </option>
           {options?.map((option) => (
-            <option key={option?.id} value={option?.id}>
+            <option key={option?.id} value={JSON.stringify(option)}>
               {option?.name}
             </option>
           ))}

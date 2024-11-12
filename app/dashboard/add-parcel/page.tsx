@@ -1,5 +1,5 @@
 "use client";
-import { getApi } from "../../../functions/API";
+import { getApi, postApi } from "../../../functions/API";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import { useEffect, useState } from "react";
@@ -13,8 +13,8 @@ const AddParcel = () => {
     string[]
   >([]);
   const [category, setCategory] = useState<string>("");
-  const [serviceType, setServiceType] = useState<string>("home");
-  const [pickUpFrom, setPickUpFrom] = useState<string>("home");
+  const [serviceType, setServiceType] = useState<string>("Home Delivery");
+  const [pickUpFrom, setPickUpFrom] = useState<string>("Home");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [amount, setAmount] = useState<number | undefined>();
   const [name, setName] = useState<string>("");
@@ -28,11 +28,48 @@ const AddParcel = () => {
   const [merchantAddress, setMerchantAddress] = useState<string>("");
   const [merchantDistrict, setMerchantDistrict] = useState<string>("");
   const [merchantThana, setMerchantThana] = useState<string>("");
-  const [charge, setCharge] = useState<string>("60");
+  const [charge, setCharge] = useState<string | null>("");
   const [isChargeConfirmed, setIsChargeConfirmed] = useState<boolean>(false);
   const [hub, setHub] = useState(null);
   const [hubNames, setHubNames] = useState<string[] | null>(null);
   // console.log(hub);
+
+  //pricing
+  useEffect(() => {
+    const fetchPriching = async () => {
+      if (!category || !serviceType || !district || !pickUpFrom) {
+        return;
+      }
+
+      const data = {
+        from: merchantDistrict || hub.name,
+        to: district,
+        category,
+        serviceType,
+        weight: weight || null,
+        pickUp: pickUpFrom,
+      };
+      try {
+        const response = await postApi("/apis/user/pricing", data);
+
+        setCharge(response.data);
+        // console.log("API Response:", response);
+        // Display response in UI if needed
+      } catch (error) {
+        toast.error(`${error.response.data.error}`);
+      }
+    };
+
+    fetchPriching();
+  }, [
+    category,
+    serviceType,
+    district,
+    pickUpFrom,
+    hub,
+    merchantDistrict,
+    weight,
+  ]);
 
   useEffect(() => {
     const fetchHub = async () => {
@@ -100,9 +137,10 @@ const AddParcel = () => {
       alert("Please confirm the delivery charge before submitting.");
       return; // Prevent form submission
     }
+
     const formData = {
       category,
-      hubId: hub,
+      hubId: hub?.id,
       serviceType,
       pickUpFrom,
       phoneNumber,
@@ -120,8 +158,18 @@ const AddParcel = () => {
       merchantThana,
       charge,
     };
-
-    console.log(formData);
+    const myPromise = () => {
+      return postApi("/apis/user/add-parcel", formData);
+    };
+    toast.promise(myPromise(), {
+      loading: "Please wait...",
+      success: () => {
+        return "Parcel added successful";
+      },
+      error: () => {
+        return "Somthing went worng!";
+      },
+    });
   };
 
   return (
@@ -140,7 +188,7 @@ const AddParcel = () => {
               <div className="p-6.5">
                 <div className="flex gap-4 my-5">
                   <div
-                    onClick={() => setCategory("regular")}
+                    onClick={() => setCategory("Regular")}
                     className={`${
                       category === "regular" ? "bg-primary" : "bg-[#D9D9D9]"
                     } hover:bg-yellow-100 w-[120px] rounded-md p-3 cursor-pointer`}
@@ -187,7 +235,7 @@ const AddParcel = () => {
                     <p className="text-center">24H</p>
                   </div>
                   <div
-                    onClick={() => setCategory("express")}
+                    onClick={() => setCategory("Express")}
                     className={`${
                       category === "express" ? "bg-primary" : "bg-[#D9D9D9]"
                     } hover:bg-yellow-100 w-[120px] rounded-md p-3 cursor-pointer`}
@@ -288,7 +336,7 @@ const AddParcel = () => {
                       type="radio"
                       id="serviceType"
                       name="serviceType"
-                      value="home"
+                      value="Home Delivery"
                       defaultChecked
                     />
                     <label className="ml-2" htmlFor="serviceType">
@@ -301,7 +349,7 @@ const AddParcel = () => {
                       type="radio"
                       id="serviceType"
                       name="serviceType"
-                      value="point"
+                      value="Point Delivery"
                     />
                     <label className="ml-2" htmlFor="serviceType">
                       Point Delivery
@@ -318,7 +366,7 @@ const AddParcel = () => {
                       type="radio"
                       id="html"
                       name="fav_language"
-                      value="home"
+                      value="Home"
                       defaultChecked
                     />
                     <label className="ml-2" htmlFor="html">
@@ -331,14 +379,14 @@ const AddParcel = () => {
                       type="radio"
                       id="html"
                       name="fav_language"
-                      value="hub"
+                      value="Hub"
                     />
                     <label className="ml-2" htmlFor="html">
                       Hub
                     </label>
                   </div>
                 </div>
-                {pickUpFrom === "home" ? (
+                {pickUpFrom === "Home" ? (
                   <div>
                     <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                       <div className="w-full xl:w-1/2">
@@ -532,7 +580,11 @@ const AddParcel = () => {
                 </div>
 
                 <label className="container-checkbox">
-                  Delivery charge 60 BDT. Want to confirm?
+                  Delivery charge{" "}
+                  <span className="text-red-500">
+                    {charge ? charge : "Calculating.."}
+                  </span>{" "}
+                  BDT. Want to confirm?
                   <input
                     type="checkbox"
                     onChange={(e) => setIsChargeConfirmed(e.target.checked)}
