@@ -27,13 +27,16 @@ export async function POST(req: NextRequest) {
             const mimeType = imageFile.type;
             const base64String = buffer.toString("base64");
             dataUri = `data:${mimeType};base64,${base64String}`;
-        }else{
-            dataUri=formDataUri;
+        } else {
+            dataUri = formDataUri;
         }
 
 
         const result = await cloudinary.uploader.upload(dataUri, {
             public_id: "user_" + user.id,
+            transformation: [
+                { width: 500, height: 500, crop: "fill" } // This crops and resizes to a 500x500 square
+            ],
         });
 
 
