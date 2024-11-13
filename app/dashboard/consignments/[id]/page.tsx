@@ -19,7 +19,7 @@ import Link from "next/link";
 export default function Parcel() {
   const { id } = useParams();
   const [data, setData] = useState();
-  console.log(data);
+  // console.log(data);
   useEffect(() => {
     const fetchPackageData = async () => {
       try {

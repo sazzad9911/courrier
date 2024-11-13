@@ -4,20 +4,20 @@ import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getApi } from "../../../functions/API";
+import Loader from "../common/Loader";
 // import { getApi } from "../../../functions/API";
 
 const ConsignmentTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
   const [packageData, addPackageData] = useState(null);
-const [total,setTotal]=useState()
+  const [total, setTotal] = useState();
   useEffect(() => {
     const fetchPackageData = async () => {
       try {
         const response = await getApi("/apis/user/add-parcel");
         addPackageData(response.data.result);
-        setTotal(response.data.total)
-        
+        setTotal(response.data.total);
       } catch (error) {
         console.log(error.response.data.error);
         toast.error(`${error.response.data.error}`);
@@ -26,6 +26,13 @@ const [total,setTotal]=useState()
 
     fetchPackageData();
   }, []);
+
+  if (!packageData) {
+    return <Loader></Loader>
+  }
+  if(packageData?.length<=0 ){
+    return <p className="text-center my-6">No data found</p>
+  }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
@@ -86,7 +93,9 @@ const [total,setTotal]=useState()
                   <div className="flex items-center space-x-3.5">
                     <button
                       onClick={() =>
-                        router.push(`/dashboard/consignments/${packageItem.trackingId}`)
+                        router.push(
+                          `/dashboard/consignments/${packageItem.trackingId}`
+                        )
                       }
                       className="hover:text-primary"
                     >
