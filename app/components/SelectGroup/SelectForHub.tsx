@@ -4,7 +4,7 @@ import React from "react";
 interface SelectGroupOneProps {
   label: string;
   onSelect: (value) => void;
-  options: string[];
+  options: any[];
 }
 
 const SelectForHub: React.FC<SelectGroupOneProps> = ({
