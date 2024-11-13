@@ -14,6 +14,7 @@ import Image from "next/image";
 import { LuPackageOpen } from "react-icons/lu";
 import { getApi } from "../../../../functions/API";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function Parcel() {
   const { id } = useParams();
@@ -58,9 +59,9 @@ export default function Parcel() {
                 Status:{" "}
                 <span className="font-thin text-yellow-600">{data?.status}</span>
               </p>
-              <button className="bg-green-600 text-white px-3 py-1 rounded-sm my-3">
+              <Link href='/pages/track-parcel' className="bg-green-600 text-white px-3 py-1 rounded-sm my-3">
                 Track Now
-              </button>
+              </Link >
             </div>
             <div>
               <h3 className="font-medium text-black dark:text-white">
