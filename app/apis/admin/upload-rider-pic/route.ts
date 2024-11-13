@@ -16,6 +16,9 @@ const handler = async (request: NextRequest) => {
     const dataUri = `data:${mimeType};base64,${base64String}`;
     const result = await cloudinary.uploader.upload(dataUri, {
       public_id: image.name,
+      transformation: [
+        { width: 500, height: 500, crop: "fill" } // This crops and resizes to a 500x500 square
+      ],
     });
 
     const userRes = await prisma.rider.update({
