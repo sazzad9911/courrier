@@ -37,8 +37,7 @@ const AddHub = () => {
       toast.success("Hub details added successfully");
       router.replace("/moderator/hub"); // Navigate to the hub list page
     } catch (error) {
-      console.error("Failed to add hub details:", error);
-      toast.error("Failed to add hub details");
+      toast.error(`${error.response.data.error}`);
     }
   };
 

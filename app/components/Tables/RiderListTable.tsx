@@ -32,7 +32,7 @@ const RiderListTable = () => {
       toast.success("Rider deleted successfully");
       fetchRiderList();
     } catch (error) {
-      toast(`${error.response.data.error.message}`);
+      toast(`${error.response.data.error}`);
     }
   };
 
@@ -71,12 +71,30 @@ const RiderListTable = () => {
                   </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 flex items-center gap-4  dark:border-strokedark xl:pl-11">
-                  <Image
-                    height={50}
-                    width={50}
-                    alt="profile"
-                    src={"/images/user/user.png"}
-                  />
+                  {rider.image ? (
+                    <Image
+                      src={rider.image}
+                      width={60}
+                      height={60}
+                      className="rounded-full"
+                      style={{
+                        width: "auto",
+                        height: "auto",
+                      }}
+                      alt="profile"
+                    />
+                  ) : (
+                    <Image
+                      src={"/images/user/user.png"}
+                      width={50}
+                      height={50}
+                      style={{
+                        width: "auto",
+                        height: "auto",
+                      }}
+                      alt="profile"
+                    />
+                  )}
                   <h5 className="font-medium text-black dark:text-white">
                     {rider.name}
                   </h5>

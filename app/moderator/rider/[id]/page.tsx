@@ -2,15 +2,18 @@
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 import AdminLayout from "../../../components/Layouts/AdminLayout";
-import { getApi } from "../../../../functions/API";
+import { getApi, putApi } from "../../../../functions/API";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Edit = ({ params }) => {
+  const router = useRouter();
   const { id } = params;
   const [formData, setFormData] = useState({
     riderName: "",
     riderNumber: "",
     riderNid: "",
+    riderPassword: "",
   });
 
   useEffect(() => {
@@ -22,6 +25,7 @@ const Edit = ({ params }) => {
           riderName: name || "",
           riderNumber: phone || "",
           riderNid: nid || "",
+          riderPassword: "",
         });
       } catch (error) {
         console.error("Failed to fetch hub details:", error);
@@ -30,6 +34,21 @@ const Edit = ({ params }) => {
     };
     fetchRiderDetails();
   }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await putApi(`/apis/admin/rider?id=${id}`, {
+        riderName: formData.riderName,
+        riderNID: formData.riderNid,
+        riderNumber: formData.riderNumber,
+        riderPassword: formData.riderPassword,
+      });
+      toast.success("Rider info updated successfully");
+      router.replace("/moderator/rider");
+    } catch (error) {
+      toast(`${error.response.data.error}`);
+    }
+  };
 
   return (
     <AdminLayout>
@@ -44,7 +63,7 @@ const Edit = ({ params }) => {
                 Rider Form
               </h3>
             </div>
-            <form action="#">
+            <form onSubmit={handleSubmit}>
               <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
@@ -105,6 +124,13 @@ const Edit = ({ params }) => {
                       type="password"
                       placeholder="Enter your hub number"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      value={formData.riderPassword}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          riderPassword: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>

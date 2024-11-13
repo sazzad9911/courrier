@@ -6,20 +6,7 @@ import errorMessage from "../../../../validations/errorMessage";
 export const POST = async (request: NextRequest) => {
   try {
     const data = await riderSchema.validate(await request.json());
-    // const token = request.headers.get("ADMIN") as string;
-    // const user = JSON.parse(token) as { id: string; phone: string };
 
-    // Check if user exists and is an admin
-    // const adminUser = await prisma.users.findFirst({ where: { id: user.id } });
-    // if (!adminUser || !adminUser.isAdmin) {
-    //   return NextResponse.json(
-    //     {
-    //       error:
-    //         "Unauthorized: You don't have permission to create Rider account",
-    //     },
-    //     { status: 403 }
-    //   );
-    // }
     const hassPassword = md5(data.riderPassword);
     await prisma.rider.create({
       data: {
@@ -34,8 +21,7 @@ export const POST = async (request: NextRequest) => {
       message: "Rider account creation successfully done",
     });
   } catch (error) {
-    errorMessage(error);
-    return NextResponse.json({ error: "Rider account creation Error" });
+    return errorMessage(error);
   }
 };
 
@@ -52,8 +38,7 @@ export const GET = async () => {
     });
     return NextResponse.json(allRider);
   } catch (error) {
-    errorMessage(error);
-    return NextResponse.json({ error: "Rider account Getting  Error" });
+    return errorMessage(error);
   }
 };
 
@@ -74,8 +59,7 @@ export const PUT = async (request: NextRequest) => {
     });
     return NextResponse.json({ message: "Rider info update success!" });
   } catch (error) {
-    errorMessage(error);
-    return NextResponse.json({ error: "Rider Info update Fail" });
+    return errorMessage(error);
   }
 };
 
@@ -105,10 +89,6 @@ export const DELETE = async (request: NextRequest) => {
       message: "Rider info and related FraudReports deleted successfully",
     });
   } catch (error) {
-    console.error("Rider info Delete Error:", error);
-    return NextResponse.json(
-      { error: "Rider info Delete Error" },
-      { status: 500 }
-    );
+    return errorMessage(error);
   }
 };

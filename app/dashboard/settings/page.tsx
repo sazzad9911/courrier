@@ -18,6 +18,7 @@ const Settings = () => {
     return postApi("/apis/user/upload-picture", form);
   };
   const handleChangeImage = (file: File) => {
+    
     toast.promise(myPromise(file), {
       loading: "Please wait...",
       success: (res) => {
@@ -289,7 +290,9 @@ const Settings = () => {
                   >
                     <input
                       onChange={(e) => {
+                        console.log(e.target.files[0])
                         setImage(e.target.files[0]);
+                        
                       }}
                       type="file"
                       accept="image/*"
