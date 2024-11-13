@@ -2,46 +2,30 @@
 import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
-import { Package } from "../../types/package";
+import toast from "react-hot-toast";
+import { getApi } from "../../../functions/API";
 // import { getApi } from "../../../functions/API";
-const packageData: Package[] = [
-  {
-    name: "Free package",
-    price: 0.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Business Package",
-    price: 99.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Unpaid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Pending",
-  },
-];
+
 const ConsignmentTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
-  // const [packageData, addPackageData] = useState(null);
-  
-  // useEffect(() => {
-  //   getApi("http://localhost:3000/apis/user/add-parcel?take&skip")
-  //     .then((res) => {
-  //       addPackageData(res.data)
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
+  const [packageData, addPackageData] = useState(null);
+const [total,setTotal]=useState()
+  useEffect(() => {
+    const fetchPackageData = async () => {
+      try {
+        const response = await getApi("/apis/user/add-parcel");
+        addPackageData(response.data.result);
+        setTotal(response.data.total)
+        
+      } catch (error) {
+        console.log(error.response.data.error);
+        toast.error(`${error.response.data.error}`);
+      }
+    };
+
+    fetchPackageData();
+  }, []);
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
@@ -72,17 +56,17 @@ const ConsignmentTable = () => {
                   <h5 className="font-medium text-black dark:text-white">
                     {packageItem.name}
                   </h5>
-                  <p className="text-sm">${packageItem.price}</p>
+                  <p className="text-sm">{packageItem.amount} TK</p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.name}
+                    {packageItem.trackingId}
                   </h5>
-                  <p className="text-sm">${packageItem.price}</p>
+                  <p className="text-sm">{packageItem.charge} TK</p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <p className="text-black dark:text-white">
-                    {packageItem.invoiceDate}
+                    {new Date(packageItem.date).toDateString()}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
@@ -102,7 +86,7 @@ const ConsignmentTable = () => {
                   <div className="flex items-center space-x-3.5">
                     <button
                       onClick={() =>
-                        router.push("/dashboard/consignments/54352")
+                        router.push(`/dashboard/consignments/${packageItem.trackingId}`)
                       }
                       className="hover:text-primary"
                     >
@@ -159,7 +143,7 @@ const ConsignmentTable = () => {
         </table>
       </div>
       <ResponsivePagination
-        total={5}
+        total={total}
         current={currentPage}
         onPageChange={setCurrentPage}
       />
