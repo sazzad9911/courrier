@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Package } from "../../types/package";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
+import Modal from "../Modals";
+import SelectGroupOne from "../SelectGroup/SelectGroupOne";
 
 const packageData: Package[] = [
   {
@@ -35,6 +37,7 @@ const PickUpTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
   const [sort, setSort] = useState("all");
+  const [isModalOpen, setModalOpen] = useState(false);
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -120,7 +123,10 @@ const PickUpTable = () => {
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary flex items-center gap-1">
+                    <button
+                      onClick={() => setModalOpen(true)}
+                      className="hover:text-primary flex items-center gap-1"
+                    >
                       <svg
                         width="19"
                         height="19"
@@ -157,6 +163,16 @@ const PickUpTable = () => {
         current={currentPage}
         onPageChange={setCurrentPage}
       />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Select Rider"
+        onAction={() => {}}
+      >
+        <div className="mt-5">
+          <SelectGroupOne />
+        </div>
+      </Modal>
     </div>
   );
 };
