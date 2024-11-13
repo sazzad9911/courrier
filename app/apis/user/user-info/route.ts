@@ -12,7 +12,7 @@ export const POST = async (request: NextRequest) => {
     if (!user) {
       return NextResponse.json({ error: "User not authenticated" });
     }
-    const updateInfo = await prisma.users.update({
+    await prisma.users.update({
       data: {
         name: data.name,
         phone: data.number,
@@ -23,7 +23,7 @@ export const POST = async (request: NextRequest) => {
         id: user.id,
       },
     });
-    return NextResponse.json({ updateInfo });
+    return NextResponse.json({ message: "Update info successful" });
   } catch (error) {
     return errorMessage(error);
   }
