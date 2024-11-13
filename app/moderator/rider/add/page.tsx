@@ -18,13 +18,12 @@ const Add = () => {
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
     try {
-      const res = await postApi("/apis/admin/rider", {
+      await postApi("/apis/admin/rider", {
         riderName: formData.riderName,
         riderNID: formData.riderNid,
         riderNumber: formData.riderNumber,
         riderPassword: formData.riderPassword,
       });
-      console.log(res);
       toast.success("Rider account creation successful");
       router.replace("/moderator/rider");
     } catch (error) {

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { deleteApi, getApi } from "../../../functions/API";
+import { deleteApi, getApi, postApi } from "../../../functions/API";
 import toast from "react-hot-toast";
 
 const RiderListTable = () => {
@@ -15,7 +15,6 @@ const RiderListTable = () => {
     try {
       setIsLoading(true);
       const response = await getApi("/apis/admin/rider");
-      console.log(response);
       setRiders(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -109,7 +108,10 @@ const RiderListTable = () => {
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <ImageUpload />
+                    <ImageUpload
+                      riderId={rider.id}
+                      fetchRiderList={fetchRiderList}
+                    />
                     <button
                       onClick={() =>
                         router.push(`/moderator/rider/${rider.id}`)
@@ -197,11 +199,28 @@ const RiderListTable = () => {
 
 export default RiderListTable;
 
-const ImageUpload = () => {
+const ImageUpload = ({ riderId, fetchRiderList }) => {
   const ref = useRef<HTMLInputElement>(null);
-
-  const handleClick = () => {
+  const handle = () => {
     ref.current?.click();
+  };
+  const myPromise = (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    return postApi(`/apis/admin/upload-rider-pic?id=${riderId}`, formData);
+  };
+
+  const handleImage = (file) => {
+    toast.promise(myPromise(file), {
+      loading: "Please wait...",
+      success: () => {
+        fetchRiderList();
+        return "Image uploaded successfully";
+      },
+      error: (err) => {
+        return err.response?.data?.error || "Image upload failed";
+      },
+    });
   };
 
   return (
@@ -212,8 +231,9 @@ const ImageUpload = () => {
         accept="image/*"
         className="w-0 h-0"
         style={{ display: "none" }} // Ensures input is hidden
+        onChange={(e) => handleImage(e.target.files[0])}
       />
-      <button onClick={handleClick} className="hover:text-primary">
+      <button onClick={handle} className="hover:text-primary">
         <svg
           width="18"
           height="18"

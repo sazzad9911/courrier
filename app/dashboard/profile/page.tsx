@@ -19,7 +19,7 @@ const Profile = () => {
   const handleChangeImage = (file: File) => {
     toast.promise(myPromise(file), {
       loading: "Please wait...",
-      success: (res) => {
+      success: () => {
         reloadAuth();
         return "Upload successful";
       },
