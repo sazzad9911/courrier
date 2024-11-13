@@ -1,6 +1,10 @@
-import React from "react";
+'use client'
+import React, { useContext } from "react";
 import { FaPeopleCarry, FaChild, FaGlobeEurope } from "react-icons/fa";
+import { LanguageContext } from "../Providers/LanguageProvider";
+
 const ReportCards = () => {
+  const { language } = useContext(LanguageContext);
   return (
     <section className="mt-14 md:mt-20 lg:mt-30 xl:mt-40 2xl:mt-80 3xl:mt-[420px] py-10">
       <div className="container mx-auto px-4 md:px-8">
@@ -12,7 +16,7 @@ const ReportCards = () => {
               300K+
             </div>
             <div className="text-sm lg:text-base text-black">
-              Register Merchant
+              {language === 'en' ? 'Register Merchant' : 'নিবন্ধিত বিক্রেতা'}
             </div>
           </div>
 
@@ -22,7 +26,9 @@ const ReportCards = () => {
             <div className="text-xl lg:text-4xl font-bold text-green-600 mb-2">
               10K+
             </div>
-            <div className="text-sm lg:text-base text-black">Delivery Man</div>
+            <div className="text-sm lg:text-base text-black">
+              {language === 'en' ? 'Delivery Man' : 'ডেলিভারি কর্মী'}
+            </div>
           </div>
 
           {/* Card 3 */}
@@ -32,7 +38,7 @@ const ReportCards = () => {
               300+
             </div>
             <div className="text-sm lg:text-base text-black">
-              Delivery Point
+              {language === 'en' ? 'Delivery Point' : 'ডেলিভারি পয়েন্ট'}
             </div>
           </div>
         </div>

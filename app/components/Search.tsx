@@ -1,9 +1,10 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { LanguageContext } from './Providers/LanguageProvider';
 
 export default function Search() {
     const [trackingCode, setTrackingCode] = useState("");
-
+    const { language } = useContext(LanguageContext);
     const handleSearch = () => {
       if (trackingCode.trim() === "") {
         alert("Please enter a tracking code");
@@ -18,7 +19,7 @@ export default function Search() {
           {/* Input Field */}
           <input
             type="text"
-            placeholder="Enter your tracking code"
+            placeholder={language === 'en' ? "Enter your tracking code" : 'ট্র্যাকিং কোড দিন'}
             value={trackingCode}
             onChange={(e) => setTrackingCode(e.target.value)}
             className="w-full py-2 md:py-3 px-4 text-base rounded-full border border-green-400 focus:outline-none focus:ring-1 focus:ring-green-500"
