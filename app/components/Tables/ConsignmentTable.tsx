@@ -10,14 +10,14 @@ import Loader from "../common/Loader";
 const ConsignmentTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
-  const [packageData, addPackageData] = useState(null);
-  const [total, setTotal] = useState();
+  const [packageData, addPackageData] = useState([]);
+  const itemsPerPage = 10;
+
   useEffect(() => {
     const fetchPackageData = async () => {
       try {
         const response = await getApi("/apis/user/add-parcel");
         addPackageData(response.data.result);
-        setTotal(response.data.total);
       } catch (error) {
         console.log(error.response.data.error);
         toast.error(`${error.response.data.error}`);
@@ -26,12 +26,18 @@ const ConsignmentTable = () => {
 
     fetchPackageData();
   }, []);
+  const totalPages = Math.ceil(packageData.length / itemsPerPage);
+
+  const currentData = packageData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   if (!packageData) {
-    return <Loader></Loader>
+    return <Loader></Loader>;
   }
-  if(packageData?.length<=0 ){
-    return <p className="text-center my-6">No data found</p>
+  if (packageData?.length <= 0) {
+    return <p className="text-center my-6">No data found</p>;
   }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -57,7 +63,7 @@ const ConsignmentTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData?.map((packageItem, key) => (
+            {currentData?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -152,7 +158,7 @@ const ConsignmentTable = () => {
         </table>
       </div>
       <ResponsivePagination
-        total={total}
+        total={totalPages}
         current={currentPage}
         onPageChange={setCurrentPage}
       />

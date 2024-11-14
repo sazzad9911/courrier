@@ -4,19 +4,18 @@ import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
 import { getApi, deleteApi } from "../../../functions/API";
 import toast from "react-hot-toast";
+import Loader from "../common/Loader";
 
 const HubListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hubs, setHubs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const itemsPerPage = 10;
 
   const fetchHubList = async () => {
     try {
-      setIsLoading(true);
       const response = await getApi("/apis/admin/add-hub");
       setHubs(response.data);
-      setIsLoading(false);
     } catch (error) {
       toast(`${error.response.data.error}`);
     }
@@ -35,12 +34,23 @@ const HubListTable = () => {
       toast(`${error.response.data.error}`);
     }
   };
+  const totalPages = Math.ceil(hubs.length / itemsPerPage);
+
+  // Get the items for the current page
+  const currentData = hubs.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  if (!hubs) {
+    return <p className="text-center my-6">No data found</p>;
+  }
+  if (hubs?.length <= 0) {
+    return <Loader></Loader>;
+  }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
-        {isLoading && (
-          <p className="text-center text-gray-500">Loading hubs...</p>
-        )}
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -62,7 +72,7 @@ const HubListTable = () => {
             </tr>
           </thead>
           <tbody>
-            {hubs.map((hub, key) => (
+            {currentData.map((hub, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -159,7 +169,7 @@ const HubListTable = () => {
         </table>
       </div>
       <ResponsivePagination
-        total={10}
+        total={totalPages}
         current={currentPage}
         onPageChange={(page) => setCurrentPage(page)} // Ensure `page` is a number
       />

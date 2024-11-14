@@ -1,40 +1,42 @@
 "use client";
-import { useRef, useState } from "react";
-import { Package } from "../../types/package";
+import { useState, useEffect } from "react";
 import ResponsivePagination from "react-responsive-pagination";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
-
-const packageData: Package[] = [
-  {
-    name: "Free package",
-    price: 0.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Business Package",
-    price: 99.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Unpaid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Pending",
-  },
-];
+import { getApi } from "../../../functions/API";
+import toast from "react-hot-toast";
+import Loader from "../common/Loader";
 
 const MerchantTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const router = useRouter();
+  const [merchants, setMerchants] = useState([]);
+  const itemsPerPage = 10;
+
+  const fetchRiderList = async () => {
+    try {
+      const response = await getApi("/apis/admin/merchant-list");
+      setMerchants(response.data);
+    } catch (error) {
+      toast(`${error.response.data.error.message}`);
+    }
+  };
+  useEffect(() => {
+    fetchRiderList();
+  }, []);
+
+  const totalPages = Math.ceil(merchants.length / itemsPerPage);
+
+  // Get the items for the current page
+  const currentData = merchants.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  if (!merchants) {
+    return <p className="text-center my-6">No data found</p>;
+  }
+  if (merchants?.length <= 0) {
+    return <Loader></Loader>;
+  }
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
@@ -59,37 +61,55 @@ const MerchantTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem, key) => (
+            {currentData.map((merchant, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">01</h5>
+                  <h5 className="font-medium text-black dark:text-white">
+                    {key + 1}{" "}
+                  </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 flex items-center gap-4  dark:border-strokedark xl:pl-11">
-                  <Image
-                    height={50}
-                    width={50}
-                    alt="profile"
-                    src={"/images/user/user.png"}
-                  />
+                  {merchant.image ? (
+                    <Image
+                      src={merchant.image}
+                      width={45}
+                      height={45}
+                      className="rounded-full"
+                      style={{
+                        width: "auto",
+                        height: "auto",
+                      }}
+                      alt="profile"
+                    />
+                  ) : (
+                    <Image
+                      src={"/images/user/user.png"}
+                      width={45}
+                      height={45}
+                      style={{
+                        width: "auto",
+                        height: "auto",
+                      }}
+                      alt="profile"
+                    />
+                  )}
                   <div>
                     <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.name}
+                      {merchant.name}
                     </h5>
-                    <p>Scientistx Tech</p>
+                    <p>{merchant.businessName} </p>
                   </div>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.invoiceDate}
-                  </p>
+                  <p className="text-black dark:text-white">{merchant.phone}</p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.name}
+                    {merchant.address}
                   </h5>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                  <p>12.77 BDT</p>
+                  <p>{merchant.balance} </p>
                 </td>
               </tr>
             ))}
@@ -97,7 +117,7 @@ const MerchantTable = () => {
         </table>
       </div>
       <ResponsivePagination
-        total={10}
+        total={totalPages}
         current={currentPage}
         onPageChange={setCurrentPage}
       />

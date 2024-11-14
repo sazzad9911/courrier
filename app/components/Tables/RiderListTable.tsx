@@ -5,18 +5,18 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { deleteApi, getApi, postApi } from "../../../functions/API";
 import toast from "react-hot-toast";
+import Loader from "../common/Loader";
 
 const RiderListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [riders, setRiders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const itemsPerPage = 10;
+
   const fetchRiderList = async () => {
     try {
-      setIsLoading(true);
       const response = await getApi("/apis/admin/rider");
       setRiders(response.data);
-      setIsLoading(false);
     } catch (error) {
       toast(`${error.response.data.error.message}`);
     }
@@ -26,21 +26,31 @@ const RiderListTable = () => {
   }, []);
   const riderDelete = async (riderId) => {
     try {
-      const response = await deleteApi(`/apis/admin/rider?id=${riderId}`);
-      console.log(response);
+      await deleteApi(`/apis/admin/rider?id=${riderId}`);
       toast.success("Rider deleted successfully");
       fetchRiderList();
     } catch (error) {
       toast(`${error.response.data.error}`);
     }
   };
+  const totalPages = Math.ceil(riders.length / itemsPerPage);
+
+  // Get the items for the current page
+  const currentData = riders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  if (!riders) {
+    return <p className="text-center my-6">No data found</p>;
+  }
+  if (riders?.length <= 0) {
+    return <Loader></Loader>;
+  }
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">
-        {isLoading && (
-          <p className="text-center text-gray-500">Loading Riders...</p>
-        )}
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -62,7 +72,7 @@ const RiderListTable = () => {
             </tr>
           </thead>
           <tbody>
-            {riders.map((rider, key) => (
+            {currentData.map((rider, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -73,8 +83,8 @@ const RiderListTable = () => {
                   {rider.image ? (
                     <Image
                       src={rider.image}
-                      width={60}
-                      height={60}
+                      width={45}
+                      height={45}
                       className="rounded-full"
                       style={{
                         width: "auto",
@@ -85,8 +95,8 @@ const RiderListTable = () => {
                   ) : (
                     <Image
                       src={"/images/user/user.png"}
-                      width={50}
-                      height={50}
+                      width={45}
+                      height={45}
                       style={{
                         width: "auto",
                         height: "auto",
@@ -189,7 +199,7 @@ const RiderListTable = () => {
         </table>
       </div>
       <ResponsivePagination
-        total={10}
+        total={totalPages}
         current={currentPage}
         onPageChange={setCurrentPage}
       />
