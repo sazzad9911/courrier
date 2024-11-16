@@ -11,14 +11,27 @@ import { useState } from "react";
 const Settings = () => {
   const { userData, reloadAuth } = useAuth();
   const [image, setImage] = useState<File>();
-
+  const [name, setName] = useState(userData.name);
+  const [phone, setPhone] = useState(userData.phone);
+  const [businessName, setBusinessName] = useState(userData.businessName);
+  const [address, setAddress] = useState(userData.address);
+  const [email, setEmail] = useState(userData.email);
   const myPromise = (file: File) => {
     const form = new FormData();
     form.append("image", file);
     return postApi("/apis/user/upload-picture", form);
   };
+  const updateUser = () => {
+    const data = {
+      name,
+      phone,
+      businessName,
+      address,
+      email,
+    };
+    return postApi("/apis/user/user-info", data);
+  };
   const handleChangeImage = (file: File) => {
-    
     toast.promise(myPromise(file), {
       loading: "Please wait...",
       success: (res) => {
@@ -34,6 +47,23 @@ const Settings = () => {
       },
     });
   };
+  const handleUpdateUser = () => {
+    toast.promise(updateUser(), {
+      loading: "Please wait...",
+      success: () => {
+        reloadAuth();
+        return "Upload successful";
+      },
+      error: (err: { response: { data: { error: string } } }) => {
+        if (err.response) {
+          return `${err.response.data.error}`;
+        } else {
+          return "An unexpected error occurred.";
+        }
+      },
+    });
+  };
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
@@ -84,6 +114,7 @@ const Settings = () => {
                           </svg>
                         </span>
                         <input
+                          onChange={(e) => setName(e.target.value)}
                           className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           type="text"
                           name="fullName"
@@ -102,6 +133,7 @@ const Settings = () => {
                         Phone Number
                       </label>
                       <input
+                        onChange={(e) => setPhone(e.target.value)}
                         className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="phoneNumber"
@@ -146,6 +178,7 @@ const Settings = () => {
                         </svg>
                       </span>
                       <input
+                        onChange={(e) => setEmail(e.target.value)}
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
                         name="emailAddress"
@@ -164,6 +197,7 @@ const Settings = () => {
                       Business Name
                     </label>
                     <input
+                      onChange={(e) => setBusinessName(e.target.value)}
                       className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
                       name="BusinessName"
@@ -213,6 +247,7 @@ const Settings = () => {
                       </span>
 
                       <textarea
+                        onChange={(e) => setAddress(e.target.value)}
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         name="bio"
                         id="bio"
@@ -225,14 +260,8 @@ const Settings = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
+                      onClick={handleUpdateUser}
                     >
                       Save
                     </button>
@@ -249,7 +278,7 @@ const Settings = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <div >
+                <div>
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       {userData.image ? (
@@ -290,9 +319,8 @@ const Settings = () => {
                   >
                     <input
                       onChange={(e) => {
-                        console.log(e.target.files[0])
+                        console.log(e.target.files[0]);
                         setImage(e.target.files[0]);
-                        
                       }}
                       type="file"
                       accept="image/*"
@@ -346,13 +374,13 @@ const Settings = () => {
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      onClick={()=>setImage(null)}
+                      onClick={() => setImage(null)}
                     >
                       Cancel
                     </button>
-                    <button onClick={()=>image&&handleChangeImage(image)}
+                    <button
+                      onClick={() => image && handleChangeImage(image)}
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      
                     >
                       Save
                     </button>
