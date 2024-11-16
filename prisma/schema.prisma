@@ -14,19 +14,19 @@ datasource db {
 }
 
 model Users {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
   businessName String
   name         String
-  email        String      @unique
-  phone        String      @unique
+  email        String        @unique
+  phone        String        @unique
   password     String
   pushToken    String?
-  balance      Float       @default(0)
-  isAdmin      Boolean     @default(false)
-  address      String      @default("")
-  image        String      @default("")
+  balance      Float         @default(0)
+  isAdmin      Boolean       @default(false)
+  address      String        @default("")
+  image        String        @default("")
   Addparcel    Addparcel[]
-  fraud        Boolean     @default(false)
+  fraud        Boolean       @default(false)
   riderReport  FraudReport[]
 }
 
@@ -58,6 +58,7 @@ model Addparcel {
   charge           Float         @default(0)
   riderId          String?       @db.ObjectId
   rider            Rider?        @relation(fields: [riderId], references: [id])
+  pickUpRiderId    String?       @db.ObjectId
   TrackParcel      TrackParcel[]
 }
 
@@ -85,15 +86,18 @@ model Hublist {
 }
 
 model Rider {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  phone     String
-  image     String?
-  nid       String
-  password  String
-  Addparcel Addparcel[]
-  date      DateTime    @default(now())
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  phone       String        @unique
+  image       String?
+  nid         String
+  password    String
+  Addparcel   Addparcel[]
+  date        DateTime      @default(now())
   fraudReport FraudReport[]
+  district    String?
+  division    String?
+  isActive    Boolean       @default(true)
 }
 
 model TrackParcel {
@@ -105,11 +109,18 @@ model TrackParcel {
 }
 
 model FraudReport {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String @db.ObjectId
-  riderId   String @db.ObjectId
-  User      Users    @relation(fields: [userId], references: [id])
-  Rider     Rider   @relation(fields: [riderId], references: [id])
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId
+  riderId String @db.ObjectId
+  User    Users  @relation(fields: [userId], references: [id])
+  Rider   Rider  @relation(fields: [riderId], references: [id])
 
   @@unique([userId, riderId]) // Ensures a rider can't flag the same user more than once
+}
+
+model support {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  phone   String
+  message String
 }

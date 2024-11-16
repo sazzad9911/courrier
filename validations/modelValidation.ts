@@ -91,7 +91,9 @@ const riderSchema = object({
   riderPassword: string().required("Password is required"),
   image: string().default(""),
 });
-
+const riderPickupSchema = object({
+  type: string().required().oneOf(["pending", "received"])
+})
 export {
   userSchema,
   addParcelSchema,
@@ -100,4 +102,5 @@ export {
   updatePricing,
   addHubSchema,
   riderSchema,
+  riderPickupSchema
 };

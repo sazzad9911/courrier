@@ -5,6 +5,7 @@ import {
 } from "next/server";
 import checkAuth from "./middleware/checkAuth";
 import checkAdmin from "./middleware/checkAdmin";
+import checkRider from "./middleware/checkRider";
 
 export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware;
 
@@ -17,7 +18,7 @@ export function stackMiddlewares(functions: MiddlewareFactory[] = [], index = 0)
   }
   return () => NextResponse.next();
 }
-const middlewares = [checkAuth,checkAdmin];
+const middlewares = [checkAuth,checkAdmin,checkRider];
 export default stackMiddlewares(middlewares);
 
 export const config = {

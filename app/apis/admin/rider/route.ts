@@ -21,7 +21,7 @@ export const POST = async (request: NextRequest) => {
       message: "Rider account creation successfully done",
     });
   } catch (error) {
-    return errorMessage(error);
+    return errorMessage(error,undefined,"Phone number");
   }
 };
 
