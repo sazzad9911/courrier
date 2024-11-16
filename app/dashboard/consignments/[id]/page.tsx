@@ -15,10 +15,40 @@ import { LuPackageOpen } from "react-icons/lu";
 import { getApi } from "../../../../functions/API";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import Loader from "../../../components/common/Loader";
+interface ParcelDetails {
+  id: string;
+  userId: string;
+  category: string; // Add more categories if needed
+  serviceType: string; // Add more service types if needed
+  pickUpFrom: string; // Add more pickup options if needed
+  phoneNumber: string;
+  amount: number;
+  name: string;
+  invoiceNumber: string;
+  address: string;
+  weight: number; // Weight in kilograms
+  district: string;
+  thana: string;
+  note?: string;
+  date: string; // ISO 8601 formatted date string
+  status: string; // Add more statuses if needed
+  trackingId: string;
+  merchantNumber: string;
+  merchantAddress: string;
+  merchantDistrict: string;
+  merchantThana: string;
+  hubId: string | null; // Nullable
+  charge: number;
+  riderId: string | null; // Nullable
+  pickUpRiderId: string | null; // Nullable
+  rider: string | null; // Nullable, could be expanded with rider details if needed
+  TrackParcel: Array<any>; // Specify the structure if known
+}
 
 export default function Parcel() {
   const { id } = useParams();
-  const [data, setData] = useState();
+  const [data, setData] = useState<ParcelDetails>();
   // console.log(data);
   useEffect(() => {
     const fetchPackageData = async () => {
@@ -57,11 +87,16 @@ export default function Parcel() {
               </p>
               <p className="font-semibold text-lg my-1">
                 Status:{" "}
-                <span className="font-thin text-yellow-600">{data?.status}</span>
+                <span className="font-thin text-yellow-600">
+                  {data?.status}
+                </span>
               </p>
-              <Link href='/pages/track-parcel' className="bg-green-600 text-white px-3 py-1 rounded-sm my-3">
+              <Link
+                href="/pages/track-parcel"
+                className="bg-green-600 text-white px-3 py-1 rounded-sm my-3"
+              >
                 Track Now
-              </Link >
+              </Link>
             </div>
             <div>
               <h3 className="font-medium text-black dark:text-white">
@@ -71,15 +106,15 @@ export default function Parcel() {
                 Name: <span className="font-thin">{data?.name}</span>
               </p>
               <p className="font-semibold text-lg my-1">
-                Address:{" "}
-                <span className="font-thin">{data?.address}</span>
+                Address: <span className="font-thin">{data?.address}</span>
               </p>
               {/* <p className="font-semibold text-lg my-1">
                 Police Station:{" "}
                 <span className="font-thin">Farmgate, Dhaka</span>
               </p> */}
               <p className="font-semibold text-lg my-1">
-                Phone Number: <span className="font-thin ">{data?.phoneNumber}</span>
+                Phone Number:{" "}
+                <span className="font-thin ">{data?.phoneNumber}</span>
               </p>
               <button className="bg-red-600 text-white px-3 py-1 rounded-sm my-3">
                 Cancel Now
@@ -88,9 +123,7 @@ export default function Parcel() {
           </div>
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <div className="text-center font-semibold text-lg my-4">Note</div>
-            <div className="text-center max-w-[80%] mx-auto">
-            {data?.note}
-            </div>
+            <div className="text-center max-w-[80%] mx-auto">{data?.note}</div>
           </div>
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark flex justify-center items-center gap-8">
             <div className="flex flex-col items-center">
