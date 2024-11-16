@@ -16,6 +16,7 @@ import { getApi } from "../../../../functions/API";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Loader from "../../../components/common/Loader";
+
 interface ParcelDetails {
   id: string;
   userId: string;
@@ -64,6 +65,9 @@ export default function Parcel() {
 
     fetchPackageData();
   }, []);
+  if (!data) {
+    return <Loader></Loader>;
+  }
 
   return (
     <DefaultLayout>
