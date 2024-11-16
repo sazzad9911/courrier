@@ -22,7 +22,8 @@ type WeightData = { weight: number } | null;
 export const POST = async (request: NextRequest) => {
   try {
     const data = await Pricing.validate(await request.json());
-    const isDhaka = data.from === "Dhaka" && data.to === "Dhaka";
+    // const isDhaka = data.from === "Dhaka" && data.to === "Dhaka";
+    const isDhaka = data.from === data.to;
 
     const locationPrice = isDhaka
       ? (await prisma.pricing.findFirst({ select: { dhakadhaka: true } }))

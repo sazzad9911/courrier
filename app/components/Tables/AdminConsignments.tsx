@@ -4,6 +4,7 @@ import ResponsivePagination from "react-responsive-pagination";
 import { useRouter } from "next/navigation";
 import { getApi } from "../../../functions/API";
 import toast from "react-hot-toast";
+import Loader from "../common/Loader";
 
 const AdminConsignmentsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,6 +32,12 @@ const AdminConsignmentsTable = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  if (!packageData) {
+    return <p className="text-center my-6">No data found</p>;
+  }
+  if (packageData?.length <= 0) {
+    return <Loader></Loader>;
+  }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full mb-2 overflow-x-auto">

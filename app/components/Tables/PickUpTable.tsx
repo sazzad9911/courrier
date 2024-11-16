@@ -1,43 +1,44 @@
 "use client";
-import { useState } from "react";
-import { Package } from "../../types/package";
+import { useState, useEffect } from "react";
 import ResponsivePagination from "react-responsive-pagination";
-import { useRouter } from "next/navigation";
 import Modal from "../Modals";
 import SelectGroupOne from "../SelectGroup/SelectGroupOne";
-
-const packageData: Package[] = [
-  {
-    name: "Free package",
-    price: 0.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Business Package",
-    price: 99.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Unpaid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Pending",
-  },
-];
+import toast from "react-hot-toast";
+import { getApi } from "../../../functions/API";
+import Loader from "../common/Loader";
 
 const PickUpTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const router = useRouter();
+  const [packageData, addPackageData] = useState([]);
   const [sort, setSort] = useState("all");
   const [isModalOpen, setModalOpen] = useState(false);
+  const itemsPerPage = 10;
+  useEffect(() => {
+    const fetchPackageData = async () => {
+      try {
+        const response = await getApi("/apis/admin/all-consignment");
+        addPackageData(response.data.result);
+      } catch (error) {
+        toast.error(`${error.response.data.error}`);
+      }
+    };
+
+    fetchPackageData();
+  }, []);
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(packageData.length / itemsPerPage);
+
+  // Get the items for the current page
+  const currentData = packageData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  if (!packageData) {
+    return <p className="text-center my-6">No data found</p>;
+  }
+  if (packageData?.length <= 0) {
+    return <Loader></Loader>;
+  }
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -89,23 +90,23 @@ const PickUpTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem, key) => (
+            {currentData.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
                     {packageItem.name}
                   </h5>
-                  <p className="text-sm">${packageItem.price}</p>
+                  <p className="text-sm">${packageItem.amount}</p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5  dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.name}
+                    {packageItem.phoneNumber}
                   </h5>
-                  <p className="text-sm">${packageItem.price}</p>
+                  <p className="text-sm">{packageItem.address}</p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <p className="text-black dark:text-white">
-                    {packageItem.invoiceDate}
+                    {new Date(packageItem.date).toDateString()}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
@@ -159,7 +160,7 @@ const PickUpTable = () => {
         </table>
       </div>
       <ResponsivePagination
-        total={10}
+        total={totalPages}
         current={currentPage}
         onPageChange={setCurrentPage}
       />
