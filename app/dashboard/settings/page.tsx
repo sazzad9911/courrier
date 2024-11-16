@@ -88,8 +88,8 @@ const Settings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          placeholder="Enter your name.."
+                          defaultValue={userData?.name}
                         />
                       </div>
                     </div>
@@ -106,8 +106,8 @@ const Settings = () => {
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        placeholder="Enter your phone.."
+                        defaultValue={userData?.phone}
                       />
                     </div>
                   </div>
@@ -150,8 +150,8 @@ const Settings = () => {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        placeholder="Enter your email.."
+                        defaultValue={userData?.email}
                       />
                     </div>
                   </div>
@@ -169,7 +169,7 @@ const Settings = () => {
                       name="BusinessName"
                       id="BusinessName"
                       placeholder="Business Name"
-                      defaultValue="devidjhon24"
+                      defaultValue={userData?.businessName}
                     />
                   </div>
 
@@ -218,7 +218,7 @@ const Settings = () => {
                         id="bio"
                         rows={2}
                         placeholder="Write your address here"
-                        defaultValue=" Donec fermentum blandit aliquet."
+                        defaultValue={userData?.address}
                       ></textarea>
                     </div>
                   </div>
