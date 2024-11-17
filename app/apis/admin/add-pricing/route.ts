@@ -3,7 +3,7 @@ import prisma from "../../../../libs/prisma";
 import errorMessage from "../../../../validations/errorMessage";
 import { updatePricing } from "../../../../validations/modelValidation";
 
-export const POST = async (request: NextRequest) => {
+export const PUT = async (request: NextRequest) => {
   try {
     // Validate incoming data using schema validation
     const data = await updatePricing.validate(await request.json());
@@ -14,12 +14,13 @@ export const POST = async (request: NextRequest) => {
       data: {
         dhakadhaka: data.dhakaToDhaka,
         dhakaalloverbangladesh: data.dhakaAllOverBangladesh,
-        weight: data.OneKgWeight,
+        weight: data.oneKgWeight,
         regular: data.regular,
         express: data.express,
         homeDelivery: data.homeDelivery,
         pointDelivery: data.pointDelivery, // fixed typo
         pickUpHome: data.pickUpHome,
+        pickAnddrop: data.pickUpAndDrop,
       },
     });
 

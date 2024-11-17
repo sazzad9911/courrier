@@ -62,13 +62,13 @@ const Pricing = object({
 const updatePricing = object({
   dhakaToDhaka: number(),
   dhakaAllOverBangladesh: number(),
-  OneKgWeight: number(),
+  oneKgWeight: number(),
   regular: number(),
   express: number(),
   homeDelivery: number(),
   pointDelivery: number(),
   pickUpHome: number(),
-  pickUpHub: number(),
+  pickUpAndDrop: number(),
 });
 
 const updateUserInformation = object({
@@ -92,8 +92,8 @@ const riderSchema = object({
   image: string().default(""),
 });
 const riderPickupSchema = object({
-  type: string().required().oneOf(["pending", "received"])
-})
+  type: string().required().oneOf(["pending", "received"]),
+});
 export {
   userSchema,
   addParcelSchema,
@@ -102,5 +102,5 @@ export {
   updatePricing,
   addHubSchema,
   riderSchema,
-  riderPickupSchema
+  riderPickupSchema,
 };
