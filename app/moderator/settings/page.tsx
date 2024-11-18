@@ -1,17 +1,42 @@
 "use client";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
-import { Metadata } from "next";
-import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import useAuth from "../../../hooks/useAuth";
-import { postApi } from "../../../functions/API";
+import { getApi, postApi, putApi } from "../../../functions/API";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminLayout from "../../components/Layouts/AdminLayout";
 
 const Settings = () => {
   const { userData, reloadAuth } = useAuth();
   const [image, setImage] = useState<File>();
+  // const [adminInfo,setAdminInfo]=useState()
+  const [formData, setFormData] = useState({
+    name: "",
+    number: "",
+    email: "",
+    businessName: "",
+    address: "",
+  });
+
+  const getAdminInfo = async () => {
+    try {
+      const response = await getApi("/apis/admin/update-admin-info");
+      setFormData({
+        name: response.data.name || "",
+        number: response.data.phone || "",
+        email: response.data.email || "",
+        businessName: response.data.businessName || "",
+        address: response.data.address || "",
+      });
+    } catch (error) {
+      toast(`${error.response.data.error}`);
+    }
+  };
+
+  useEffect(() => {
+    getAdminInfo();
+  }, []);
 
   const myPromise = (file: File) => {
     const form = new FormData();
@@ -21,7 +46,7 @@ const Settings = () => {
   const handleChangeImage = (file: File) => {
     toast.promise(myPromise(file), {
       loading: "Please wait...",
-      success: (res) => {
+      success: () => {
         reloadAuth();
         return "Upload successful";
       },
@@ -34,6 +59,19 @@ const Settings = () => {
       },
     });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await putApi("/apis/admin/update-admin-info", formData);
+      getAdminInfo();
+      toast.success(`${response.data.message}`);
+    } catch (error) {
+      console.log(error);
+      toast(`${error.response.data.error}`);
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="mx-auto max-w-270">
@@ -48,7 +86,7 @@ const Settings = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+                <form onSubmit={handleSubmit}>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
@@ -88,8 +126,10 @@ const Settings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          value={formData.name}
+                          onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                          }
                         />
                       </div>
                     </div>
@@ -106,8 +146,13 @@ const Settings = () => {
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        value={formData.number}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            number: e.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -150,8 +195,10 @@ const Settings = () => {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -168,8 +215,13 @@ const Settings = () => {
                       type="text"
                       name="BusinessName"
                       id="BusinessName"
-                      placeholder="Business Name"
-                      defaultValue="devidjhon24"
+                      value={formData.businessName}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          businessName: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
@@ -217,22 +269,25 @@ const Settings = () => {
                         name="bio"
                         id="bio"
                         rows={2}
-                        placeholder="Write your address here"
-                        defaultValue=" Donec fermentum blandit aliquet."
+                        value={formData.address}
+                        onChange={(e) =>
+                          setFormData({ ...formData, address: e.target.value })
+                        }
                       ></textarea>
                     </div>
                   </div>
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
+                      type="button"
+                      onClick={() => window.location.reload()}
+                      className="px-6 py-2 border rounded text-gray-700 hover:bg-gray-100"
                     >
                       Cancel
                     </button>
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
+                      // type="submit"
                     >
                       Save
                     </button>
@@ -249,7 +304,7 @@ const Settings = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <div >
+                <div>
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       {userData.image ? (
@@ -344,13 +399,13 @@ const Settings = () => {
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      onClick={()=>setImage(null)}
+                      onClick={() => setImage(null)}
                     >
                       Cancel
                     </button>
-                    <button onClick={()=>image&&handleChangeImage(image)}
+                    <button
+                      onClick={() => image && handleChangeImage(image)}
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      
                     >
                       Save
                     </button>

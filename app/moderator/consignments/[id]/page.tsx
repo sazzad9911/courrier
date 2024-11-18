@@ -1,7 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
-import DefaultLayout from "../../../components/Layouts/DefaultLayout";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 import {
   FaBoxOpen,
@@ -14,10 +13,46 @@ import Image from "next/image";
 import { LuPackageOpen } from "react-icons/lu";
 import AdminLayout from "../../../components/Layouts/AdminLayout";
 import SelectGroupOne from "../../../components/SelectGroup/SelectGroupOne";
+import { getApi } from "../../../../functions/API";
+import toast from "react-hot-toast";
+
+interface parcel {
+  invoiceNumber: string;
+  weight: number;
+  amount: number;
+  status: string;
+  name: string;
+  address: string;
+  phoneNumber: string;
+}
 
 export default function Parcel() {
   const { id } = useParams();
-  const [status, setStatus] = useState("packaging");
+  const [singleParcel, setSingleParcel] = useState<parcel | null>(null);
+  useEffect(() => {
+    const getSingelParcel = async () => {
+      try {
+        const response = await getApi(
+          `/apis/admin/all-consignment?trackingId=${id}`
+        );
+        setSingleParcel(response.data);
+      } catch (error) {
+        toast(`${error.response.data.error}`);
+      }
+    };
+    getSingelParcel();
+  }, []);
+
+  if (!singleParcel) {
+    // Display loading state or placeholder content
+    return (
+      <AdminLayout>
+        <Breadcrumb pageName="Price Table" />
+        <div className="text-center py-10">Loading parcel data...</div>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <Breadcrumb pageName={`Parcel Id: ${id}`} />
@@ -29,27 +64,30 @@ export default function Parcel() {
                 Parcel Information
               </h3>
               <p className="font-semibold text-lg my-1">
-                Invoice: <span className="font-thin">N/A</span>
+                Invoice:{" "}
+                <span className="font-thin">{singleParcel.invoiceNumber} </span>
               </p>
               <p className="font-semibold text-lg my-1">
-                Weight: <span className="font-thin">1 Kg</span>
+                Weight:{" "}
+                <span className="font-thin">{singleParcel.weight} KG</span>
               </p>
               <p className="font-semibold text-lg my-1">
-                COD: <span className="font-thin">2300 BDT</span>
+                COD:{" "}
+                <span className="font-thin">{singleParcel.amount} BDT</span>
               </p>
               <p className="font-semibold text-lg my-1">
                 Status:{" "}
                 <span className="font-thin text-yellow-600">PENDING</span>
               </p>
-              {status === "pending" ? (
+              {singleParcel.status === "pending" ? (
                 <button className="bg-green-600 text-white px-3 py-1 rounded-sm my-3">
                   Mark as Processing
                 </button>
-              ) : status === "processing" ? (
+              ) : singleParcel.status === "processing" ? (
                 <button className="bg-green-600 text-white px-3 py-1 rounded-sm my-3">
                   Mark as Packaging
                 </button>
-              ) : status === "packaging" ? (
+              ) : singleParcel.status === "packaging" ? (
                 <div className="w-10/12 flex flex-col gap-2">
                   <label>Select Delivery Person</label>
                   <SelectGroupOne />
@@ -63,20 +101,21 @@ export default function Parcel() {
                 Receiver Information
               </h3>
               <p className="font-semibold text-lg my-1">
-                Name: <span className="font-thin">Rasel Shekh</span>
+                Name: <span className="font-thin">{singleParcel.name} </span>
               </p>
               <p className="font-semibold text-lg my-1">
                 Address:{" "}
-                <span className="font-thin">Kolabagan, Dhaka, Bangladesh</span>
+                <span className="font-thin">{singleParcel.address} </span>
               </p>
               <p className="font-semibold text-lg my-1">
                 Police Station:{" "}
                 <span className="font-thin">Farmgate, Dhaka</span>
               </p>
               <p className="font-semibold text-lg my-1">
-                Phone Number: <span className="font-thin ">+8801633423423</span>
+                Phone Number:{" "}
+                <span className="font-thin ">{singleParcel.phoneNumber} </span>
               </p>
-              {status === "pending" ? (
+              {singleParcel.status === "pending" ? (
                 <button className="bg-red-600 text-white px-3 py-1 rounded-sm my-3">
                   Cancel Now
                 </button>

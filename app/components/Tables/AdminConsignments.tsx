@@ -125,7 +125,9 @@ const AdminConsignmentsTable = () => {
                       <div className="flex items-center space-x-3.5">
                         <button
                           onClick={() =>
-                            router.push("/moderator/consignments/54352")
+                            router.push(
+                              `/moderator/consignments/${packageItem.trackingId}`
+                            )
                           }
                           className="hover:text-primary"
                         >
