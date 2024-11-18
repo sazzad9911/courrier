@@ -1,10 +1,10 @@
 "use client";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
-import { Metadata } from "next";
+// import { Metadata } from "next";
 import DefaultLayout from "../../components/Layouts/DefaultLayout";
 import useAuth from "../../../hooks/useAuth";
-import { postApi } from "../../../functions/API";
+import { postApi, putApi } from "../../../functions/API";
 import toast from "react-hot-toast";
 import { useState } from "react";
 
@@ -29,12 +29,12 @@ const Settings = () => {
       address,
       email,
     };
-    return postApi("/apis/user/user-info", data);
+    return putApi("/apis/user/user-info", data);
   };
   const handleChangeImage = (file: File) => {
     toast.promise(myPromise(file), {
       loading: "Please wait...",
-      success: (res) => {
+      success: () => {
         reloadAuth();
         return "Upload successful";
       },
