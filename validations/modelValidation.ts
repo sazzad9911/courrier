@@ -94,6 +94,17 @@ const riderSchema = object({
 const riderPickupSchema = object({
   type: string().required().oneOf(["pending", "received"]),
 });
+const riderInfoSchema = object({
+  name:string().required().max(250),
+  phone: string().required().max(11),
+  nid:string().required(),
+  address:string()
+})
+const fraudMarkSchema = object({
+  name:string().required(),
+  phone:string().required(),
+  address:string().required()
+})
 export {
   userSchema,
   addParcelSchema,
@@ -103,4 +114,6 @@ export {
   addHubSchema,
   riderSchema,
   riderPickupSchema,
+  riderInfoSchema,
+  fraudMarkSchema
 };

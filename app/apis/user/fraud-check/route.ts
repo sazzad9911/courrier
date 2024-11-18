@@ -2,36 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../libs/prisma";
 import errorMessage from "../../../../validations/errorMessage";
 
-export const POST = async (request: NextRequest) => {
-  const { number } = await request.json();
-
+export const GET = async (request: NextRequest) => {
+  const number = request.nextUrl.searchParams.get('number');
+  if (!number) return NextResponse.json({ error: "Invalid number" }, { status: 404 })
   try {
-    const users = await prisma.users.findMany({
+    const fraud = await prisma.fraudReport.findFirst({
       where: {
-        fraud: true,
         phone: number,
-      },
-      select: {
-        id: true,
-        businessName: true,
-        name: true,
-        email: true,
-        phone: true,
-        balance: true,
-        address: true,
-        image: true,
-        Addparcel: true,
-      },
+      }
     });
+    if (!fraud) {
+      const parcel = await prisma.addparcel.findMany({
+        where: {
+          phoneNumber: number
+        }
+      })
+      const totalDelivered = parcel.filter(parcel => parcel.status === "delivered").length;
+      const totalPending = parcel.filter(parcel => parcel.status === "pending").length;
+      const totalCancelled = parcel.filter(parcel => parcel.status === "cancelled").length;
+      const totalParcel = parcel.length;
 
-    // Check if the users array is empty
-    if (users.length === 0) {
-      return NextResponse.json({ message: "There is no fraud case" });
+      return NextResponse.json({ message: "No fraud report found!", result: { totalParcel, totalDelivered, totalPending, totalCancelled } }, { status: 201 })
     }
 
-    return NextResponse.json(users);
+    return NextResponse.json({ message: "Fraud Alert!!", result: fraud });
   } catch (error) {
-    errorMessage(error);
-    return NextResponse.json({ error: "Fraud check error" });
+    return errorMessage(error);
   }
 };

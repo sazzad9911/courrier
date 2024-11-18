@@ -27,7 +27,6 @@ model Users {
   image        String        @default("")
   Addparcel    Addparcel[]
   fraud        Boolean       @default(false)
-  riderReport  FraudReport[]
 }
 
 model Addparcel {
@@ -98,6 +97,7 @@ model Rider {
   district    String?
   division    String?
   isActive    Boolean       @default(true)
+  address     String?
 }
 
 model TrackParcel {
@@ -109,13 +109,12 @@ model TrackParcel {
 }
 
 model FraudReport {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  userId  String @db.ObjectId
-  riderId String @db.ObjectId
-  User    Users  @relation(fields: [userId], references: [id])
-  Rider   Rider  @relation(fields: [riderId], references: [id])
-
-  @@unique([userId, riderId]) // Ensures a rider can't flag the same user more than once
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  riderId String  @db.ObjectId
+  Rider   Rider   @relation(fields: [riderId], references: [id])
+  name    String
+  phone   String
+  address String
 }
 
 model support {
