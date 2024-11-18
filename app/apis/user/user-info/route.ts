@@ -3,7 +3,7 @@ import prisma from "../../../../libs/prisma";
 import { updateUserInformation } from "../../../../validations/modelValidation";
 import errorMessage from "../../../../validations/errorMessage";
 
-export const POST = async (request: NextRequest) => {
+export const PUT = async (request: NextRequest) => {
   const data = await updateUserInformation.validate(await request.json());
   const token = request.headers.get("USER") as string;
   const user = JSON.parse(token) as { id: string; phone: string };
