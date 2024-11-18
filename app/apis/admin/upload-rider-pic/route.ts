@@ -15,7 +15,7 @@ const handler = async (request: NextRequest) => {
     const base64String = buffer.toString("base64");
     const dataUri = `data:${mimeType};base64,${base64String}`;
     const result = await cloudinary.uploader.upload(dataUri, {
-      public_id: image.name,
+      public_id: id,
       transformation: [
         { width: 500, height: 500, crop: "fill" } // This crops and resizes to a 500x500 square
       ],
