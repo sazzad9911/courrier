@@ -19,6 +19,7 @@ export const PUT = async (request: NextRequest) => {
       data: {
         name: data.name,
         phone: data.number,
+        businessName: data.businessName,
         email: data.email,
         address: data.address,
       },
