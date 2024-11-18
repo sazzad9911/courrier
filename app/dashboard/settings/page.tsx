@@ -29,6 +29,8 @@ const Settings = () => {
       address,
       email,
     };
+    // console.log(data);
+
     return putApi("/apis/user/user-info", data);
   };
   const handleChangeImage = (file: File) => {
@@ -78,7 +80,7 @@ const Settings = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+                <form>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
@@ -259,12 +261,12 @@ const Settings = () => {
                   </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <button
+                    <div
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       onClick={handleUpdateUser}
                     >
                       Save
-                    </button>
+                    </div>
                   </div>
                 </form>
               </div>
