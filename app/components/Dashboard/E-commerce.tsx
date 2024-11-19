@@ -1,11 +1,11 @@
 "use client";
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChartOne from "../Charts/ChartOne";
 import ChartTwo from "../Charts/ChartTwo";
-import ChatCard from "../Chat/ChatCard";
-import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
+import toast from "react-hot-toast";
+import { getApi } from "../../../functions/API";
 
 const MapOne = dynamic(() => import("../Maps/MapOne"), {
   ssr: false,
@@ -16,12 +16,29 @@ const ChartThree = dynamic(() => import("../Charts/ChartThree"), {
 });
 
 const ECommerce: React.FC = () => {
+  const [dashBord, setDashBord] = useState(null);
+  useEffect(() => {
+    const getDashBordData = async () => {
+      try {
+        const response = await getApi("/apis/admin/dashboard");
+        setDashBord(response.data);
+      } catch (error) {
+        toast(`${error.response.data.error}`);
+      }
+    };
+    getDashBordData();
+  }, []);
+
+  if (!dashBord) {
+    // Display loading state or placeholder content
+    return <div className="text-center py-10">Loading Dashboard data...</div>;
+  }
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
           title="Total parcel"
-          total="$3.456K"
+          total={`${dashBord.totalParcel}`}
           rate="0.43%"
           levelUp
         >
@@ -40,7 +57,7 @@ const ECommerce: React.FC = () => {
         </CardDataStats>
         <CardDataStats
           title="Total Delivered"
-          total="$45,2K"
+          total={`${dashBord.totalDelivered}`}
           rate="4.35%"
           levelUp
         >
@@ -57,7 +74,12 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Pending" total="2.450" rate="2.59%" levelUp>
+        <CardDataStats
+          title="Total Pending"
+          total={`${dashBord.totalPending}`}
+          rate="2.59%"
+          levelUp
+        >
           <svg
             width="16"
             height="16"
@@ -77,7 +99,7 @@ const ECommerce: React.FC = () => {
         </CardDataStats>
         <CardDataStats
           title="Total Cancelled"
-          total="3.456"
+          total={`${dashBord.totalCancelled}`}
           rate="0.95%"
           levelDown
         >
