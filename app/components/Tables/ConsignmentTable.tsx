@@ -34,10 +34,10 @@ const ConsignmentTable = () => {
   );
 
   if (!packageData) {
-    return <Loader></Loader>;
+    return <p className="text-center my-6">No data found</p>;
   }
   if (packageData?.length <= 0) {
-    return <p className="text-center my-6">No data found</p>;
+    return <Loader></Loader>;
   }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">

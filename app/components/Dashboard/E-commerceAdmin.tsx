@@ -15,12 +15,12 @@ const ChartThree = dynamic(() => import("../Charts/ChartThree"), {
   ssr: false,
 });
 
-const ECommerce: React.FC = () => {
+const ECommerceAdmin: React.FC = () => {
   const [dashBord, setDashBord] = useState(null);
   useEffect(() => {
     const getDashBordData = async () => {
       try {
-        const response = await getApi("/apis/user/dashboard");
+        const response = await getApi("/apis/admin/dashboard");
         setDashBord(response.data);
       } catch (error) {
         toast(`${error.response.data.error}`);
@@ -128,4 +128,4 @@ const ECommerce: React.FC = () => {
   );
 };
 
-export default ECommerce;
+export default ECommerceAdmin;
